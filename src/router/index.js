@@ -1,10 +1,10 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router';
+import invoicesPage from '@/views/invoicesPage.vue';
 
 const routes = [
   {
-    // path: '/',
-    // name: 'home',
-    // component: HomeView
+    path: '/',
+    component: invoicesPage
   },
   {
     // path: '/about',
