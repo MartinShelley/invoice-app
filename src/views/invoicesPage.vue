@@ -2,14 +2,30 @@
     <div id="invoices-header">
       <div class="heading">
         <h1>Invoices</h1>
-        <p>No Invoices</p>
+        <p class="invoice-number-label">No Invoices</p>
       </div>
       <div class="header-items">
-        <span>Filter by status <img src="@/assets/icon-arrow-down.svg" /></span>
+        <div id="filter" @mouseover="mouseOver" @mouseleave="mouseleave">
+          <span class="filter-label">Filter by status <img src="@/assets/icon-arrow-down.svg" /></span>
+          <div id="filter-dropdown" v-show="this.filterHover">
+            <span>
+              <input type="checkbox" id="filter-draft" name="filter-draft" value="Draft" />
+              <label for="filter-draft">Draft</label>
+            </span>
+            <span>
+              <input type="checkbox" id="filter-pending" name="filter-pending" value="Pending" />
+              <label for="filter-pending">Pending</label>
+            </span>
+            <span>
+              <input type="checkbox" id="filter-paid" name="filter-paid" value="Paid" />
+              <label for="filter-paid">Paid</label>
+            </span>
+          </div>
+        </div>
         <button>
           <svg height="32" width="32">
             <circle cx="16" cy="16" r="16" fill="white" />
-            <image href="@/assets/icon-plus.svg" width="10" height="10" x="11" y="10"/>
+            <image href="@/assets/icon-plus.svg" width="10" height="10" x="11" y="11"/>
           </svg>
           New Invoice
         </button>
@@ -22,6 +38,19 @@
 import NoInvoices from '@/components/NoInvoices.vue';
 
 export default {
+  data() {
+    return {
+      filterHover: false
+    }
+  },
+  methods: {
+    mouseOver() {
+      this.filterHover = true;
+    },
+    mouseleave() {
+      this.filterHover = false;
+    }
+  },
   components: { NoInvoices }
 }
 </script>
@@ -34,10 +63,65 @@ export default {
   margin: 72px auto 0;
   max-width: 730px;
 
+  .invoice-number-label {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 15px;
+    letter-spacing: -0.25px;
+    color: #888EB0;
+  }
+
   .header-items {
     display: flex;
     align-items: center;
     gap: 40px;
+
+    #filter {
+      position: relative;
+
+      .filter-label {
+        padding-bottom: 20px;
+      }
+    }
+
+    #filter-dropdown {
+      display: flex;
+      flex-direction: column;
+      background-color: #fff;
+      padding: 24px;
+      width: 192px;
+      border-radius: 8px;
+      box-shadow: 0px 10px 20px 0px #48549F40;
+      position: absolute;
+      // top: 40px;
+      margin-top: 20px;
+      transform: translateX(-35px);
+      z-index: 1;
+
+
+
+      span {
+        margin-bottom: 16px;
+        input[type="checkbox"] {
+          height: 16px;
+          width: 16px;
+          margin-right: 13px;
+          accent-color: #7C5DFA;
+          // background-color: #DFE3FA;
+          border-radius: 2px;
+        }
+        label {
+          font-weight: 700;
+          color: #0C0E16;
+          cursor: pointer;
+        }
+      }
+
+    }
+
+    span {
+      cursor: pointer;
+    }
   }
 }
 
@@ -54,6 +138,7 @@ button {
   font-size: 14px;
   line-height: 15px;
 }
+
 svg {
   margin-left: 8px;
 }

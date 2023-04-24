@@ -25,6 +25,10 @@ export default {
   box-sizing: border-box;
 }
 
+html {
+  background-color: #f2f2f2;
+}
+
 input,
 button,
 textarea,
@@ -58,6 +62,10 @@ h4 {
   font-weight: 700;
   line-height: 15px;
   letter-spacing: -0.25px;
+}
+
+button {
+  cursor: pointer;
 }
 
 </style>
