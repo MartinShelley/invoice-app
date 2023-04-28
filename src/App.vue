@@ -1,6 +1,8 @@
 <template>
   <MenuBar />
-  <RouterView />
+  <main>
+    <RouterView />
+  </main>
 </template>
 
 <script>
@@ -34,6 +36,14 @@ button,
 textarea,
 select {
   font: inherit;
+}
+
+#app {
+  display: flex;
+}
+
+main {
+  width: calc(100vw - 103px);
 }
 
 h1 {

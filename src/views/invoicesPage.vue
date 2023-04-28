@@ -1,46 +1,50 @@
 <template>
-    <div id="invoices-header">
-      <div class="heading">
-        <h1>Invoices</h1>
-        <p class="invoice-number-label">No Invoices</p>
-      </div>
-      <div class="header-items">
-        <div id="filter" @mouseover="mouseOver" @mouseleave="mouseleave">
-          <span class="filter-label">Filter by status <img src="@/assets/icon-arrow-down.svg" /></span>
-          <div id="filter-dropdown" v-show="this.filterHover">
-            <span>
-              <input type="checkbox" id="filter-draft" name="filter-draft" value="Draft" />
-              <label for="filter-draft">Draft</label>
-            </span>
-            <span>
-              <input type="checkbox" id="filter-pending" name="filter-pending" value="Pending" />
-              <label for="filter-pending">Pending</label>
-            </span>
-            <span>
-              <input type="checkbox" id="filter-paid" name="filter-paid" value="Paid" />
-              <label for="filter-paid">Paid</label>
-            </span>
-          </div>
-        </div>
-        <button>
-          <svg height="32" width="32">
-            <circle cx="16" cy="16" r="16" fill="white" />
-            <image href="@/assets/icon-plus.svg" width="10" height="10" x="11" y="11"/>
-          </svg>
-          New Invoice
-        </button>
-      </div>
+  <div id="invoices-header">
+    <div class="heading">
+      <h1>Invoices</h1>
+      <p class="invoice-number-label">No Invoices</p>
     </div>
-    <NoInvoices />
+    <div class="header-items">
+      <div id="filter" @mouseover="mouseOver" @mouseleave="mouseleave">
+        <span class="filter-label">Filter by status <img src="@/assets/icon-arrow-down.svg" /></span>
+        <div id="filter-dropdown" v-show="this.filterHover">
+          <span>
+            <input type="checkbox" id="filter-draft" name="filter-draft" value="Draft" />
+            <label for="filter-draft">Draft</label>
+          </span>
+          <span>
+            <input type="checkbox" id="filter-pending" name="filter-pending" value="Pending" />
+            <label for="filter-pending">Pending</label>
+          </span>
+          <span>
+            <input type="checkbox" id="filter-paid" name="filter-paid" value="Paid" />
+            <label for="filter-paid">Paid</label>
+          </span>
+        </div>
+      </div>
+      <button @click="showForm()">
+        <svg height="32" width="32">
+          <circle cx="16" cy="16" r="16" fill="white" />
+          <image href="@/assets/icon-plus.svg" width="10" height="10" x="11" y="11" />
+        </svg>
+        New Invoice
+      </button>
+    </div>
+  </div>
+  <Transition name="slide">
+    <InvoiceForm v-if="showFormToggle" />
+  </Transition>
+  <NoInvoices />
 </template>
 
 <script>
 import NoInvoices from '@/components/NoInvoices.vue';
-
+import InvoiceForm from '@/components/InvoiceForm.vue';
 export default {
   data() {
     return {
-      filterHover: false
+      filterHover: false,
+      showFormToggle: false
     }
   },
   methods: {
@@ -49,9 +53,15 @@ export default {
     },
     mouseleave() {
       this.filterHover = false;
+    },
+    hideForm() {
+      this.showFormToggle = false;
+    },
+    showForm() {
+      this.showFormToggle = true;
     }
   },
-  components: { NoInvoices }
+  components: { NoInvoices, InvoiceForm }
 }
 </script>
 
@@ -102,6 +112,7 @@ export default {
 
       span {
         margin-bottom: 16px;
+
         input[type="checkbox"] {
           height: 16px;
           width: 16px;
@@ -110,6 +121,7 @@ export default {
           // background-color: #DFE3FA;
           border-radius: 2px;
         }
+
         label {
           font-weight: 700;
           color: #0C0E16;
@@ -137,9 +149,28 @@ button {
   gap: 16px;
   font-size: 14px;
   line-height: 15px;
+
+  &:hover {
+    background-color: #9277ff;
+  }
 }
 
 svg {
   margin-left: 8px;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateX(-100%);
+}
+
+.slide-enter-to,
+.slide-leave-from {
+  transform: translateX(0);
+}
+
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.75s ease;
 }
 </style>
