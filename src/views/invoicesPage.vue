@@ -22,7 +22,7 @@
           </span>
         </div>
       </div>
-      <button @click="showForm()">
+      <button @click="showForm(true)">
         <svg height="32" width="32">
           <circle cx="16" cy="16" r="16" fill="white" />
           <image href="@/assets/icon-plus.svg" width="10" height="10" x="11" y="11" />
@@ -32,7 +32,7 @@
     </div>
   </div>
   <Transition name="slide">
-    <InvoiceForm v-if="showFormToggle" />
+    <InvoiceForm v-if="showFormToggle" @discard="showForm(false)" />
   </Transition>
   <NoInvoices />
 </template>
@@ -57,8 +57,15 @@ export default {
     hideForm() {
       this.showFormToggle = false;
     },
-    showForm() {
-      this.showFormToggle = true;
+    showForm(val) {
+      console.log("showForm!");
+      console.log(val);
+      if (val == false) {
+        this.showFormToggle = false;
+      }
+      else if (val == true) {
+        this.showFormToggle = true;
+      }
     }
   },
   components: { NoInvoices, InvoiceForm }
@@ -169,8 +176,8 @@ svg {
   transform: translateX(0);
 }
 
-.slide-enter-active,
-.slide-leave-active {
-  transition: all 0.75s ease;
+.slide-leave-active,
+.slide-enter-active {
+  transition: transform 1.5s ease-in-out;
 }
 </style>

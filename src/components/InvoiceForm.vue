@@ -79,23 +79,67 @@
         </section>
         <section id="item-list">
           <h3>Item List</h3>
+          <table>
+            <tr>
+              <th>Item Name</th>
+              <th>Qty.</th>
+              <th>Price</th>
+              <th>Total</th>
+              <th></th>
+            </tr>
+            <!-- eslint-disable-next-line -->
+            <tr v-for="(index, rows) in rowData" :key="index">
+              <td><input type="text" /></td>
+              <td><input type="number" class="tb-qty" /></td>
+              <td><input type="number" class="tb-price" /></td>
+              <td class="tb-total">156.00</td>
+              <td class="tb-delete"><img src="@/assets/icon-delete.svg" /></td>
+            </tr>
+            <tr>
+              <td colspan="5"><button type="button" @click="addTableRow()">+ Add New Item</button></td>
+            </tr>
+          </table>
         </section>
       </div>
       <section id="form-actions">
         <div>
-          <button id="discard">Discard</button>
+          <button id="discard" type="button" @click="discardForm()">Discard</button>
         </div>
         <div>
-          <button id="save-draft">Save as Draft</button>
+          <button id="save-draft" type="button">Save as Draft</button>
           <button id="save">Save & Send</button>
         </div>
       </section>
     </form>
   </div>
+  <!-- <dialog id="discard-confirmation">
+    <h2>Are you sure?</h2>
+    <p>You will lose your progress if you continue</p>
+    <button>Discard</button>
+    <button>Cancel</button>
+  </dialog> -->
 </template>
 
 <script>
-
+/* eslint-disable */
+export default {
+  data() {
+    return {
+      //tableRowCounter: 0,
+      rowData: []
+    }
+  },
+  methods: {
+    addTableRow() {
+      //this.tableRowCounter++;
+      this.rowData.push({});
+    },
+    discardForm() {
+      console.log("discardForm")
+      this.$emit('discard', false);
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -147,6 +191,55 @@
     }
   }
 
+  table {
+    width: 100%;
+
+    th {
+      text-align: left;
+      padding: 0 16px 16px 0;
+    }
+
+    tr td:first-child,
+    tr input[type="text"] {
+      width: 214px;
+      padding: 0 16px 16px 0;
+    }
+
+    tr td:nth-child(2),
+    .tb-qty {
+      width: 46px;
+      padding: 0 16px 16px 0;
+    }
+
+    tr td:nth-child(3),
+    .tb-price {
+      width: 100px;
+      padding: 0 16px 16px 0;
+    }
+
+    .tb-total {
+      padding: 0 38px 16px 0;
+      font-size: 12px;
+    }
+
+    .tb-delete {
+      padding: 0 16px 16px 0;
+    }
+
+    button {
+      width: 100%;
+      background-color: #F9FAFE;
+      color: #7E88C3;
+      font-size: 12px;
+      line-height: 15px;
+      letter-spacing: -0.25px;
+      font-weight: 700;
+      border: 0;
+      border-radius: 24px;
+      height: 48px;
+    }
+  }
+
   #form-actions {
     display: flex;
     justify-content: space-between;
@@ -168,9 +261,22 @@
       letter-spacing: -0.25px;
       border-radius: 24px;
       padding: 17px 24px;
+      border: 0;
+    }
+
+    #discard {
+      color: #7E88C3;
+      background-color: #F9FAFE;
+    }
+
+    #save-draft {
+      background-color: #373B53;
+      color: #888EB0;
     }
 
     #save {
+      background-color: #7C5DFA;
+      color: #fff;
       margin-left: 8px;
     }
   }
@@ -213,6 +319,22 @@
         }
       }
     }
+  }
+}
+
+#discard-confirmation {
+  display: block;
+  position: absolute;
+  left: 50%;
+  width: 400px;
+  z-index: 500;
+  height: 200px;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 24px;
+
+  h2 {
+    margin-bottom: 24px;
   }
 }
 
