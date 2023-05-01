@@ -32,12 +32,14 @@
     </div>
   </div>
   <Transition name="slide">
-    <InvoiceForm v-if="showFormToggle" @discard="showForm(false)" />
+    <InvoiceForm v-show="showFormToggle" @discard="showForm(false)" @closeForm="hideForm()"
+      @submitInvoice="saveInvoice" />
   </Transition>
   <NoInvoices />
 </template>
 
 <script>
+
 import NoInvoices from '@/components/NoInvoices.vue';
 import InvoiceForm from '@/components/InvoiceForm.vue';
 export default {
@@ -58,14 +60,15 @@ export default {
       this.showFormToggle = false;
     },
     showForm(val) {
-      console.log("showForm!");
-      console.log(val);
       if (val == false) {
         this.showFormToggle = false;
       }
       else if (val == true) {
         this.showFormToggle = true;
       }
+    },
+    saveInvoice(data) {
+      this.$store.dispatch('submitInvoiceForm', data);
     }
   },
   components: { NoInvoices, InvoiceForm }

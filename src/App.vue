@@ -6,6 +6,7 @@
 </template>
 
 <script>
+// console.log(invoicesStore);
 import MenuBar from './components/UI/MenuBar.vue';
 export default {
   components: {
@@ -77,5 +78,4 @@ h4 {
 button {
   cursor: pointer;
 }
-
 </style>

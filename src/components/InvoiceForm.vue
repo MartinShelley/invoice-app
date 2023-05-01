@@ -9,20 +9,20 @@
             <legend>Bill Form</legend>
             <div id="address-container" class="input-container">
               <label for="address">Street Address</label>
-              <input type="text" id="address" />
+              <input type="text" id="address" v-model="billFrom.address" />
             </div>
             <div class="col-3-wrapper">
               <div class="input-container">
                 <label for="city">City</label>
-                <input type="text" id="city" />
+                <input type="text" id="city" v-model="billFrom.city" />
               </div>
               <div class="input-container">
                 <label for="postcode">Postcode</label>
-                <input type="text" id="postcode" />
+                <input type="text" id="postcode" v-model="billFrom.postcode" />
               </div>
               <div class="input-container">
                 <label for="country">Country</label>
-                <input type="text" id="country" />
+                <input type="text" id="country" v-model="billFrom.country" />
               </div>
             </div>
           </fieldset>
@@ -32,38 +32,38 @@
             <legend>Bill To</legend>
             <div class="input-container">
               <label>Client's Name</label>
-              <input type="text" />
+              <input type="text" v-model="billTo.clientName" />
             </div>
             <div class="input-container">
               <label>Client's Email</label>
-              <input type="email" placeholder="e.g. email@example.com" />
+              <input type="email" placeholder="e.g. email@example.com" v-model="billTo.clientEmail" />
             </div>
             <div class="input-container">
               <label>Street Address</label>
-              <input type="text" />
+              <input type="text" v-model="billTo.address" />
             </div>
             <div class="col-3-wrapper">
               <div class="input-container">
                 <label>City</label>
-                <input type="text" />
+                <input type="text" v-model="billTo.city" />
               </div>
               <div class="input-container">
                 <label>Postcode</label>
-                <input type="text" />
+                <input type="text" v-model="billTo.postcode" />
               </div>
               <div class="input-container">
                 <label>Country</label>
-                <input type="text" />
+                <input type="text" v-model="billTo.country" />
               </div>
             </div>
             <div class="col-2-wrapper">
               <div class="input-container">
                 <label>Invoice Date</label>
-                <input type="date" />
+                <input type="date" v-model="billTo.invoiceDate" />
               </div>
               <div class="input-container">
                 <label>Payment Terms</label>
-                <select>
+                <select v-model="billTo.paymentTerms">
                   <option value="1 Day">Net 1 Day</option>
                   <option value="7 Days">Net 7 Days</option>
                   <option value="14 Days">Net 14 Days</option>
@@ -73,7 +73,7 @@
             </div>
             <div class="input-container">
               <label>Project Description</label>
-              <input type="text" placeholder="e.g. Graphic Design Service" />
+              <input type="text" placeholder="e.g. Graphic Design Service" v-model="billTo.projectDesc" />
             </div>
           </fieldset>
         </section>
@@ -88,12 +88,12 @@
               <th></th>
             </tr>
             <!-- eslint-disable-next-line -->
-            <tr v-for="(index, rows) in rowData" :key="index">
-              <td><input type="text" /></td>
-              <td><input type="number" class="tb-qty" /></td>
-              <td><input type="number" class="tb-price" /></td>
-              <td class="tb-total">156.00</td>
-              <td class="tb-delete"><img src="@/assets/icon-delete.svg" /></td>
+            <tr v-for="(content, index) in itemListData" :key="index">
+              <td><input type="text" v-model="itemListData[index].itemName" /></td>
+              <td><input type="number" class="tb-qty" v-model="itemListData[index].qty" /></td>
+              <td><input type="number" class="tb-price" v-model="itemListData[index].price" /></td>
+              <td class="tb-total">{{ itemListData[index].price * itemListData[index].qty }}</td>
+              <td class="tb-delete"><img src="@/assets/icon-delete.svg" @click="deleteTableRow(index)" /></td>
             </tr>
             <tr>
               <td colspan="5"><button type="button" @click="addTableRow()">+ Add New Item</button></td>
@@ -106,8 +106,8 @@
           <button id="discard" type="button" @click="discardForm()">Discard</button>
         </div>
         <div>
-          <button id="save-draft" type="button">Save as Draft</button>
-          <button id="save">Save & Send</button>
+          <button id="save-draft" type="button" @click="saveAsDraft()">Save as Draft</button>
+          <button id="save" type="button" @click="saveFormData()">Save & Send</button>
         </div>
       </section>
     </form>
@@ -121,22 +121,72 @@
 </template>
 
 <script>
+
 /* eslint-disable */
 export default {
   data() {
     return {
-      //tableRowCounter: 0,
-      rowData: []
+      billFrom: {
+        address: '',
+        city: '',
+        postcode: '',
+        country: ''
+      },
+      billTo: {
+        clientName: '',
+        clientEmail: '',
+        address: '',
+        city: '',
+        postcode: '',
+        country: '',
+        invoiceDate: '',
+        paymentTerms: '',
+        projectDesc: '',
+      },
+      itemListData: []
     }
   },
   methods: {
     addTableRow() {
-      //this.tableRowCounter++;
-      this.rowData.push({});
+      this.itemListData.push({
+        itemName: '',
+        qty: 0,
+        price: 0.00
+      });
     },
     discardForm() {
-      console.log("discardForm")
       this.$emit('discard', false);
+    },
+    saveAsDraft() {
+      this.$emit('closeForm');
+    },
+    deleteTableRow(number) {
+      this.itemListData.splice(number, 1);
+    },
+    saveFormData() {
+      const formData = {
+        senderAddress: {
+          address: this.billFrom.address,
+          city: this.billFrom.city,
+          postcode: this.billFrom.postcode,
+          country: this.billFrom.country,
+        },
+        clientDetails: {
+          clientName: this.billTo.clientName,
+          clientEmail: this.billTo.clientEmail,
+          clientAddress: this.billTo.address,
+          clientCity: this.billTo.city,
+          clientPostcode: this.billTo.postcode,
+          clientCountry: this.billTo.country,
+        },
+        invoiceDate: this.billTo.invoiceDate,
+        paymentTerms: this.billTo.paymentTerms,
+        projectDesc: this.billTo.projectDesc,
+        itemListData: this.itemListData
+      }
+
+      this.$emit('submitInvoice', formData);
+
     }
   }
 }
@@ -192,38 +242,66 @@ export default {
   }
 
   table {
-    width: 100%;
+    min-width: 504px;
 
     th {
       text-align: left;
-      padding: 0 16px 16px 0;
+      padding-bottom: 16px;
     }
 
+    th:first-child,
     tr td:first-child,
-    tr input[type="text"] {
+    tr td:first-child input {
       width: 214px;
-      padding: 0 16px 16px 0;
+      padding-right: 16px;
     }
 
-    tr td:nth-child(2),
+    th:nth-child(2) {
+      width: 62px;
+    }
+
+    tr td:nth-child(2) {
+      width: 46px;
+      padding-right: 16px;
+    }
+
     .tb-qty {
       width: 46px;
-      padding: 0 16px 16px 0;
+      padding-left: 16px;
     }
 
+    .tb-qty::-webkit-outer-spin-button,
+    .tb-qty::-webkit-inner-spin-button,
+    .tb-price::-webkit-outer-spin-button,
+    .tb-price::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    th:nth-child(3),
     tr td:nth-child(3),
-    .tb-price {
+    tr td:nth-child(3) input {
       width: 100px;
-      padding: 0 16px 16px 0;
+      padding-right: 16px;
+    }
+
+    th:nth-child(4),
+    .tb-total {
+      width: 56px;
     }
 
     .tb-total {
-      padding: 0 38px 16px 0;
       font-size: 12px;
     }
 
+    th:nth-child(5),
     .tb-delete {
-      padding: 0 16px 16px 0;
+      // padding-left: 27px;
+      width: 39px;
+    }
+
+    .tb-delete img {
+      padding-left: 27px;
     }
 
     button {
