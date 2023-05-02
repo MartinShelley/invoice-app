@@ -31,22 +31,29 @@
       </button>
     </div>
   </div>
+  <div v-if="invoiceData.length">
+    <InvoiceListItem />
+  </div>
+  <NoInvoices v-else />
   <Transition name="slide">
     <InvoiceForm v-show="showFormToggle" @discard="showForm(false)" @closeForm="hideForm()"
       @submitInvoice="saveInvoice" />
   </Transition>
-  <NoInvoices />
 </template>
 
 <script>
 
 import NoInvoices from '@/components/NoInvoices.vue';
 import InvoiceForm from '@/components/InvoiceForm.vue';
+import InvoiceListItem from '@/components/invoiceListItem.vue';
+import data from '@/data.json';
 export default {
   data() {
     return {
       filterHover: false,
-      showFormToggle: false
+      showFormToggle: false,
+      invoiceData: data
+      // invoiceData: []
     }
   },
   methods: {
@@ -71,7 +78,7 @@ export default {
       this.$store.dispatch('submitInvoiceForm', data);
     }
   },
-  components: { NoInvoices, InvoiceForm }
+  components: { NoInvoices, InvoiceForm, InvoiceListItem }
 }
 </script>
 
