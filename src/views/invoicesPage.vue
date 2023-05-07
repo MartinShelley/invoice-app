@@ -31,8 +31,8 @@
       </button>
     </div>
   </div>
-  <div v-if="invoiceData.length">
-    <InvoiceListItem />
+  <div v-if="invoiceData.length" style="margin-top:65px;">
+    <InvoiceList />
   </div>
   <NoInvoices v-else />
   <Transition name="slide">
@@ -45,7 +45,7 @@
 
 import NoInvoices from '@/components/NoInvoices.vue';
 import InvoiceForm from '@/components/InvoiceForm.vue';
-import InvoiceListItem from '@/components/invoiceListItem.vue';
+import InvoiceList from '@/components/invoiceList.vue';
 import data from '@/data.json';
 export default {
   data() {
@@ -53,7 +53,6 @@ export default {
       filterHover: false,
       showFormToggle: false,
       invoiceData: data
-      // invoiceData: []
     }
   },
   methods: {
@@ -78,7 +77,7 @@ export default {
       this.$store.dispatch('submitInvoiceForm', data);
     }
   },
-  components: { NoInvoices, InvoiceForm, InvoiceListItem }
+  components: { NoInvoices, InvoiceForm, InvoiceList },
 }
 </script>
 

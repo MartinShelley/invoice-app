@@ -41,6 +41,8 @@ export default {
   background-color: #1E2139;
   border-radius: 0 20px 20px 0;
   z-index: 10;
+  position: sticky;
+  top: 0;
 
   .menu-items {
     display: flex;

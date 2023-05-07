@@ -44,7 +44,9 @@ select {
 }
 
 main {
-  width: calc(100vw - 103px);
+  // width: calc(100vw - 103px);
+  width: 730px;
+  margin: 0 auto;
 }
 
 h1 {
