@@ -2,7 +2,8 @@
   <div id="invoices-header">
     <div class="heading">
       <h1>Invoices</h1>
-      <p class="invoice-number-label">No Invoices</p>
+      <p class="invoice-number-label" v-if="noOfInvoices">There are {{ noOfInvoices }} total invoices</p>
+      <p class="invoice-number-label" v-else>No Invoices</p>
     </div>
     <div class="header-items">
       <div id="filter" @mouseover="mouseOver" @mouseleave="mouseleave">
@@ -31,7 +32,7 @@
       </button>
     </div>
   </div>
-  <div v-if="invoiceData.length" style="margin-top:65px;">
+  <div v-if="noOfInvoices" style="margin-top:65px;">
     <InvoiceList />
   </div>
   <NoInvoices v-else />
@@ -46,13 +47,13 @@
 import NoInvoices from '@/components/NoInvoices.vue';
 import InvoiceForm from '@/components/InvoiceForm.vue';
 import InvoiceList from '@/components/invoiceList.vue';
-import data from '@/data.json';
+// import data from '@/data.json';
 export default {
   data() {
     return {
       filterHover: false,
       showFormToggle: false,
-      invoiceData: data
+      // invoiceData: data
     }
   },
   methods: {
@@ -75,6 +76,11 @@ export default {
     },
     saveInvoice(data) {
       this.$store.dispatch('submitInvoiceForm', data);
+    }
+  },
+  computed: {
+    noOfInvoices() {
+      return this.$store.getters['getAllInvoices'].length;
     }
   },
   components: { NoInvoices, InvoiceForm, InvoiceList },

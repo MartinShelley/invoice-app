@@ -10,9 +10,18 @@ const store = createStore({
   mutations: {
     addInvoice(state, payload) {
       state.invoices.push(payload);
+    },
+    updateInvoices(state, payload) {
+      state.invoices = payload
     }
   },
   actions: {
+    async getInvoices({ commit }) {
+      const response = await fetch('https://invoice-app-3517e-default-rtdb.europe-west1.firebasedatabase.app/invoices.json');
+      const responseData = await response.json();
+      commit('updateInvoices', responseData);
+      console.log(responseData)
+    },
     submitInvoiceForm(context, payload) {
       const invoiceData = {
         senderAddress: {
@@ -41,7 +50,11 @@ const store = createStore({
       });
     }
   },
-  getters: {}
+  getters: {
+    getAllInvoices(state) {
+      return state.invoices;
+    }
+  }
 })
 
 export default store;

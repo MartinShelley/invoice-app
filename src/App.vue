@@ -11,6 +11,9 @@ import MenuBar from './components/UI/MenuBar.vue';
 export default {
   components: {
     MenuBar
+  },
+  created() {
+    this.$store.dispatch('getInvoices');
   }
 }
 </script>
@@ -64,7 +67,7 @@ h2 {
 }
 
 h3 {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 700;
   line-height: 24px;
   letter-spacing: -0.8px;

@@ -1,9 +1,9 @@
 <template>
   <li>
-    <p>#{{ value.id }}</p>
-    <p>Due {{ transformDate }}</p>
-    <p>{{ value.clientName }}</p>
-    <p>{{ formattingPrice }}</p>
+    <p id="invoice-id"><span>#</span>{{ value.id }}</p>
+    <p class="invoice-text">Due {{ transformDate }}</p>
+    <p class="invoice-text">{{ value.clientName }}</p>
+    <h3 id="invoice-price">{{ formattingPrice }}</h3>
     <div :class="['invoice-status', settingStatusClass]">
       <svg height="8" width="8">
         <circle cx="4" cy="4" r="4" />
@@ -48,8 +48,27 @@ li {
   justify-content: space-between;
   list-style-type: none;
   background-color: #fff;
-  padding: 29px 32px;
+  padding: 16px 32px;
   margin-bottom: 16px;
+  border-radius: 8px;
+
+  #invoice-id {
+    color: #0C0E16;
+    font-weight: 700;
+    letter-spacing: -0.25px;
+
+    span {
+      color: #7E88C3;
+      font-weight: normal;
+    }
+  }
+
+  .invoice-text {
+    color: #888EB0;
+    letter-spacing: -0.25px;
+  }
+
+  #invoice-price {}
 
   .invoice-status {
     width: 104px;
