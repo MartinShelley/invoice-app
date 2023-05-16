@@ -47,13 +47,11 @@
 import NoInvoices from '@/components/NoInvoices.vue';
 import InvoiceForm from '@/components/InvoiceForm.vue';
 import InvoiceList from '@/components/invoiceList.vue';
-// import data from '@/data.json';
 export default {
   data() {
     return {
       filterHover: false,
       showFormToggle: false,
-      // invoiceData: data
     }
   },
   methods: {
@@ -113,6 +111,15 @@ export default {
 
       .filter-label {
         padding-bottom: 20px;
+        // margin-right: 16px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: -0.25px;
+        line-height: 15px;
+
+        img {
+          margin-left: 16px;
+        }
       }
     }
 
@@ -148,6 +155,9 @@ export default {
           font-weight: 700;
           color: #0C0E16;
           cursor: pointer;
+          font-size: 12px;
+          line-height: 15px;
+          letter-spacing: -0.25px;
         }
       }
 
@@ -169,8 +179,9 @@ button {
   display: flex;
   align-items: center;
   gap: 16px;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 15px;
+  padding: 0 8px;
 
   &:hover {
     background-color: #9277ff;
@@ -178,7 +189,7 @@ button {
 }
 
 svg {
-  margin-left: 8px;
+  // margin-left: 8px;
 }
 
 .slide-enter-from,

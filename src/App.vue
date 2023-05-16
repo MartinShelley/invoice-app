@@ -6,23 +6,36 @@
 </template>
 
 <script>
-// console.log(invoicesStore);
 import MenuBar from './components/UI/MenuBar.vue';
 export default {
   components: {
     MenuBar
   },
-  created() {
+  beforeCreate() {
     this.$store.dispatch('getInvoices');
   }
 }
 </script>
 
 <style lang="scss">
+@font-face {
+  font-family: "Spartan";
+  src: url("@/assets/fonts/SpartanMB-Regular.otf");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Spartan";
+  src: url("@/assets/fonts/SpartanMB-Bold.otf");
+  font-weight: 700;
+  font-style: normal;
+}
+
 * {
   margin: 0;
   padding: 0;
-  font-family: "League Spartan", sans-serif, Arial;
+  font-family: "Spartan", sans-serif, Arial;
 }
 
 *,
@@ -34,6 +47,7 @@ export default {
 html {
   background-color: #f2f2f2;
 }
+
 
 input,
 button,
@@ -82,5 +96,13 @@ h4 {
 
 button {
   cursor: pointer;
+  border-radius: 24px;
+  border: 0;
+  height: 48px;
+  // font-size: 12px;
+  line-height: 15px;
+  letter-spacing: -0.25px;
+  font-weight: 700;
+  padding: 0 24px;
 }
 </style>

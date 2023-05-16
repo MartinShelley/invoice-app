@@ -308,13 +308,6 @@ export default {
       width: 100%;
       background-color: #F9FAFE;
       color: #7E88C3;
-      font-size: 12px;
-      line-height: 15px;
-      letter-spacing: -0.25px;
-      font-weight: 700;
-      border: 0;
-      border-radius: 24px;
-      height: 48px;
     }
   }
 

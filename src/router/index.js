@@ -1,10 +1,16 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import invoicesPage from '@/views/invoicesPage.vue';
+import invoiceDetail from '@/views/invoiceDetail.vue';
 
 const routes = [
   {
     path: '/',
     component: invoicesPage
+  },
+  {
+    path: '/invoice/:id',
+    component: invoiceDetail,
+    params: true
   },
   {
     // path: '/about',
