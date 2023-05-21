@@ -3,6 +3,9 @@ export default {
     state.invoices.push(payload);
   },
   updateInvoices(state, payload) {
-    state.invoices = payload
+    state.invoices = payload;
+  },
+  toggleLightMode(state) {
+    state.lightMode = !state.lightMode;
   }
 }

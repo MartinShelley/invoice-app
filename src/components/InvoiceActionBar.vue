@@ -7,7 +7,7 @@
     <div class="action-bar-buttons">
       <button class="button button-edit">Edit</button>
       <button class="button button-delete">Delete</button>
-      <button class="button button-paid">Mark as Paid</button>
+      <button :class="['button button-paid', paidClass]">Mark as Paid</button>
     </div>
   </div>
 </template>
@@ -21,6 +21,14 @@ export default {
   computed: {
     getStatusValue() {
       return this.$store.getters.getInvoiceStatus(this.$route.params.id);
+    },
+    paidClass() {
+      if (this.getStatusValue == "paid") {
+        return "inactive";
+      }
+      else {
+        return ""
+      }
     }
   }
 }
@@ -72,6 +80,11 @@ export default {
     .button-paid {
       background-color: #7C5DFA;
       color: #fff;
+    }
+
+    .inactive {
+      opacity: 0.2;
+      pointer-events: none;
     }
   }
 }

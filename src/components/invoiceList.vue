@@ -1,15 +1,42 @@
 <template>
   <ul>
-    <InvoiceListItem v-for="invoice in allInvoices" :key="invoice.id" :value="invoice" />
+    <InvoiceListItem v-for="invoice in filteredList" :key="invoice.id" :value="invoice" />
   </ul>
 </template>
 
 <script>
 import InvoiceListItem from '@/components/invoiceListItem.vue';
+import { mapGetters } from 'vuex';
 export default {
+  props: {
+    filters: Object
+  },
   computed: {
+    ...mapGetters({
+      allInvoices: 'getAllInvoices'
+    }),
+    filteredList() {
+      const allInvoices = this.allInvoices;
+      const filters = [];
+      for (const key of Object.keys(this.filters)) {
+        if (this.filters[key] === true) {
+          filters.push(key);
+        }
+      }
+      if (filters.length == 0) {
+        return allInvoices;
+      }
+      else {
+        const fileredList = allInvoices.filter((invoice) => {
+          return filters.includes(invoice.status)
+        });
+        return fileredList;
+      }
+    }
+  },
+  watch: {
     allInvoices() {
-      return this.$store.getters['getAllInvoices'];
+
     }
   },
   components: { InvoiceListItem },

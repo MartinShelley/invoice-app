@@ -8,5 +8,8 @@ export default {
   getInvoiceStatus: (state) => (id) => {
     const invoice = state.invoices.find(invoice => invoice.id === id);
     return invoice.status;
+  },
+  getLightModeToggle(state) {
+    return state.lightMode;
   }
 }

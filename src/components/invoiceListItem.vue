@@ -1,12 +1,16 @@
 <template>
   <li>
     <router-link :to="invoiceDetailLink">
-      <p id="invoice-id"><span>#</span>{{ value.id }}</p>
-      <p class="invoice-text">Due {{ transformDate }}</p>
-      <p class="invoice-text">{{ value.clientName }}</p>
-      <h3 id="invoice-price">{{ formattingPrice }}</h3>
-      <StatusIcon :statusValue="value.status" />
-      <img src="@/assets/icon-arrow-right.svg" />
+      <div class="invoice-item-left-container">
+        <p id="invoice-id"><span>#</span>{{ value.id }}</p>
+        <p class="invoice-text">Due {{ transformDate }}</p>
+        <p class="invoice-text">{{ value.clientName }}</p>
+      </div>
+      <div class="invoice-item-right-container">
+        <h3 id="invoice-price">{{ formattingPrice }}</h3>
+        <StatusIcon :statusValue="value.status" />
+        <img src="@/assets/icon-arrow-right.svg" />
+      </div>
     </router-link>
   </li>
 </template>
@@ -50,35 +54,52 @@ li {
     align-items: center;
     justify-content: space-between;
     text-decoration: none;
+    gap: 73px;
 
+    .invoice-item-left-container {
+      display: flex;
+      gap: 43px;
 
-    #invoice-id {
-      color: #0C0E16;
-      font-weight: 700;
-      letter-spacing: -0.25px;
-      font-size: 12px;
-      line-height: 15px;
+      #invoice-id {
+        color: #0C0E16;
+        font-weight: 700;
+        letter-spacing: -0.25px;
+        font-size: 12px;
+        line-height: 15px;
 
-      span {
-        color: #7E88C3;
-        font-weight: normal;
+        span {
+          color: #7E88C3;
+          font-weight: normal;
+        }
+      }
+
+      .invoice-text {
+        color: #888EB0;
+        letter-spacing: -0.25px;
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 15px;
       }
     }
 
-    .invoice-text {
-      color: #888EB0;
-      letter-spacing: -0.25px;
-      font-weight: 500;
-      font-size: 12px;
-      line-height: 15px;
+    .invoice-item-right-container {
+      display: flex;
+      // column-gap: 40px;
+      align-items: center;
+
+      #invoice-price {
+        color: #000;
+        font-size: 16px;
+        line-height: 24px;
+        font-weight: 700;
+        margin-right: 40px;
+      }
+
+      img {
+        margin-left: 20px;
+      }
     }
 
-    #invoice-price {
-      color: #000;
-      font-size: 16px;
-      line-height: 24px;
-      font-weight: 700;
-    }
   }
 }
 </style>

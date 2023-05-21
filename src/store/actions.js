@@ -8,23 +8,26 @@ export default {
   async submitInvoiceForm(context, payload) {
     const invoiceData = {
       senderAddress: {
-        address: payload.senderAddress.address,
+        street: payload.senderAddress.street,
         city: payload.senderAddress.city,
-        postcode: payload.senderAddress.postcode,
+        postCode: payload.senderAddress.postCode,
         country: payload.senderAddress.country,
       },
-      clientDetails: {
-        clientName: payload.clientDetails.clientName,
-        clientEmail: payload.clientDetails.clientEmail,
-        clientAddress: payload.clientDetails.clientAddress,
-        clientCity: payload.clientDetails.clientCity,
-        clientPostcode: payload.clientDetails.clientPostcode,
-        clientCountry: payload.clientDetails.clientCountry,
+      clientName: payload.clientName,
+      clientEmail: payload.clientEmail,
+      clientAddress: {
+        street: payload.clientAddress.street,
+        city: payload.clientAddress.city,
+        postCode: payload.clientAddress.postCode,
+        country: payload.clientAddress.country,
       },
-      invoiceDate: payload.invoiceDate,
+      paymentDue: payload.paymentDue,
       paymentTerms: payload.paymentTerms,
-      projectDesc: payload.projectDesc,
-      itemListData: payload.itemListData
+      description: payload.description,
+      items: payload.items,
+      status: payload.status,
+      total: payload.total,
+      id: payload.id
     }
 
     // const response = await fetch('https://invoice-app-3517e-default-rtdb.europe-west1.firebasedatabase.app/invoices.json', {
@@ -40,7 +43,7 @@ export default {
 
     context.commit('addInvoice', {
       ...invoiceData,
-      id: "123"
+      //id: "123"
     });
   }
 }

@@ -17,14 +17,14 @@
 
 <script>
 export default {
-  data() {
-    return {
-      lightMode: true
-    }
-  },
   methods: {
     toggleColourMode() {
-      this.lightMode = !this.lightMode;
+      this.$store.commit('toggleLightMode');
+    }
+  },
+  computed: {
+    lightMode() {
+      return this.$store.getters['getLightModeToggle'];
     }
   }
 }

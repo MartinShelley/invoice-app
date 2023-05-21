@@ -1,0 +1,12 @@
+To do:
+☐ Add data to Vuex and get components to use that
+☐ Create ability to save/add/delete/create-draft forms
+☐ Custom prompt when deleting invoice
+☐ Form error handling
+☐ Custom Input styling (Calendars/Scrollbar)
+✔ Add spacing for form Item table rows @done (5/21/2023, 10:22:40 PM)
+☐ Dark/Light mode
+☐ Hover States
+☐ Mobile & Tablet views
+☐ Accessibility
+☐ Figuring out the font

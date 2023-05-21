@@ -10,15 +10,16 @@
         <span class="filter-label">Filter by status <img src="@/assets/icon-arrow-down.svg" /></span>
         <div id="filter-dropdown" v-show="this.filterHover">
           <span>
-            <input type="checkbox" id="filter-draft" name="filter-draft" value="Draft" />
+            <input type="checkbox" id="filter-draft" name="filter-draft" value="Draft" v-model="selectedFilters.draft" />
             <label for="filter-draft">Draft</label>
           </span>
           <span>
-            <input type="checkbox" id="filter-pending" name="filter-pending" value="Pending" />
+            <input type="checkbox" id="filter-pending" name="filter-pending" value="Pending"
+              v-model="selectedFilters.pending" />
             <label for="filter-pending">Pending</label>
           </span>
           <span>
-            <input type="checkbox" id="filter-paid" name="filter-paid" value="Paid" />
+            <input type="checkbox" id="filter-paid" name="filter-paid" value="Paid" v-model="selectedFilters.paid" />
             <label for="filter-paid">Paid</label>
           </span>
         </div>
@@ -33,9 +34,10 @@
     </div>
   </div>
   <div v-if="noOfInvoices" style="margin-top:65px;">
-    <InvoiceList />
+    <InvoiceList :filters="selectedFilters" />
   </div>
   <NoInvoices v-else />
+  <div id="invoice-form-background" v-show="showFormToggle" @click="backgroundClick"></div>
   <Transition name="slide">
     <InvoiceForm v-show="showFormToggle" @discard="showForm(false)" @closeForm="hideForm()"
       @submitInvoice="saveInvoice" />
@@ -52,6 +54,11 @@ export default {
     return {
       filterHover: false,
       showFormToggle: false,
+      selectedFilters: {
+        paid: false,
+        pending: false,
+        draft: false
+      }
     }
   },
   methods: {
@@ -74,11 +81,24 @@ export default {
     },
     saveInvoice(data) {
       this.$store.dispatch('submitInvoiceForm', data);
+    },
+    backgroundClick() {
+      this.showFormToggle = false;
     }
   },
   computed: {
     noOfInvoices() {
       return this.$store.getters['getAllInvoices'].length;
+    }
+  },
+  watch: {
+    showFormToggle(newValue) {
+      if (newValue == true) {
+        document.body.style.overflow = "hidden";
+      }
+      else {
+        document.body.style.overflow = "";
+      }
     }
   },
   components: { NoInvoices, InvoiceForm, InvoiceList },
@@ -110,8 +130,7 @@ export default {
       position: relative;
 
       .filter-label {
-        padding-bottom: 20px;
-        // margin-right: 16px;
+        padding-bottom: 30px;
         font-size: 12px;
         font-weight: 700;
         letter-spacing: -0.25px;
@@ -140,6 +159,8 @@ export default {
 
 
       span {
+        display: flex;
+        align-items: center;
         margin-bottom: 16px;
 
         input[type="checkbox"] {
@@ -188,8 +209,14 @@ button {
   }
 }
 
-svg {
-  // margin-left: 8px;
+#invoice-form-background {
+  background-color: #000;
+  opacity: 0.5;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  position: absolute;
 }
 
 .slide-enter-from,
@@ -204,6 +231,6 @@ svg {
 
 .slide-leave-active,
 .slide-enter-active {
-  transition: transform 1.5s ease-in-out;
+  transition: transform 0.75s ease-out;
 }
 </style>
