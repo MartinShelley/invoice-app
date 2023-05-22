@@ -23,7 +23,7 @@ export default {
       return this.$store.getters.getInvoiceStatus(this.$route.params.id);
     },
     paidClass() {
-      if (this.getStatusValue == "paid") {
+      if (this.getStatusValue == "paid" || this.getStatusValue == "draft") {
         return "inactive";
       }
       else {

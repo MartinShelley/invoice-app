@@ -2,6 +2,9 @@ export default {
   getAllInvoices(state) {
     return state.invoices;
   },
+  getNumberOfInvoices(state) {
+    return Object.keys(state.invoices).length;
+  },
   getInvoice: (state) => (id) => {
     return state.invoices.find(invoice => invoice.id === id);
   },

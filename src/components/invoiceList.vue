@@ -34,11 +34,6 @@ export default {
       }
     }
   },
-  watch: {
-    allInvoices() {
-
-    }
-  },
   components: { InvoiceListItem },
 }
 </script>

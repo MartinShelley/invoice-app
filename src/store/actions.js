@@ -1,9 +1,8 @@
 export default {
   async getInvoices({ commit }) {
-    const response = await fetch('https://invoice-app-3517e-default-rtdb.europe-west1.firebasedatabase.app/invoices.json');
+    const response = await fetch(`https://invoice-app-3517e-default-rtdb.europe-west1.firebasedatabase.app/invoices.json`);
     const responseData = await response.json();
-    commit('updateInvoices', responseData);
-    console.log(responseData)
+    await commit('updateInvoices', responseData);
   },
   async submitInvoiceForm(context, payload) {
     const invoiceData = {
@@ -30,20 +29,18 @@ export default {
       id: payload.id
     }
 
-    // const response = await fetch('https://invoice-app-3517e-default-rtdb.europe-west1.firebasedatabase.app/invoices.json', {
-    //   method: 'POST',
-    //   body: JSON.stringify(invoiceData)
-    // });
-
-    // console.log(JSON.stringify(invoiceData));
-
-    // const responseData = await response.json();
-
-    // console.log(responseData);
-
-    context.commit('addInvoice', {
-      ...invoiceData,
-      //id: "123"
+    const response = await fetch(`https://invoice-app-3517e-default-rtdb.europe-west1.firebasedatabase.app/invoices/${payload.id}.json`, {
+      method: 'PUT',
+      body: JSON.stringify(invoiceData)
     });
+
+    const responseData = await response.json();
+
+    if (!response.ok) {
+      const error = new Error(responseData.message || 'Failed to send request.')
+      throw error;
+    }
+
+    context.commit('addInvoice', invoiceData);
   }
 }

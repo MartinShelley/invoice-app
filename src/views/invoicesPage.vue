@@ -88,7 +88,7 @@ export default {
   },
   computed: {
     noOfInvoices() {
-      return this.$store.getters['getAllInvoices'].length;
+      return this.$store.getters['getNumberOfInvoices'];
     }
   },
   watch: {
@@ -101,7 +101,7 @@ export default {
       }
     }
   },
-  components: { NoInvoices, InvoiceForm, InvoiceList },
+  components: { NoInvoices, InvoiceForm, InvoiceList }
 }
 </script>
 

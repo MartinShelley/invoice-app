@@ -1,6 +1,6 @@
 To do:
-☐ Add data to Vuex and get components to use that
-☐ Create ability to save/add/delete/create-draft forms
+✔ Add data to Vuex and get components to use that @done (5/22/2023, 4:01:59 PM)
+☐ Create ability to save/delete/create-draft forms
 ☐ Custom prompt when deleting invoice
 ☐ Form error handling
 ☐ Custom Input styling (Calendars/Scrollbar)
