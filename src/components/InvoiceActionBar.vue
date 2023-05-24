@@ -6,7 +6,7 @@
     </div>
     <div class="action-bar-buttons">
       <button class="button button-edit">Edit</button>
-      <button class="button button-delete">Delete</button>
+      <button class="button button-delete" @click="deleteInvoice(this.$route.params.id)">Delete</button>
       <button :class="['button button-paid', paidClass]">Mark as Paid</button>
     </div>
   </div>
@@ -29,6 +29,11 @@ export default {
       else {
         return ""
       }
+    }
+  },
+  methods: {
+    deleteInvoice(id) {
+      this.$store.dispatch('deleteInvoice', id);
     }
   }
 }

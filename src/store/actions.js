@@ -42,5 +42,14 @@ export default {
     }
 
     context.commit('addInvoice', invoiceData);
+  },
+  async deleteInvoice(_, payload) {
+    await fetch(`https://invoice-app-3517e-default-rtdb.europe-west1.firebasedatabase.app/invoices/${payload}.json`, {
+      method: 'DELETE'
+    })
+    .then(response => {
+      console.log(response.json())
+      console.log("hello")
+    })
   }
 }
