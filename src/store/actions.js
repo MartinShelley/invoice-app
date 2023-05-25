@@ -44,10 +44,22 @@ export default {
     context.commit('addInvoice', invoiceData);
   },
   //eslint-disable-next-line
-  async deleteInvoice({_, dispatch}, payload) {
+  async deleteInvoice({ _, dispatch }, payload) {
     await fetch(`https://invoice-app-3517e-default-rtdb.europe-west1.firebasedatabase.app/invoices/${payload}.json`, {
       method: 'DELETE'
     });
     await dispatch('getInvoices');
+  },
+  //eslint-disable-next-line
+  async markAsPPaid(_, payload) {
+    await fetch(`https://invoice-app-3517e-default-rtdb.europe-west1.firebasedatabase.app/invoices/${payload}.json`, {
+      method: "PATCH",
+      body: JSON.stringify({
+        status: "paid"
+      })
+    })
+
+      .then(response => response.json())
+      .then(data => console.log(data))
   }
 }

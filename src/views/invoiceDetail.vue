@@ -4,7 +4,7 @@
       <img src="@/assets/icon-arrow-left.svg" />
       <span>Go back</span>
     </router-link>
-    <InvoiceActionBar @delete-dialog="showDeleteDialog"/>
+    <InvoiceActionBar @delete-dialog="showDeleteDialog" />
   </div>
   <div class="invoice-main">
     <div class="invoice-heading">
@@ -68,7 +68,7 @@
     <div class="background"></div>
     <dialog>
       <h2>Confirm Deletion</h2>
-      <p>Are you sure you want to delete invoice #{{invoiceDetails.id}}? This action cannot be undone.</p>
+      <p>Are you sure you want to delete invoice #{{ invoiceDetails.id }}? This action cannot be undone.</p>
       <div class="buttons">
         <button class="cancel" @click="hideDeleteDialog">Cancel</button>
         <button class="delete" @click="deleteInvoice(this.$route.params.id)">Delete</button>
@@ -96,17 +96,17 @@ export default {
   },
   methods: {
     deleteInvoice(id) {
-      console.log("delete invoice!!");
       this.$store.dispatch('deleteInvoice', id);
       this.$router.push('/');
       this.hideDeleteDialog();
     },
     hideDeleteDialog() {
       this.deletePrompt = false;
+      document.body.style.overflow = "";
     },
     showDeleteDialog() {
-      console.log("show Delete Dialog!!");
       this.deletePrompt = true;
+      document.body.style.overflow = "hidden";
     }
   }
 }
