@@ -6,7 +6,7 @@
     </div>
     <div class="action-bar-buttons">
       <button class="button button-edit">Edit</button>
-      <button class="button button-delete" @click="deleteInvoice(this.$route.params.id)">Delete</button>
+      <button class="button button-delete" @click="deleteInvoice">Delete</button>
       <button :class="['button button-paid', paidClass]">Mark as Paid</button>
     </div>
   </div>
@@ -32,8 +32,9 @@ export default {
     }
   },
   methods: {
-    deleteInvoice(id) {
-      this.$store.dispatch('deleteInvoice', id);
+    deleteInvoice() {
+      console.log("emit event!");
+      this.$emit('delete-dialog');
     }
   }
 }

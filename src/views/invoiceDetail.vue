@@ -4,7 +4,7 @@
       <img src="@/assets/icon-arrow-left.svg" />
       <span>Go back</span>
     </router-link>
-    <InvoiceActionBar />
+    <InvoiceActionBar @delete-dialog="showDeleteDialog"/>
   </div>
   <div class="invoice-main">
     <div class="invoice-heading">
@@ -64,17 +64,49 @@
       <h3>£{{ invoiceDetails.total.toFixed(2) }}</h3>
     </div>
   </div>
+  <div id="delete-confirmation" v-show="deletePrompt">
+    <div class="background"></div>
+    <dialog>
+      <h2>Confirm Deletion</h2>
+      <p>Are you sure you want to delete invoice #{{invoiceDetails.id}}? This action cannot be undone.</p>
+      <div class="buttons">
+        <button class="cancel" @click="hideDeleteDialog">Cancel</button>
+        <button class="delete" @click="deleteInvoice(this.$route.params.id)">Delete</button>
+      </div>
+    </dialog>
+  </div>
 </template>
 
 <script>
 import InvoiceActionBar from '@/components/InvoiceActionBar.vue';
 export default {
+  emits: ['delete-dialog'],
+  data() {
+    return {
+      deletePrompt: false
+    }
+  },
   components: {
     InvoiceActionBar
   },
   computed: {
     invoiceDetails() {
       return this.$store.getters.getInvoice(this.$route.params.id);
+    }
+  },
+  methods: {
+    deleteInvoice(id) {
+      console.log("delete invoice!!");
+      this.$store.dispatch('deleteInvoice', id);
+      this.$router.push('/');
+      this.hideDeleteDialog();
+    },
+    hideDeleteDialog() {
+      this.deletePrompt = false;
+    },
+    showDeleteDialog() {
+      console.log("show Delete Dialog!!");
+      this.deletePrompt = true;
     }
   }
 }
@@ -251,5 +283,79 @@ export default {
     }
   }
 
+}
+
+#delete-confirmation {
+  // display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+
+  .background {
+    background-color: #000;
+    opacity: 0.5;
+    width: 100%;
+    height: 100%;
+  }
+
+  dialog {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 11;
+    transform: translate(-50%, -50%);
+    height: 250px;
+    max-width: 480px;
+    padding: 48px;
+    border-radius: 8px;
+    box-shadow: 0px 10px 10px -10px rgba(72, 84, 159, 0.100397);
+    border: none;
+
+    h2 {
+      font-size: 24px;
+      line-break: 32px;
+      letter-spacing: -0.5px;
+      font-weight: 700;
+      color: #0C0E16;
+      margin-bottom: 13px;
+    }
+
+    p {
+      font-size: 13px;
+      color: #888EB0;
+      line-height: 22px;
+      letter-spacing: -0.25px;
+      margin-bottom: 16px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+
+      button {
+        font-size: 13px;
+        line-height: 15px;
+        letter-spacing: -0.25px;
+        font-weight: 700;
+        border-radius: 24px;
+        width: 89px;
+      }
+
+      .cancel {
+        background-color: #F9FAFE;
+        color: #7E88C3;
+      }
+
+      .delete {
+        background-color: #EC5757;
+        color: #fff;
+      }
+    }
+  }
 }
 </style>
