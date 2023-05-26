@@ -51,15 +51,16 @@ export default {
     await dispatch('getInvoices');
   },
   //eslint-disable-next-line
-  async markAsPPaid(_, payload) {
-    await fetch(`https://invoice-app-3517e-default-rtdb.europe-west1.firebasedatabase.app/invoices/${payload}.json`, {
+  async markAsPaid(context, payload) {
+    await fetch(`https://invoice-app-3517e-default-rtdb.europe-west1.firebasedatabase.app/invoices/${payload.id}.json`, {
       method: "PATCH",
       body: JSON.stringify({
+        ...payload,
         status: "paid"
       })
     })
 
       .then(response => response.json())
-      .then(data => console.log(data))
+      .then(data => context.commit('updateInvoice', data));
   }
 }

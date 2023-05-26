@@ -36,7 +36,7 @@ export default {
       this.$emit('delete-dialog');
     },
     markAsPaid() {
-      this.$store.dispatch('markAsPPaid', this.$route.params.id);
+      this.$emit('mark-paid');
     }
   }
 }

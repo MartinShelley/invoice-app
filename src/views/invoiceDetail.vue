@@ -4,7 +4,7 @@
       <img src="@/assets/icon-arrow-left.svg" />
       <span>Go back</span>
     </router-link>
-    <InvoiceActionBar @delete-dialog="showDeleteDialog" />
+    <InvoiceActionBar @delete-dialog="showDeleteDialog" @mark-paid="markInvoiceAsPaid" />
   </div>
   <div class="invoice-main">
     <div class="invoice-heading">
@@ -71,7 +71,7 @@
       <p>Are you sure you want to delete invoice #{{ invoiceDetails.id }}? This action cannot be undone.</p>
       <div class="buttons">
         <button class="cancel" @click="hideDeleteDialog">Cancel</button>
-        <button class="delete" @click="deleteInvoice(this.$route.params.id)">Delete</button>
+        <button class="delete" @click="deleteInvoice()">Delete</button>
       </div>
     </dialog>
   </div>
@@ -80,7 +80,7 @@
 <script>
 import InvoiceActionBar from '@/components/InvoiceActionBar.vue';
 export default {
-  emits: ['delete-dialog'],
+  emits: ['delete-dialog', 'mark-paid'],
   data() {
     return {
       deletePrompt: false
@@ -95,8 +95,8 @@ export default {
     }
   },
   methods: {
-    deleteInvoice(id) {
-      this.$store.dispatch('deleteInvoice', id);
+    deleteInvoice() {
+      this.$store.dispatch('deleteInvoice', this.invoiceDetails);
       this.$router.push('/');
       this.hideDeleteDialog();
     },
@@ -107,6 +107,9 @@ export default {
     showDeleteDialog() {
       this.deletePrompt = true;
       document.body.style.overflow = "hidden";
+    },
+    markInvoiceAsPaid() {
+      this.$store.dispatch('markAsPaid', this.invoiceDetails);
     }
   }
 }
