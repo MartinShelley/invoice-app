@@ -45,7 +45,7 @@ export default {
   },
   //eslint-disable-next-line
   async deleteInvoice({ _, dispatch }, payload) {
-    await fetch(`https://invoice-app-3517e-default-rtdb.europe-west1.firebasedatabase.app/invoices/${payload}.json`, {
+    await fetch(`https://invoice-app-3517e-default-rtdb.europe-west1.firebasedatabase.app/invoices/${payload.id}.json`, {
       method: 'DELETE'
     });
     await dispatch('getInvoices');

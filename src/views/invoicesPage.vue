@@ -53,7 +53,7 @@ export default {
   data() {
     return {
       filterHover: false,
-      showFormToggle: false,
+      // showFormToggle: false,
       selectedFilters: {
         paid: false,
         pending: false,
@@ -69,38 +69,49 @@ export default {
       this.filterHover = false;
     },
     hideForm() {
-      this.showFormToggle = false;
+      this.$store.commit('toggleShowForm', false);
+      document.body.style.overflow = "";
+      // this.showFormToggle = false;
     },
     showForm(val) {
       if (val == false) {
-        this.showFormToggle = false;
+        this.$store.commit('toggleShowForm', false);
+        document.body.style.overflow = "";
+        // this.showFormToggle = false;
       }
       else if (val == true) {
-        this.showFormToggle = true;
+        this.$store.commit('toggleShowForm', true);
+        document.body.style.overflow = "hidden";
+        // this.showFormToggle = true;
       }
     },
     saveInvoice(data) {
       this.$store.dispatch('submitInvoiceForm', data);
     },
     backgroundClick() {
-      this.showFormToggle = false;
+      // this.showFormToggle = false;
+      this.$store.commit('toggleShowForm', false);
+      document.body.style.overflow = "";
     }
   },
   computed: {
     noOfInvoices() {
       return this.$store.getters['getNumberOfInvoices'];
+    },
+    showFormToggle() {
+      return this.$store.getters.getShowFormToggle;
     }
   },
-  watch: {
-    showFormToggle(newValue) {
-      if (newValue == true) {
-        document.body.style.overflow = "hidden";
-      }
-      else {
-        document.body.style.overflow = "";
-      }
-    }
-  },
+  // watch: {
+  //   showFormToggle(newValue) {
+  //     if (newValue == true) {
+  //       document.body.style.overflow = "hidden";
+  //     }
+  //     else {
+  //       document.body.style.overflow = "";
+  //     }
+  //   }
+  // },
   components: { NoInvoices, InvoiceForm, InvoiceList }
 }
 </script>

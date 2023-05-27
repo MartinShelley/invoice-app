@@ -7,7 +7,8 @@ const store = createStore({
   state() {
     return {
       invoices: [],
-      lightMode: true
+      lightMode: true,
+      showFormToggle: false
     }
   },
   mutations: mutations,

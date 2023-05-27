@@ -5,7 +5,7 @@
       <StatusIcon :statusValue="getStatusValue" />
     </div>
     <div class="action-bar-buttons">
-      <button class="button button-edit">Edit</button>
+      <button :class="['button button-edit', editClass]" @click="editInvoice">Edit</button>
       <button class="button button-delete" @click="deleteInvoice">Delete</button>
       <button :class="['button button-paid', paidClass]" @click="markAsPaid">Mark as Paid</button>
     </div>
@@ -29,9 +29,20 @@ export default {
       else {
         return ""
       }
+    },
+    editClass() {
+      if (this.getStatusValue != "paid") {
+        return ""
+      }
+      else {
+        return "inactive"
+      }
     }
   },
   methods: {
+    editInvoice() {
+      this.$emit('edit-invoice');
+    },
     deleteInvoice() {
       this.$emit('delete-dialog');
     },

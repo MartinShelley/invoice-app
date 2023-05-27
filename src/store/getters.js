@@ -14,5 +14,8 @@ export default {
   },
   getLightModeToggle(state) {
     return state.lightMode;
+  },
+  getShowFormToggle(state) {
+    return state.showFormToggle;
   }
 }

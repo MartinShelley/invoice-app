@@ -7,20 +7,20 @@
           <legend>Bill Form</legend>
           <div id="address-container" class="input-container">
             <label for="address">Street Address</label>
-            <input type="text" id="address" v-model="billFrom.address" />
+            <input type="text" id="address" v-model="formData.senderAddress.street" />
           </div>
           <div class="col-3-wrapper">
             <div class="input-container">
               <label for="city">City</label>
-              <input type="text" id="city" v-model="billFrom.city" />
+              <input type="text" id="city" v-model="formData.senderAddress.city" />
             </div>
             <div class="input-container">
               <label for="postcode">Postcode</label>
-              <input type="text" id="postcode" v-model="billFrom.postcode" />
+              <input type="text" id="postcode" v-model="formData.senderAddress.postcode" />
             </div>
             <div class="input-container">
               <label for="country">Country</label>
-              <input type="text" id="country" v-model="billFrom.country" />
+              <input type="text" id="country" v-model="formData.senderAddress.country" />
             </div>
           </div>
         </fieldset>
@@ -30,38 +30,38 @@
           <legend>Bill To</legend>
           <div class="input-container">
             <label>Client's Name</label>
-            <input type="text" v-model="billTo.clientName" />
+            <input type="text" v-model="formData.clientName" />
           </div>
           <div class="input-container">
             <label>Client's Email</label>
-            <input type="email" placeholder="e.g. email@example.com" v-model="billTo.clientEmail" />
+            <input type="email" placeholder="e.g. email@example.com" v-model="formData.clientEmail" />
           </div>
           <div class="input-container">
             <label>Street Address</label>
-            <input type="text" v-model="billTo.address" />
+            <input type="text" v-model="formData.clientAddress.street" />
           </div>
           <div class="col-3-wrapper">
             <div class="input-container">
               <label>City</label>
-              <input type="text" v-model="billTo.city" />
+              <input type="text" v-model="formData.clientAddress.city" />
             </div>
             <div class="input-container">
               <label>Postcode</label>
-              <input type="text" v-model="billTo.postcode" />
+              <input type="text" v-model="formData.clientAddress.postcode" />
             </div>
             <div class="input-container">
               <label>Country</label>
-              <input type="text" v-model="billTo.country" />
+              <input type="text" v-model="formData.clientAddress.country" />
             </div>
           </div>
           <div class="col-2-wrapper">
             <div class="input-container">
               <label>Invoice Date</label>
-              <input type="date" v-model="billTo.invoiceDate" />
+              <input type="date" v-model="formData.invoiceDate" />
             </div>
             <div class="input-container">
               <label>Payment Terms</label>
-              <select v-model="billTo.paymentTerms">
+              <select v-model="formData.paymentTerms">
                 <option value="1 Day">Net 1 Day</option>
                 <option value="7 Days">Net 7 Days</option>
                 <option value="14 Days">Net 14 Days</option>
@@ -71,7 +71,7 @@
           </div>
           <div class="input-container">
             <label>Project Description</label>
-            <input type="text" placeholder="e.g. Graphic Design Service" v-model="billTo.projectDesc" />
+            <input type="text" placeholder="e.g. Graphic Design Service" v-model="formData.description" />
           </div>
         </fieldset>
       </section>
@@ -85,13 +85,13 @@
             <th>Total</th>
             <th></th>
           </tr>
-          <tr v-for="(_, index) in itemListData" :key="index">
-            <td><input type="text" v-model="itemListData[index].name" /></td>
-            <td><input type="number" class="tb-qty" min="1" v-model="itemListData[index].quantity"
+          <tr v-for="(_, index) in formData.items" :key="index">
+            <td><input type="text" v-model="formData.items[index].name" /></td>
+            <td><input type="number" class="tb-qty" min="1" v-model="formData.items[index].quantity"
                 @input="updateListItemTotal(index)" /></td>
-            <td><input type="number" class="tb-price" v-model="itemListData[index].price"
+            <td><input type="number" class="tb-price" v-model="formData.items[index].price"
                 @input="updateListItemTotal(index)" /></td>
-            <td class="tb-total">{{ itemListData[index].total }}</td>
+            <td class="tb-total">{{ formData.items[index].total }}</td>
             <td class="tb-delete"><img src="@/assets/icon-delete.svg" @click="deleteTableRow(index)" /></td>
           </tr>
           <tr>
@@ -116,32 +116,36 @@
 
 /* eslint-disable */
 export default {
+  //how to update data below if user clicks on edit in action bar...? If prop isnt undefined, fill data?
+  props: ['editForm'],
   data() {
     return {
-      billFrom: {
-        address: '',
-        city: '',
-        postcode: '',
-        country: ''
-      },
-      billTo: {
+      formData: {
+        senderAddress: {
+          street: '',
+          city: '',
+          postCode: '',
+          country: ''
+        },
+        clientAddress: {
+          street: '',
+          city: '',
+          postCode: '',
+          country: '',
+        },
         clientName: '',
         clientEmail: '',
-        address: '',
-        city: '',
-        postcode: '',
-        country: '',
-        invoiceDate: '',
-        paymentTerms: '',
-        projectDesc: '',
-      },
-      itemListData: [],
-      total: 0
+        paymentDue: '',
+        paymentTerms: null,
+        description: '',
+        items: [],
+        total: 0,
+      }
     }
   },
   methods: {
     addTableRow() {
-      this.itemListData.push({
+      this.formData.items.push({
         name: '',
         quantity: 0,
         price: 0,
@@ -152,14 +156,14 @@ export default {
       this.$emit('discard', false);
     },
     deleteTableRow(number) {
-      this.itemListData.splice(number, 1);
+      this.formData.items.splice(number, 1);
     },
     updateListItemTotal(index) {
-      this.itemListData[index].total = this.itemListData[index].price * this.itemListData[index].quantity;
+      this.formData.items[index].total = this.formData.items[index].price * this.formData.items[index].quantity;
     },
     saveFormData(status) {
       let total = 0;
-      this.itemListData.forEach((item) => {
+      this.formData.items.forEach((item) => {
         total += item.total
       });
 
@@ -206,6 +210,11 @@ export default {
       this.$emit('submitInvoice', formData);
       this.$emit('closeForm');
 
+    },
+  },
+  created() {
+    if (this.$route.path.indexOf('/invoice/') != -1) {
+      this.formData = this.$store.getters.getInvoice(this.$route.params.id);
     }
   }
 }
@@ -215,7 +224,7 @@ export default {
 #invoice-form-overlay {
   height: 100%;
   width: 719px;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   background-color: #fff;
@@ -495,11 +504,3 @@ p {
   background: #7C5DFA;
 }
 </style>
-
-
- <!-- <dialog id="discard-confirmation">
-    <h2>Are you sure?</h2>
-    <p>You will lose your progress if you continue</p>
-    <button>Discard</button>
-    <button>Cancel</button>
-  </dialog> -->

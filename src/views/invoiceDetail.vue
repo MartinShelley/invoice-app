@@ -4,7 +4,7 @@
       <img src="@/assets/icon-arrow-left.svg" />
       <span>Go back</span>
     </router-link>
-    <InvoiceActionBar @delete-dialog="showDeleteDialog" @mark-paid="markInvoiceAsPaid" />
+    <InvoiceActionBar @delete-dialog="showDeleteDialog" @edit-invoice="toggleForm(true)" @mark-paid="markInvoiceAsPaid" />
   </div>
   <div class="invoice-main">
     <div class="invoice-heading">
@@ -75,23 +75,32 @@
       </div>
     </dialog>
   </div>
+  <div id="invoice-form-background" v-show="showFormToggle" @click="backgroundClick"></div>
+  <Transition name="slide">
+    <InvoiceForm v-show="showFormToggle" @discard="toggleForm(false)" @closeForm="toggleForm(false)" />
+  </Transition>
 </template>
 
 <script>
 import InvoiceActionBar from '@/components/InvoiceActionBar.vue';
+import InvoiceForm from '@/components/InvoiceForm.vue';
 export default {
-  emits: ['delete-dialog', 'mark-paid'],
+  emits: ['delete-dialog', 'edit-invoice', 'mark-paid'],
   data() {
     return {
       deletePrompt: false
     }
   },
   components: {
-    InvoiceActionBar
+    InvoiceActionBar,
+    InvoiceForm
   },
   computed: {
     invoiceDetails() {
       return this.$store.getters.getInvoice(this.$route.params.id);
+    },
+    showFormToggle() {
+      return this.$store.getters.getShowFormToggle;
     }
   },
   methods: {
@@ -110,6 +119,20 @@ export default {
     },
     markInvoiceAsPaid() {
       this.$store.dispatch('markAsPaid', this.invoiceDetails);
+    },
+    toggleForm(val) {
+      if (val == false) {
+        this.$store.commit('toggleShowForm', false);
+        document.body.style.overflow = "";
+      }
+      else if (val == true) {
+        this.$store.commit('toggleShowForm', true);
+        document.body.style.overflow = "hidden";
+      }
+    },
+    backgroundClick() {
+      this.$store.commit('toggleShowForm', false);
+      document.body.style.overflow = "";
     }
   }
 }
@@ -360,5 +383,30 @@ export default {
       }
     }
   }
+}
+
+#invoice-form-background {
+  background-color: #000;
+  opacity: 0.5;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  position: fixed;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateX(-100%);
+}
+
+.slide-enter-to,
+.slide-leave-from {
+  transform: translateX(0);
+}
+
+.slide-leave-active,
+.slide-enter-active {
+  transition: transform 0.75s ease-out;
 }
 </style>

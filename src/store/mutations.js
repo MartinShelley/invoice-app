@@ -12,5 +12,8 @@ export default {
   },
   toggleLightMode(state) {
     state.lightMode = !state.lightMode;
+  },
+  toggleShowForm(state, payload) {
+    state.showFormToggle = payload;
   }
 }
