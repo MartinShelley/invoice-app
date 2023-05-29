@@ -18,6 +18,7 @@ import StatusIcon from './UI/StatusIcon.vue';
 
 export default {
   components: { StatusIcon },
+  emits: ['delete-dialog', 'edit-invoice', 'mark-paid'],
   computed: {
     getStatusValue() {
       return this.$store.getters.getInvoiceStatus(this.$route.params.id);

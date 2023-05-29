@@ -16,7 +16,7 @@
             </div>
             <div class="input-container">
               <label for="postcode">Postcode</label>
-              <input type="text" id="postcode" v-model="formData.senderAddress.postcode" />
+              <input type="text" id="postcode" v-model="formData.senderAddress.postCode" />
             </div>
             <div class="input-container">
               <label for="country">Country</label>
@@ -47,7 +47,7 @@
             </div>
             <div class="input-container">
               <label>Postcode</label>
-              <input type="text" v-model="formData.clientAddress.postcode" />
+              <input type="text" v-model="formData.clientAddress.postCode" />
             </div>
             <div class="input-container">
               <label>Country</label>
@@ -62,10 +62,10 @@
             <div class="input-container">
               <label>Payment Terms</label>
               <select v-model="formData.paymentTerms">
-                <option value="1 Day">Net 1 Day</option>
-                <option value="7 Days">Net 7 Days</option>
-                <option value="14 Days">Net 14 Days</option>
-                <option value="30 Days" selected>Net 30 Days</option>
+                <option value=1>Net 1 Day</option>
+                <option value=7>Net 7 Days</option>
+                <option value=14>Net 14 Days</option>
+                <option value=30 selected>Net 30 Days</option>
               </select>
             </div>
           </div>
@@ -83,7 +83,7 @@
             <th>Qty.</th>
             <th>Price</th>
             <th>Total</th>
-            <th></th>
+            <!-- <th></th> -->
           </tr>
           <tr v-for="(_, index) in formData.items" :key="index">
             <td><input type="text" v-model="formData.items[index].name" /></td>
@@ -102,11 +102,11 @@
     </div>
     <section id="form-actions">
       <div>
-        <button id="discard" type="button" @click="discardForm()">Discard</button>
+        <button id="discard" type="button" @click="discardForm">Discard</button>
       </div>
       <div>
-        <button id="save-draft" type="button" @click="saveFormData('draft')">Save as Draft</button>
-        <button id="save" type="button" @click="saveFormData('pending')">Save & Send</button>
+        <button id="save-draft" type="button" @click="submitForm('draft')">Save as Draft</button>
+        <button id="save" type="button" @click="submitForm('pending')">Save & Send</button>
       </div>
     </section>
   </form>
@@ -116,10 +116,20 @@
 
 /* eslint-disable */
 export default {
-  //how to update data below if user clicks on edit in action bar...? If prop isnt undefined, fill data?
-  props: ['editForm'],
+  props: {
+    editingForm: {
+      type: Boolean,
+      required: false
+    },
+    // invoiceData: {
+    //   type: Object,
+    //   required: false
+    // }
+  },
+  emits: ['hideForm'],
   data() {
     return {
+      originalData: {},
       formData: {
         senderAddress: {
           street: '',
@@ -135,12 +145,19 @@ export default {
         },
         clientName: '',
         clientEmail: '',
+        createdAt: '',
         paymentDue: '',
         paymentTerms: null,
         description: '',
         items: [],
         total: 0,
       }
+    }
+  },
+  computed: {
+    getTodaysDate() {
+      const dateValues = new Date().toISOString().slice(0, 10).split("-");
+      return `${dateValues[2]}-${dateValues[1]}-${dateValues[0]}`;
     }
   },
   methods: {
@@ -152,22 +169,54 @@ export default {
         total: 0
       });
     },
-    discardForm() {
-      this.$emit('discard', false);
-    },
     deleteTableRow(number) {
       this.formData.items.splice(number, 1);
     },
     updateListItemTotal(index) {
       this.formData.items[index].total = this.formData.items[index].price * this.formData.items[index].quantity;
     },
-    saveFormData(status) {
+    discardForm() {
+      this.$emit('hideForm');
+      if (this.editingForm == false) {
+        this.formData = {
+          senderAddress: {
+            street: '',
+            city: '',
+            postCode: '',
+            country: ''
+          },
+          clientAddress: {
+            street: '',
+            city: '',
+            postCode: '',
+            country: '',
+          },
+          clientName: '',
+          clientEmail: '',
+          paymentDue: '',
+          paymentTerms: null,
+          description: '',
+          items: [],
+          total: 0,
+        }
+      }
+      else if (this.editingForm == true) {
+        this.formData = JSON.parse(JSON.stringify(this.originalData));
+      }
+    },
+    submitForm(status) {
+      let newInvoice = false;
+      console.log(this.formData.id)
       let total = 0;
-      this.formData.items.forEach((item) => {
-        total += item.total
-      });
+      console.log(this.formData.items)
+      if (this.formData.items != null) {
+        this.formData.items.forEach((item) => {
+          total += item.total
+        });
+      }
 
       function randomString() {
+        newInvoice = true;
         const letters = "ABCDEFGHIJKLMNOPQRSTUVWXTZ";
         const numbers = "0123456789";
         const letter_length = 2;
@@ -183,38 +232,48 @@ export default {
         }
         return randomstring;
       }
-      const formData = {
+
+      const submitData = {
         senderAddress: {
-          street: this.billFrom.address,
-          city: this.billFrom.city,
-          postCode: this.billFrom.postcode,
-          country: this.billFrom.country,
+          street: this.formData.senderAddress.street,
+          city: this.formData.senderAddress.city,
+          postCode: this.formData.senderAddress.postCode,
+          country: this.formData.senderAddress.country,
         },
-        clientName: this.billTo.clientName,
-        clientEmail: this.billTo.clientEmail,
+        clientName: this.formData.clientName,
+        clientEmail: this.formData.clientEmail,
         clientAddress: {
-          street: this.billTo.address,
-          city: this.billTo.city,
-          postCode: this.billTo.postcode,
-          country: this.billTo.country,
+          street: this.formData.clientAddress.address,
+          city: this.formData.clientAddress.city,
+          postCode: this.formData.clientAddress.postCode,
+          country: this.formData.clientAddress.country,
         },
-        paymentDue: this.billTo.invoiceDate,
-        paymentTerms: this.billTo.paymentTerms,
-        description: this.billTo.projectDesc,
+        createdAt: this.getTodaysDate,
+        paymentDue: this.formData.invoiceDate,
+        paymentTerms: this.formData.paymentTerms,
+        description: this.formData.projectDesc,
         total: total,
-        items: this.itemListData,
+        items: this.formData.items,
         status: status,
-        id: randomString()
+        id: this.formData.id || randomString()
       }
 
-      this.$emit('submitInvoice', formData);
-      this.$emit('closeForm');
+      if (newInvoice == true) {
+        this.$store.dispatch('createInvoice', submitData);
+      }
+      else {
+        this.$store.dispatch('updateInvoice', submitData);
+      }
 
+      this.$emit('hideForm');
     },
   },
-  created() {
-    if (this.$route.path.indexOf('/invoice/') != -1) {
-      this.formData = this.$store.getters.getInvoice(this.$route.params.id);
+
+  async created() {
+    console.log("created form component!");
+    if (this.editingForm == true) {
+      this.originalData = JSON.parse(JSON.stringify(this.$store.getters.getInvoice(this.$route.params.id)));
+      this.formData = JSON.parse(JSON.stringify(this.originalData));
     }
   }
 }

@@ -3,7 +3,6 @@ export default {
     state.invoices.push(payload);
   },
   updateInvoices(state, payload) {
-    console.log(Object.values(payload));
     state.invoices = Object.values(payload);
   },
   updateInvoice(state, payload) {

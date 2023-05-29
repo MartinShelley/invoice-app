@@ -3,7 +3,7 @@
     <router-link :to="invoiceDetailLink">
       <div class="invoice-item-left-container">
         <p id="invoice-id"><span>#</span>{{ value.id }}</p>
-        <p class="invoice-text">Due {{ transformDate }}</p>
+        <p class="invoice-text">{{ transformDate }}</p>
         <p class="invoice-text">{{ value.clientName }}</p>
       </div>
       <div class="invoice-item-right-container">
@@ -23,9 +23,14 @@ export default {
   props: { value: Object },
   computed: {
     transformDate() {
-      var date = new Date(this.value.paymentDue);
-      var dateParts = date.toDateString().slice(4).split(" ");
-      return `${dateParts[1]} ${dateParts[0]} ${dateParts[2]}`;
+      if (this.value.paymentDue != undefined) {
+        var date = new Date(this.value.paymentDue);
+        var dateParts = date.toDateString().slice(4).split(" ");
+        return `Due ${dateParts[1]} ${dateParts[0]} ${dateParts[2]}`;
+      }
+      else {
+        return ''
+      }
     },
     formattingPrice() {
       return this.value.total.toLocaleString("en-gb", {

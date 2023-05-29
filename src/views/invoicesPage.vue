@@ -24,7 +24,7 @@
           </span>
         </div>
       </div>
-      <button @click="showForm(true)">
+      <button @click="showForm">
         <svg height="32" width="32">
           <circle cx="16" cy="16" r="16" fill="white" />
           <image href="@/assets/icon-plus.svg" width="10" height="10" x="11" y="11" />
@@ -39,8 +39,7 @@
   <NoInvoices v-else />
   <div id="invoice-form-background" v-show="showFormToggle" @click="backgroundClick"></div>
   <Transition name="slide">
-    <InvoiceForm v-show="showFormToggle" @discard="showForm(false)" @closeForm="hideForm()"
-      @submitInvoice="saveInvoice" />
+    <InvoiceForm v-show="showFormToggle" @hide-form="hideForm" />
   </Transition>
 </template>
 
@@ -53,7 +52,6 @@ export default {
   data() {
     return {
       filterHover: false,
-      // showFormToggle: false,
       selectedFilters: {
         paid: false,
         pending: false,
@@ -71,25 +69,12 @@ export default {
     hideForm() {
       this.$store.commit('toggleShowForm', false);
       document.body.style.overflow = "";
-      // this.showFormToggle = false;
     },
-    showForm(val) {
-      if (val == false) {
-        this.$store.commit('toggleShowForm', false);
-        document.body.style.overflow = "";
-        // this.showFormToggle = false;
-      }
-      else if (val == true) {
-        this.$store.commit('toggleShowForm', true);
-        document.body.style.overflow = "hidden";
-        // this.showFormToggle = true;
-      }
-    },
-    saveInvoice(data) {
-      this.$store.dispatch('submitInvoiceForm', data);
+    showForm() {
+      this.$store.commit('toggleShowForm', true);
+      document.body.style.overflow = "hidden";
     },
     backgroundClick() {
-      // this.showFormToggle = false;
       this.$store.commit('toggleShowForm', false);
       document.body.style.overflow = "";
     }
@@ -102,16 +87,6 @@ export default {
       return this.$store.getters.getShowFormToggle;
     }
   },
-  // watch: {
-  //   showFormToggle(newValue) {
-  //     if (newValue == true) {
-  //       document.body.style.overflow = "hidden";
-  //     }
-  //     else {
-  //       document.body.style.overflow = "";
-  //     }
-  //   }
-  // },
   components: { NoInvoices, InvoiceForm, InvoiceList }
 }
 </script>
@@ -227,7 +202,7 @@ button {
   width: 100%;
   top: 0;
   left: 0;
-  position: absolute;
+  position: fixed;
 }
 
 .slide-enter-from,

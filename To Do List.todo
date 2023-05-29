@@ -1,12 +1,26 @@
 To do:
-✔ Add data to Vuex and get components to use that @done (5/22/2023, 4:01:59 PM)
-☐ Create ability to save/delete/create-draft forms
-☐ Custom prompt when deleting invoice
-☐ Form error handling
-☐ Custom Input styling (Calendars/Scrollbar)
-✔ Add spacing for form Item table rows @done (5/21/2023, 10:22:40 PM)
-☐ Dark/Light mode
-☐ Hover States
-☐ Mobile & Tablet views
-☐ Accessibility
-☐ Figuring out the font
+
+  Invoice Page:
+    ☐ Saving Form as a draft
+    ☐ Submitting Form as Pending
+    ☐ Discarding Form and clear data
+
+  Invoice Detail Page:
+    ☐ Saving Form as another draft (also can't save to draft without main list item data)
+    ☐ Submitting Form as Pending
+    ☐ Discarding Form and go back to original data
+    ☐ Mark as Paid
+    ☐ Delete Invoice
+
+    ☐ Form error handling
+    ☐ Custom Input styling (Calendars/Scrollbar)
+
+
+    Others:
+    ☐ If multiple people saw this, how can everyone start with the same invoices without people updating 
+    ☐ Dark/Light mode
+    ☐ Hover States
+    ☐ Mobile & Tablet views
+    ☐ Accessibility
+    ☐ Figuring out the font
+    ☐ Refactor code

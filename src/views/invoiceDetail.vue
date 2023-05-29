@@ -4,7 +4,7 @@
       <img src="@/assets/icon-arrow-left.svg" />
       <span>Go back</span>
     </router-link>
-    <InvoiceActionBar @delete-dialog="showDeleteDialog" @edit-invoice="toggleForm(true)" @mark-paid="markInvoiceAsPaid" />
+    <InvoiceActionBar @delete-dialog="showDeleteDialog" @edit-invoice="showForm" @mark-paid="markInvoiceAsPaid" />
   </div>
   <div class="invoice-main">
     <div class="invoice-heading">
@@ -23,20 +23,20 @@
       <div class="invoice-dates">
         <div>
           <p class="title">Invoice Date</p>
-          <h4>{{ invoiceDetails.createdAt }}</h4>
+          <h4>{{ formatInvoiceDate }}</h4>
         </div>
         <div>
           <p class="title">Payment Due</p>
-          <h4>{{ invoiceDetails.paymentDue }}</h4>
+          <h4>{{ formatPaymentDue }}</h4>
         </div>
       </div>
       <div class="invoice-bill-to">
         <p class="title">Bill To</p>
         <h4>{{ invoiceDetails.clientName }}</h4>
-        <p>{{ invoiceDetails.senderAddress.street }}</p>
-        <p>{{ invoiceDetails.senderAddress.city }}</p>
-        <p>{{ invoiceDetails.senderAddress.postCode }}</p>
-        <p>{{ invoiceDetails.senderAddress.country }}</p>
+        <p>{{ invoiceDetails.clientAddress.street }}</p>
+        <p>{{ invoiceDetails.clientAddress.city }}</p>
+        <p>{{ invoiceDetails.clientAddress.postCode }}</p>
+        <p>{{ invoiceDetails.clientAddress.country }}</p>
       </div>
       <div class="invoice-client-email">
         <p class="title">Sent to</p>
@@ -75,9 +75,9 @@
       </div>
     </dialog>
   </div>
-  <div id="invoice-form-background" v-show="showFormToggle" @click="backgroundClick"></div>
+  <div id="invoice-form-background" v-show="showFormToggle" @click="hideForm"></div>
   <Transition name="slide">
-    <InvoiceForm v-show="showFormToggle" @discard="toggleForm(false)" @closeForm="toggleForm(false)" />
+    <InvoiceForm v-show="showFormToggle" @hide-form="hideForm" :editing-form="true" :invoice-data="invoiceDetails" />
   </Transition>
 </template>
 
@@ -85,7 +85,6 @@
 import InvoiceActionBar from '@/components/InvoiceActionBar.vue';
 import InvoiceForm from '@/components/InvoiceForm.vue';
 export default {
-  emits: ['delete-dialog', 'edit-invoice', 'mark-paid'],
   data() {
     return {
       deletePrompt: false
@@ -98,6 +97,24 @@ export default {
   computed: {
     invoiceDetails() {
       return this.$store.getters.getInvoice(this.$route.params.id);
+    },
+    formatInvoiceDate() {
+      if (this.invoiceDetails.createdAt) {
+        const date = this.invoiceDetails.createdAt.split("-");
+        return `${date[2]}-${date[1]}-${date[0]}`;
+      }
+      else {
+        return "";
+      }
+    },
+    formatPaymentDue() {
+      if (this.invoiceDetails.paymentDue) {
+        const value = this.invoiceDetails.paymentDue.split('-');
+        return `${value[2]}-${value[1]}-${value[0]}`;
+      }
+      else {
+        return "";
+      }
     },
     showFormToggle() {
       return this.$store.getters.getShowFormToggle;
@@ -120,17 +137,11 @@ export default {
     markInvoiceAsPaid() {
       this.$store.dispatch('markAsPaid', this.invoiceDetails);
     },
-    toggleForm(val) {
-      if (val == false) {
-        this.$store.commit('toggleShowForm', false);
-        document.body.style.overflow = "";
-      }
-      else if (val == true) {
-        this.$store.commit('toggleShowForm', true);
-        document.body.style.overflow = "hidden";
-      }
+    showForm() {
+      this.$store.commit('toggleShowForm', true);
+      document.body.style.overflow = "hidden";
     },
-    backgroundClick() {
+    hideForm() {
       this.$store.commit('toggleShowForm', false);
       document.body.style.overflow = "";
     }
@@ -325,6 +336,7 @@ export default {
     opacity: 0.5;
     width: 100%;
     height: 100%;
+    position: fixed;
   }
 
   dialog {
