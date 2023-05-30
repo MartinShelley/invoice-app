@@ -120,11 +120,7 @@ export default {
     editingForm: {
       type: Boolean,
       required: false
-    },
-    // invoiceData: {
-    //   type: Object,
-    //   required: false
-    // }
+    }
   },
   emits: ['hideForm'],
   data() {
@@ -206,16 +202,14 @@ export default {
     },
     submitForm(status) {
       let newInvoice = false;
-      console.log(this.formData.id)
       let total = 0;
-      console.log(this.formData.items)
       if (this.formData.items != null) {
         this.formData.items.forEach((item) => {
           total += item.total
         });
       }
 
-      function randomString() {
+      function randomIDString() {
         newInvoice = true;
         const letters = "ABCDEFGHIJKLMNOPQRSTUVWXTZ";
         const numbers = "0123456789";
@@ -231,6 +225,12 @@ export default {
           randomstring += numbers[rnum];
         }
         return randomstring;
+      }
+
+      function paymentDate(dueDate) {
+        const d = new Date();
+        const paymentDateValues = new Date(d.setDate(d.getDate() + dueDate)).toISOString().slice(0, 10).split('-');
+        return `${paymentDateValues[2]}-${paymentDateValues[1]}-${paymentDateValues[0]}`;
       }
 
       const submitData = {
@@ -249,19 +249,21 @@ export default {
           country: this.formData.clientAddress.country,
         },
         createdAt: this.getTodaysDate,
-        paymentDue: this.formData.invoiceDate,
+        paymentDue: paymentDate(this.formData.paymentTerms),
         paymentTerms: this.formData.paymentTerms,
         description: this.formData.projectDesc,
         total: total,
         items: this.formData.items,
         status: status,
-        id: this.formData.id || randomString()
+        id: this.formData.id || randomIDString()
       }
 
       if (newInvoice == true) {
+        console.log("new invoice");
         this.$store.dispatch('createInvoice', submitData);
       }
       else {
+        console.log("existing invoice!")
         this.$store.dispatch('updateInvoice', submitData);
       }
 
