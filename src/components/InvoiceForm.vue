@@ -57,7 +57,7 @@
           <div class="col-2-wrapper">
             <div class="input-container">
               <label>Invoice Date</label>
-              <input type="date" v-model="formData.invoiceDate" />
+              <input type="date" v-model="formData.createdAt" />
             </div>
             <div class="input-container">
               <label>Payment Terms</label>
@@ -65,7 +65,7 @@
                 <option value=1>Net 1 Day</option>
                 <option value=7>Net 7 Days</option>
                 <option value=14>Net 14 Days</option>
-                <option value=30 selected>Net 30 Days</option>
+                <option value=30>Net 30 Days</option>
               </select>
             </div>
           </div>
@@ -152,8 +152,16 @@ export default {
   },
   computed: {
     getTodaysDate() {
-      const dateValues = new Date().toISOString().slice(0, 10).split("-");
-      return `${dateValues[2]}-${dateValues[1]}-${dateValues[0]}`;
+      // const dateValues = new Date().toISOString().slice(0, 10).split("-");
+      // return `${dateValues[2]}-${dateValues[1]}-${dateValues[0]}`;
+      // return dateValues;
+      return new Date().toISOString().slice(0, 10);
+    },
+    calculatingPaymentDate() {
+      const paymentTerms = this.formData.paymentTerms;
+      const invoiceDate = new Date(this.formData.createdAt);
+      const paymentDate = new Date(invoiceDate.setDate(invoiceDate.getDate() + Number(paymentTerms))).toISOString().slice(0, 10);
+      return paymentDate;
     }
   },
   methods: {
@@ -189,6 +197,7 @@ export default {
           },
           clientName: '',
           clientEmail: '',
+          createdAt: '',
           paymentDue: '',
           paymentTerms: null,
           description: '',
@@ -201,7 +210,7 @@ export default {
       }
     },
     submitForm(status) {
-      let newInvoice = false;
+      let newInvoice;
       let total = 0;
       if (this.formData.items != null) {
         this.formData.items.forEach((item) => {
@@ -227,10 +236,9 @@ export default {
         return randomstring;
       }
 
-      function paymentDate(dueDate) {
-        const d = new Date();
-        const paymentDateValues = new Date(d.setDate(d.getDate() + dueDate)).toISOString().slice(0, 10).split('-');
-        return `${paymentDateValues[2]}-${paymentDateValues[1]}-${paymentDateValues[0]}`;
+      if (this.formData.createdAt == '') {
+        this.formData.createdAt = this.getTodaysDate;
+        console.log(this.getTodaysDate);
       }
 
       const submitData = {
@@ -248,35 +256,29 @@ export default {
           postCode: this.formData.clientAddress.postCode,
           country: this.formData.clientAddress.country,
         },
-        createdAt: this.getTodaysDate,
-        paymentDue: paymentDate(this.formData.paymentTerms),
+        createdAt: this.formData.createdAt,
+        paymentDue: this.calculatingPaymentDate,
+        // paymentDue: calculatingPaymentDate(),
         paymentTerms: this.formData.paymentTerms,
         description: this.formData.projectDesc,
         total: total,
         items: this.formData.items,
         status: status,
-        id: this.formData.id || randomIDString()
-      }
-
-      if (newInvoice == true) {
-        console.log("new invoice");
-        this.$store.dispatch('createInvoice', submitData);
-      }
-      else {
-        console.log("existing invoice!")
-        this.$store.dispatch('updateInvoice', submitData);
+        id: this.formData.id || randomIDString(),
+        newInvoice: newInvoice || ''
       }
 
       this.$emit('hideForm');
+      this.$store.dispatch('invoiceSaved', submitData);
     },
   },
 
   async created() {
-    console.log("created form component!");
     if (this.editingForm == true) {
       this.originalData = JSON.parse(JSON.stringify(this.$store.getters.getInvoice(this.$route.params.id)));
       this.formData = JSON.parse(JSON.stringify(this.originalData));
     }
+    //this.formData.paymentDue = this.calculatingPaymentDate;
   }
 }
 </script>

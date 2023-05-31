@@ -18,12 +18,12 @@
 <script>
 import StatusIcon from './UI/StatusIcon.vue';
 
-
 export default {
   props: { value: Object },
   computed: {
     transformDate() {
-      if (this.value.paymentDue != undefined) {
+      console.log(this.value)
+      if (this.value.paymentDue != "") {
         var date = new Date(this.value.paymentDue);
         var dateParts = date.toDateString().slice(4).split(" ");
         return `Due ${dateParts[1]} ${dateParts[0]} ${dateParts[2]}`;
