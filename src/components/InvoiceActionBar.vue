@@ -32,7 +32,7 @@ export default {
       }
     },
     editClass() {
-      if (this.getStatusValue != "paid") {
+      if (this.getStatusValue == "draft") {
         return ""
       }
       else {

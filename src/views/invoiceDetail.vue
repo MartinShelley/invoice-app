@@ -77,7 +77,7 @@
   </div>
   <div id="invoice-form-background" v-show="showFormToggle" @click="hideForm"></div>
   <Transition name="slide">
-    <InvoiceForm v-show="showFormToggle" @hide-form="hideForm" :editing-form="true" :invoice-data="invoiceDetails" />
+    <InvoiceForm v-if="showFormToggle" @hide-form="hideForm" :editing-form="true" :invoice-data="invoiceDetails" />
   </Transition>
 </template>
 

@@ -1,7 +1,10 @@
 <template>
   <form id="invoice-form-overlay">
+    <div class="form-heading">
+      <h2 v-if="formData.id">Edit #{{ formData.id }}</h2>
+      <h2 v-else>New Invoice</h2>
+    </div>
     <div class="form-top-section">
-      <h2>New Invoice</h2>
       <section id="bill-from-section">
         <fieldset>
           <legend>Bill Form</legend>
@@ -152,16 +155,18 @@ export default {
   },
   computed: {
     getTodaysDate() {
-      // const dateValues = new Date().toISOString().slice(0, 10).split("-");
-      // return `${dateValues[2]}-${dateValues[1]}-${dateValues[0]}`;
-      // return dateValues;
       return new Date().toISOString().slice(0, 10);
     },
     calculatingPaymentDate() {
       const paymentTerms = this.formData.paymentTerms;
       const invoiceDate = new Date(this.formData.createdAt);
       const paymentDate = new Date(invoiceDate.setDate(invoiceDate.getDate() + Number(paymentTerms))).toISOString().slice(0, 10);
-      return paymentDate;
+      if (paymentTerms == null) {
+        return ''
+      }
+      else {
+        return paymentDate;
+      }
     }
   },
   methods: {
@@ -251,16 +256,15 @@ export default {
         clientName: this.formData.clientName,
         clientEmail: this.formData.clientEmail,
         clientAddress: {
-          street: this.formData.clientAddress.address,
+          street: this.formData.clientAddress.street,
           city: this.formData.clientAddress.city,
           postCode: this.formData.clientAddress.postCode,
           country: this.formData.clientAddress.country,
         },
         createdAt: this.formData.createdAt,
         paymentDue: this.calculatingPaymentDate,
-        // paymentDue: calculatingPaymentDate(),
         paymentTerms: this.formData.paymentTerms,
-        description: this.formData.projectDesc,
+        description: this.formData.description,
         total: total,
         items: this.formData.items,
         status: status,
@@ -278,7 +282,9 @@ export default {
       this.originalData = JSON.parse(JSON.stringify(this.$store.getters.getInvoice(this.$route.params.id)));
       this.formData = JSON.parse(JSON.stringify(this.originalData));
     }
-    //this.formData.paymentDue = this.calculatingPaymentDate;
+  },
+  mounted() {
+    document.querySelector('#invoice-form-overlay').scroll(0, 0);
   }
 }
 </script>
@@ -295,8 +301,15 @@ export default {
   overflow-y: auto;
   z-index: 2;
 
+  .form-heading {
+    padding: 56px 56px 0 159px;
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+  }
+
   .form-top-section {
-    padding: 56px 56px 32px 159px;
+    padding: 0 56px 32px 159px;
 
 
     #bill-from-section {
