@@ -105,4 +105,13 @@ button {
   font-weight: 700;
   padding: 0 24px;
 }
+
+input {
+  height: 48px;
+  border: 1px solid #DFE3FA;
+  border-radius: 4px;
+  padding: 0 16px 0 20px;
+  font-weight: 700;
+  background-color: transparent;
+}
 </style>

@@ -1,22 +1,17 @@
 To do:
 
-  Invoice Page:
-    ☐ Saving Form as a draft
-    ☐ Submitting Form as Pending
-    ☐ Discarding Form and clear data
+  DatePicker:
+    ☐ Save selected date, close popup & save value in input field
+    ☐ If user opens again and searches for new date, only have selected date highlighted
+    ☐ Try and stop the input values from highlighting when clicking to open
 
-  Invoice Detail Page:
-    ☐ Saving Form as another draft (also can't save to draft without main list item data)
-    ☐ Submitting Form as Pending
-    ☐ Discarding Form and go back to original data
-    ☐ Mark as Paid
-    ☐ Delete Invoice
 
+  Other Form To dos:
     ☐ Form error handling
-    ☐ Custom Input styling (Calendars/Scrollbar)
+    ☐ Custom Input styling (Scrollbar/Select Dropdowns)
 
 
-    Others:
+  Others:
     ☐ If multiple people saw this, how can everyone start with the same invoices without people updating 
     ☐ Dark/Light mode
     ☐ Hover States

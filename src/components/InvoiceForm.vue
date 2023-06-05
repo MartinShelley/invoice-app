@@ -60,7 +60,8 @@
           <div class="col-2-wrapper">
             <div class="input-container">
               <label>Invoice Date</label>
-              <input type="date" v-model="formData.createdAt" />
+              <!-- <input type="date" v-model="formData.createdAt" /> -->
+              <datePicker @saveInvoiceDate="updateInvoiceDate" />
             </div>
             <div class="input-container">
               <label>Payment Terms</label>
@@ -116,7 +117,7 @@
 </template>
 
 <script>
-
+import datePicker from './UI/datePicker.vue';
 /* eslint-disable */
 export default {
   props: {
@@ -126,6 +127,9 @@ export default {
     }
   },
   emits: ['hideForm'],
+  components: {
+    datePicker
+  },
   data() {
     return {
       originalData: {},
@@ -275,6 +279,9 @@ export default {
       this.$emit('hideForm');
       this.$store.dispatch('invoiceSaved', submitData);
     },
+    updateInvoiceDate() {
+
+    }
   },
 
   async created() {
@@ -479,6 +486,7 @@ export default {
         display: flex;
         flex-direction: column;
         margin-bottom: 24px;
+        position: relative;
 
         label {
           margin-bottom: 10px;
@@ -529,15 +537,6 @@ select {
   background-position-x: 95%;
   background-position-y: 50%;
   font-weight: 700;
-}
-
-input {
-  height: 48px;
-  border: 1px solid #DFE3FA;
-  border-radius: 4px;
-  padding: 0 16px 0 20px;
-  font-weight: 700;
-  background-color: transparent;
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {
