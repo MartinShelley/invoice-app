@@ -279,8 +279,8 @@ export default {
       this.$emit('hideForm');
       this.$store.dispatch('invoiceSaved', submitData);
     },
-    updateInvoiceDate() {
-
+    updateInvoiceDate(payload) {
+      return payload;
     }
   },
 

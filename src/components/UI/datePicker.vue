@@ -1,5 +1,5 @@
 <template>
-  <input type="date" readonly="readonly" @click="toggleDatePicker" />
+  <input type="date" readonly="readonly" @click="toggleDatePicker" v-model="selected.fullDate" />
   <div class="date-picker" v-show="showDatePicker">
     <div class="date-picker-header">
       <img src="@/assets/icon-arrow-left.svg" @click="prevMonth" />
@@ -27,6 +27,7 @@ export default {
         date: null,
         month: null,
         year: null,
+        fullDate: null,
       },
       months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
       showDatePicker: false
@@ -70,9 +71,10 @@ export default {
       this.selected.date = Number(event.target.innerText);
       this.selected.month = this.current.month;
       this.selected.year = this.current.year;
+      this.selected.fullDate = new Date(`${this.selected.year}-${this.selected.month + 1}-${this.selected.date}`).toISOString().slice(0, 10);
       event.target.classList.add('selected');
       this.toggleDatePicker();
-      this.$emit('saveInvoiceDate'); //send date to form and output
+      this.$emit('saveInvoiceDate', this.selected.fullDate); //send date to form and output
     },
     toggleDatePicker() {
       this.showDatePicker = !this.showDatePicker
