@@ -7,7 +7,7 @@
       <img src="@/assets/icon-arrow-right.svg" @click="nextMonth" />
     </div>
     <div class="days">
-      <div class="day" v-for="n in daysInMonth" :key="n" @click="selectedDay($event)">{{
+      <div class="day" :data-value="n" v-for="n in daysInMonth" :key="n" @click="selectedDay($event)">{{
         n }}</div>
     </div>
   </div>
@@ -40,24 +40,16 @@ export default {
     },
     daysInMonth() {
       this.isLeapYear(this.current.year);
-      if(this.current.leapYear == true && this.current.month == 1) {
+      if (this.current.leapYear == true && this.current.month == 1) {
         return 29;
       }
-      else{
+      else {
         return new Date(this.current.year, this.current.month + 1, 0).getDate();
       }
     }
   },
   methods: {
-    isLeapYear(year) {
-      if ((year % 4 == 0) && (year % 100 != 0) || (year % 400 == 0)){
-        this.leapYear = true;
-      }
-      else {
-        this.leapYear = false;
-      }
-    },
-    nextMonth() {
+    addMonth() {
       if (this.current.month == 11) {
         this.current.month = 0;
         this.current.year++
@@ -66,7 +58,19 @@ export default {
         this.current.month++;
       }
     },
-    prevMonth() {
+    checkForSelectedDate() {
+      if (this.selected.month == null) {
+        return;
+      }
+      else if (this.current.month !== this.selected.month && document.querySelector('.selected') !== null) {
+        document.querySelector('.selected').classList.remove('selected');
+
+      }
+      else if (this.current.month == this.selected.month) {
+        document.querySelector(`.day[data-value="${this.selected.date}"]`).classList.add('selected');
+      }
+    },
+    decreaseMonth() {
       if (this.current.month == 0) {
         this.current.month = 11;
         this.current.year--
@@ -74,6 +78,22 @@ export default {
       else {
         this.current.month--;
       }
+    },
+    isLeapYear(year) {
+      if ((year % 4 == 0) && (year % 100 != 0) || (year % 400 == 0)) {
+        this.leapYear = true;
+      }
+      else {
+        this.leapYear = false;
+      }
+    },
+    nextMonth() {
+      this.addMonth();
+      this.checkForSelectedDate();
+    },
+    prevMonth() {
+      this.decreaseMonth();
+      this.checkForSelectedDate();
     },
     selectedDay(event) {
       if (this.selected.month != null) {
@@ -83,7 +103,7 @@ export default {
       this.selected.date = Number(event.target.innerText);
       this.selected.month = this.current.month;
       this.selected.year = this.current.year;
-      this.selected.fullDate = new Date(`${this.selected.year}-${this.selected.month + 1}-${this.selected.date}`).toLocaleDateString().split( '/' ).reverse( ).join( '-' );
+      this.selected.fullDate = new Date(`${this.selected.year}-${this.selected.month + 1}-${this.selected.date}`).toLocaleDateString().split('/').reverse().join('-');
       event.target.classList.add('selected');
       this.toggleDatePicker();
       this.$emit('saveInvoiceDate', this.selected.fullDate); //send date to form for form submission
@@ -98,6 +118,7 @@ export default {
 <style lang="scss" scoped>
 input {
   margin-bottom: 8px;
+  user-select: none;
 }
 
 .date-picker {
