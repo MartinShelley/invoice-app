@@ -280,7 +280,7 @@ export default {
       this.$store.dispatch('invoiceSaved', submitData);
     },
     updateInvoiceDate(payload) {
-      return payload;
+      this.formData.createdAt = payload;
     }
   },
 

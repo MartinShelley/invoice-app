@@ -21,7 +21,8 @@ export default {
     return {
       current: {
         month: new Date().getMonth(), //0 indexed
-        year: new Date().getFullYear()
+        year: new Date().getFullYear(),
+        leapYear: false
       },
       selected: {
         date: null,
@@ -38,12 +39,23 @@ export default {
       return this.months[this.current.month] + ' ' + this.current.year;
     },
     daysInMonth() {
-      return new Date(this.current.year, this.current.month + 1, 0).getDate();
+      this.isLeapYear(this.current.year);
+      if(this.current.leapYear == true && this.current.month == 1) {
+        return 29;
+      }
+      else{
+        return new Date(this.current.year, this.current.month + 1, 0).getDate();
+      }
     }
   },
   methods: {
     isLeapYear(year) {
-      return ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0);
+      if ((year % 4 == 0) && (year % 100 != 0) || (year % 400 == 0)){
+        this.leapYear = true;
+      }
+      else {
+        this.leapYear = false;
+      }
     },
     nextMonth() {
       if (this.current.month == 11) {
@@ -71,10 +83,10 @@ export default {
       this.selected.date = Number(event.target.innerText);
       this.selected.month = this.current.month;
       this.selected.year = this.current.year;
-      this.selected.fullDate = new Date(`${this.selected.year}-${this.selected.month + 1}-${this.selected.date}`).toISOString().slice(0, 10);
+      this.selected.fullDate = new Date(`${this.selected.year}-${this.selected.month + 1}-${this.selected.date}`).toLocaleDateString().split( '/' ).reverse( ).join( '-' );
       event.target.classList.add('selected');
       this.toggleDatePicker();
-      this.$emit('saveInvoiceDate', this.selected.fullDate); //send date to form and output
+      this.$emit('saveInvoiceDate', this.selected.fullDate); //send date to form for form submission
     },
     toggleDatePicker() {
       this.showDatePicker = !this.showDatePicker

@@ -1,7 +1,7 @@
 To do:
 
   DatePicker:
-    ☐ Save selected date, close popup & save value in input field
+    ✔ Save selected date, close popup & save value in input field @done (06/06/2023, 13:27:27)
     ☐ If user opens again and searches for new date, only have selected date highlighted
     ☐ Try and stop the input values from highlighting when clicking to open
 
