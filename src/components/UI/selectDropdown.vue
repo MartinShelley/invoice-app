@@ -1,19 +1,23 @@
 <template>
-  <div class="custom-select">
-    <select>
-      <option value=1>Net 1 Day</option>
-      <option value=7>Net 7 Days</option>
-      <option value=14>Net 14 Days</option>
-      <option value=30>Net 30 Days</option>
-    </select>
-    <div class="custom-select-dropdown" @click="toggleDropdown">
-      {{ selectedOption }}
-      <img class="arrow" src="@/assets/icon-arrow-down.svg" />
-    </div>
-    <div class="custom-select-items" v-if="showDropdown">
-      <div class="custom-select-item" v-for="(option, index) in options" :data-value="values[index]" :key="index"
-        @click="optionSelected(option, values[index])">{{
-          option }}
+  <div class="input-container" :class="{ invalid: invalidElement }">
+    <label>Payment Terms</label>
+    <p class="error" v-if="invalidElement">can't be empty</p>
+    <div class="custom-select" :class="{ invalid: invalidElement }">
+      <select>
+        <option value=1>Net 1 Day</option>
+        <option value=7>Net 7 Days</option>
+        <option value=14>Net 14 Days</option>
+        <option value=30>Net 30 Days</option>
+      </select>
+      <div class="custom-select-dropdown" @click="toggleDropdown">
+        {{ selectedOption }}
+        <img class="arrow" src="@/assets/icon-arrow-down.svg" />
+      </div>
+      <div class="custom-select-items" v-if="showDropdown">
+        <div class="custom-select-item" v-for="(option, index) in options" :data-value="values[index]" :key="index"
+          @click="optionSelected(option, values[index])">{{
+            option }}
+        </div>
       </div>
     </div>
   </div>
@@ -22,6 +26,7 @@
 <script>
 export default {
   emits: ['paymentTermSelected'],
+  props: ['invalidElement'],
   data() {
     return {
       options: ['Net 1 Day', 'Net 7 Days', 'Net 14 Days', 'Net 30 Days'],
@@ -50,6 +55,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.input-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 0.5fr 1fr;
+  margin-bottom: 24px;
+  position: relative;
+
+  label {
+    // margin-bottom: 10px;
+    color: #7E88C3;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 15px;
+  }
+}
+
 .custom-select {
   width: 100%;
   position: relative;
@@ -58,6 +79,8 @@ export default {
   border-radius: 4px;
   font-weight: 700;
   background-color: transparent;
+  grid-row: 2 / 3;
+  grid-column: 1 / 3;
 
   &:hover {
     border-color: #7C5DFA;
@@ -119,6 +142,23 @@ export default {
       }
     }
   }
+}
 
+.invalid {
+  label {
+    color: #EC5757 !important;
+  }
+
+  .error {
+    font-size: 10px;
+    color: #EC5757;
+    text-align: right;
+    font-weight: 600;
+    margin-bottom: 0;
+  }
+
+  .custom-select {
+    border-color: #EC5757 !important;
+  }
 }
 </style>

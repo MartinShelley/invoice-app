@@ -8,21 +8,27 @@
       <section id="bill-from-section">
         <fieldset>
           <legend>Bill Form</legend>
-          <div id="address-container" class="input-container">
+          <div id="address-container" class="input-container"
+            :class="{ invalid: !formErrorHandling.senderAddress.street }">
             <label for="address">Street Address</label>
-            <input type="text" id="address" v-model="formData.senderAddress.street" />
+            <p class="error" v-if="!formErrorHandling.senderAddress.street">can't be empty</p>
+            <input type="text" id="address" v-model="formData.senderAddress.street"
+              @blur="clearError(this.formErrorHandling.senderAddress.street)" />
           </div>
           <div class="col-3-wrapper">
-            <div class="input-container">
+            <div class="input-container" :class="{ invalid: !formErrorHandling.senderAddress.city }">
               <label for="city">City</label>
+              <p class="error" v-if="!formErrorHandling.senderAddress.city">can't be empty</p>
               <input type="text" id="city" v-model="formData.senderAddress.city" />
             </div>
-            <div class="input-container">
+            <div class="input-container" :class="{ invalid: !formErrorHandling.senderAddress.postCode }">
               <label for="postcode">Postcode</label>
+              <p class="error" v-if="!formErrorHandling.senderAddress.postCode">can't be empty</p>
               <input type="text" id="postcode" v-model="formData.senderAddress.postCode" />
             </div>
-            <div class="input-container">
+            <div class="input-container" :class="{ invalid: !formErrorHandling.senderAddress.country }">
               <label for="country">Country</label>
+              <p class="error" v-if="!formErrorHandling.senderAddress.country">can't be empty</p>
               <input type="text" id="country" v-model="formData.senderAddress.country" />
             </div>
           </div>
@@ -31,55 +37,50 @@
       <section id="bill-to-section">
         <fieldset>
           <legend>Bill To</legend>
-          <div class="input-container">
+          <div class="input-container" :class="{ invalid: !formErrorHandling.clientName }">
             <label>Client's Name</label>
+            <p class="error" v-if="!formErrorHandling.clientName">can't be empty</p>
             <input type="text" v-model="formData.clientName" />
           </div>
-          <div class="input-container">
+          <div class="input-container" :class="{ invalid: !formErrorHandling.clientEmail }">
             <label>Client's Email</label>
+            <p class="error" v-if="!formErrorHandling.clientEmail">can't be empty</p>
             <input type="email" placeholder="e.g. email@example.com" v-model="formData.clientEmail" />
           </div>
-          <div class="input-container">
+          <div class="input-container" :class="{ invalid: !formErrorHandling.clientAddress.street }">
             <label>Street Address</label>
+            <p class="error" v-if="!formErrorHandling.clientAddress.street">can't be empty</p>
             <input type="text" v-model="formData.clientAddress.street" />
           </div>
           <div class="col-3-wrapper">
-            <div class="input-container">
+            <div class="input-container" :class="{ invalid: !formErrorHandling.clientAddress.city }">
               <label>City</label>
+              <p class="error" v-if="!formErrorHandling.clientAddress.city">can't be empty</p>
               <input type="text" v-model="formData.clientAddress.city" />
             </div>
-            <div class="input-container">
+            <div class="input-container" :class="{ invalid: !formErrorHandling.clientAddress.postCode }">
               <label>Postcode</label>
+              <p class="error" v-if="!formErrorHandling.clientAddress.postCode">can't be empty</p>
               <input type="text" v-model="formData.clientAddress.postCode" />
             </div>
-            <div class="input-container">
+            <div class="input-container" :class="{ invalid: !formErrorHandling.clientAddress.country }">
               <label>Country</label>
+              <p class="error" v-if="!formErrorHandling.clientAddress.country">can't be empty</p>
               <input type="text" v-model="formData.clientAddress.country" />
             </div>
           </div>
           <div class="col-2-wrapper">
-            <div class="input-container">
-              <label>Invoice Date</label>
-              <datePicker @saveInvoiceDate="updateInvoiceDate" />
-            </div>
-            <div class="input-container">
-              <label>Payment Terms</label>
-              <!-- <select v-model="formData.paymentTerms">
-                <option value=1>Net 1 Day</option>
-                <option value=7>Net 7 Days</option>
-                <option value=14>Net 14 Days</option>
-                <option value=30>Net 30 Days</option>
-              </select> -->
-              <selectDropdown @paymentTermSelected="updatePaymentTerm" />
-            </div>
+            <datePicker @saveInvoiceDate="updateInvoiceDate" :invalid-element="!formErrorHandling.createdAt" />
+            <selectDropdown @paymentTermSelected="updatePaymentTerm" :invalid-element="!formErrorHandling.paymentTerms" />
           </div>
-          <div class="input-container">
+          <div class="input-container" :class="{ invalid: !formErrorHandling.description }">
             <label>Project Description</label>
+            <p class="error" v-if="!formErrorHandling.description">can't be empty</p>
             <input type="text" placeholder="e.g. Graphic Design Service" v-model="formData.description" />
           </div>
         </fieldset>
       </section>
-      <section id="item-list">
+      <section id="item-list" :class="{ invalid: !formErrorHandling.items }">
         <h3>Item List</h3>
         <table>
           <tr>
@@ -87,7 +88,6 @@
             <th>Qty.</th>
             <th>Price</th>
             <th>Total</th>
-            <!-- <th></th> -->
           </tr>
           <tr v-for="(_, index) in formData.items" :key="index">
             <td><input type="text" v-model="formData.items[index].name" /></td>
@@ -103,6 +103,10 @@
           </tr>
         </table>
       </section>
+      <div class="errors-description">
+        <p v-if="!formIsValid">- All fields must be added</p>
+        <p v-if="!formErrorHandling.items">- An item must be added</p>
+      </div>
     </div>
     <section id="form-actions">
       <div>
@@ -156,7 +160,30 @@ export default {
         description: '',
         items: [],
         total: 0,
-      }
+      },
+      formErrorHandling: {
+        senderAddress: {
+          street: true,
+          city: true,
+          postCode: true,
+          country: true
+        },
+        clientAddress: {
+          street: true,
+          city: true,
+          postCode: true,
+          country: true,
+        },
+        clientName: true,
+        clientEmail: true,
+        createdAt: true,
+        paymentDue: true,
+        paymentTerms: true,
+        description: true,
+        items: true,
+        total: true,
+      },
+      formIsValid: true
     }
   },
   computed: {
@@ -224,6 +251,15 @@ export default {
       }
     },
     submitForm(status) {
+      if (status == 'pending') {
+        this.validateForm();
+      }
+
+      if (!this.formIsValid) {
+        return;
+      }
+
+
       let newInvoice;
       let total = 0;
       if (this.formData.items != null) {
@@ -284,6 +320,72 @@ export default {
       this.$emit('hideForm');
       this.$store.dispatch('invoiceSaved', submitData);
     },
+    clearError(input) {
+      this.input = true
+    },
+    validateForm() {
+      this.formIsValid = true;
+      if (this.formData.senderAddress.street === '') {
+        this.formErrorHandling.senderAddress.street = false;
+        this.formIsValid = false;
+      }
+      if (this.formData.senderAddress.city === '') {
+        this.formErrorHandling.senderAddress.city = false;
+        this.formIsValid = false;
+      }
+      if (this.formData.senderAddress.postCode === '') {
+        this.formErrorHandling.senderAddress.postCode = false;
+        this.formIsValid = false;
+      }
+      if (this.formData.senderAddress.country === '') {
+        this.formErrorHandling.senderAddress.country = false;
+        this.formIsValid = false;
+      }
+      if (this.formData.clientAddress.street === '') {
+        this.formErrorHandling.clientAddress.street = false;
+        this.formIsValid = false;
+      }
+      if (this.formData.clientAddress.city === '') {
+        this.formErrorHandling.clientAddress.city = false;
+        this.formIsValid = false;
+      }
+      if (this.formData.clientAddress.postCode === '') {
+        this.formErrorHandling.clientAddress.postCode = false;
+        this.formIsValid = false;
+      }
+      if (this.formData.clientAddress.country === '') {
+        this.formErrorHandling.clientAddress.country = false;
+        this.formIsValid = false;
+      }
+      if (this.formData.clientName === '') {
+        this.formErrorHandling.clientName = false;
+        this.formIsValid = false;
+      }
+      if (this.formData.clientEmail === '') {
+        this.formErrorHandling.clientEmail = false;
+        this.formIsValid = false;
+      }
+      if (this.formData.createdAt === '') {
+        this.formErrorHandling.createdAt = false;
+        this.formIsValid = false;
+      }
+      if (this.formData.paymentTerms === null) {
+        this.formErrorHandling.paymentTerms = false;
+        this.formIsValid = false;
+      }
+      if (this.formData.description === '') {
+        this.formErrorHandling.description = false;
+        this.formIsValid = false;
+      }
+      if (this.formData.items.length === 0) {
+        this.formErrorHandling.items = false;
+        this.formIsValid = false;
+      }
+      if (this.formData.total === 0) {
+        this.formErrorHandling.total = false;
+        this.formIsValid = false;
+      }
+    },
     updateInvoiceDate(payload) {
       this.formData.createdAt = payload;
     }
@@ -314,10 +416,11 @@ export default {
   z-index: 2;
 
   .form-heading {
-    padding: 56px 56px 0 159px;
+    padding: 56px 56px 48px 159px;
     position: sticky;
     top: 0;
     background-color: #fff;
+    z-index: 2;
   }
 
   .form-top-section {
@@ -345,6 +448,15 @@ export default {
         line-height: 32px;
         letter-spacing: -0.38px;
         color: #777F98;
+      }
+    }
+
+    .errors-description {
+      p {
+        color: #EC5757;
+        font-size: 13px;
+        margin-bottom: 0;
+        font-weight: 600;
       }
     }
   }
@@ -413,6 +525,7 @@ export default {
 
     .tb-delete img {
       padding-left: 27px;
+      cursor: pointer;
     }
 
     button {
@@ -421,6 +534,8 @@ export default {
       color: #7E88C3;
     }
   }
+
+
 
   #form-actions {
     display: flex;
@@ -488,20 +603,47 @@ export default {
       }
 
       .input-container {
-        display: flex;
-        flex-direction: column;
+        // display: flex;
+        // flex-direction: column;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: 0.5fr 1fr;
         margin-bottom: 24px;
         position: relative;
 
         label {
-          margin-bottom: 10px;
+          // margin-bottom: 10px;
           color: #7E88C3;
           font-size: 12px;
           font-weight: 500;
           line-height: 15px;
         }
+
+        .error {
+          font-size: 10px;
+          color: #EC5757;
+          text-align: right;
+          font-weight: 600;
+          margin-bottom: 0;
+        }
+
+        input {
+          grid-column: 1 / 3;
+        }
       }
     }
+  }
+}
+
+.invalid {
+
+  label,
+  h3 {
+    color: #EC5757 !important;
+  }
+
+  input {
+    border-color: #EC5757 !important;
   }
 }
 
@@ -525,7 +667,7 @@ h2 {
   font-size: 24px;
   line-height: 32px;
   letter-spacing: -0.5px;
-  margin-bottom: 48px;
+  // margin-bottom: 48px;
 }
 
 select {

@@ -1,14 +1,19 @@
 <template>
-  <input type="date" readonly="readonly" @click="toggleDatePicker" v-model="selected.fullDate" />
-  <div class="date-picker" v-show="showDatePicker">
-    <div class="date-picker-header">
-      <img src="@/assets/icon-arrow-left.svg" @click="prevMonth" />
-      <span class="selected-month-year">{{ datePickerMonth }}</span>
-      <img src="@/assets/icon-arrow-right.svg" @click="nextMonth" />
-    </div>
-    <div class="days">
-      <div class="day" :data-value="n" v-for="n in daysInMonth" :key="n" @click="selectedDay($event)">{{
-        n }}</div>
+  <div class="input-container" :class="{ invalid: invalidElement }">
+    <label>Invoice Date</label>
+    <p class="error" v-if="invalidElement">must pick a date</p>
+    <input type="date" readonly="readonly" @click="toggleDatePicker" v-model="selected.fullDate"
+      :class="{ invalid: invalidElement }" />
+    <div class="date-picker" v-show="showDatePicker">
+      <div class="date-picker-header">
+        <img src="@/assets/icon-arrow-left.svg" @click="prevMonth" />
+        <span class="selected-month-year">{{ datePickerMonth }}</span>
+        <img src="@/assets/icon-arrow-right.svg" @click="nextMonth" />
+      </div>
+      <div class="days">
+        <div class="day" :data-value="n" v-for="n in daysInMonth" :key="n" @click="selectedDay($event)">{{
+          n }}</div>
+      </div>
     </div>
   </div>
 </template>
@@ -17,6 +22,7 @@
 
 export default {
   emits: ['saveInvoiceDate'],
+  props: ['invalidElement'],
   data() {
     return {
       current: {
@@ -116,6 +122,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.input-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 0.5fr 1fr;
+  margin-bottom: 24px;
+  position: relative;
+
+  label {
+    // margin-bottom: 10px;
+    color: #7E88C3;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 15px;
+  }
+
+  input {
+    grid-row: 2 / 3;
+    grid-column: 1 / 3;
+  }
+}
+
 input {
   margin-bottom: 8px;
 }
@@ -168,6 +195,24 @@ input {
     .selected {
       color: #9277FF;
     }
+  }
+}
+
+.invalid {
+  label {
+    color: #EC5757 !important;
+  }
+
+  .error {
+    font-size: 10px;
+    color: #EC5757;
+    text-align: right;
+    font-weight: 600;
+    margin-bottom: 0;
+  }
+
+  input {
+    border-color: #EC5757 !important;
   }
 }
 </style>
