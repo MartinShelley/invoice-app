@@ -6,10 +6,8 @@ export default {
     state.invoices = Object.values(payload);
   },
   updateInvoice(state, payload) {
-    console.log("update Invoice");
     const findExistingInvoice = state.invoices.findIndex(invoice => invoice.id === payload.id);
     state.invoices[findExistingInvoice] = payload;
-    console.log(state.invoices);
   },
   toggleLightMode(state) {
     state.lightMode = !state.lightMode;

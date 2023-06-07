@@ -22,7 +22,6 @@ export default {
   props: { value: Object },
   computed: {
     transformDate() {
-      console.log(this.value)
       if (this.value.paymentDue != "") {
         var date = new Date(this.value.paymentDue);
         var dateParts = date.toDateString().slice(4).split(" ");

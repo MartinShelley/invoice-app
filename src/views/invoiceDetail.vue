@@ -163,8 +163,6 @@ export default {
     font-weight: 700;
     letter-spacing: -0.25px;
 
-    // margin-bottom: 32px;
-
     img {
       margin-right: 23px;
     }

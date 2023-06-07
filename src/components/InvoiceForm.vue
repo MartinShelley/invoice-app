@@ -320,9 +320,6 @@ export default {
       this.$emit('hideForm');
       this.$store.dispatch('invoiceSaved', submitData);
     },
-    clearError(input) {
-      this.input = true
-    },
     validateForm() {
       this.formIsValid = true;
       if (this.formData.senderAddress.street === '') {
@@ -411,7 +408,6 @@ export default {
   top: 0;
   left: 0;
   background-color: #fff;
-  border-radius: 0px 20px 20px 0px;
   overflow-y: auto;
   z-index: 2;
 
