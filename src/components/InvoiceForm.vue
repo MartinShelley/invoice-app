@@ -60,17 +60,17 @@
           <div class="col-2-wrapper">
             <div class="input-container">
               <label>Invoice Date</label>
-              <!-- <input type="date" v-model="formData.createdAt" /> -->
               <datePicker @saveInvoiceDate="updateInvoiceDate" />
             </div>
             <div class="input-container">
               <label>Payment Terms</label>
-              <select v-model="formData.paymentTerms">
+              <!-- <select v-model="formData.paymentTerms">
                 <option value=1>Net 1 Day</option>
                 <option value=7>Net 7 Days</option>
                 <option value=14>Net 14 Days</option>
                 <option value=30>Net 30 Days</option>
-              </select>
+              </select> -->
+              <selectDropdown @paymentTermSelected="updatePaymentTerm" />
             </div>
           </div>
           <div class="input-container">
@@ -118,6 +118,7 @@
 
 <script>
 import datePicker from './UI/datePicker.vue';
+import selectDropdown from './UI/selectDropdown.vue';
 /* eslint-disable */
 export default {
   props: {
@@ -128,7 +129,8 @@ export default {
   },
   emits: ['hideForm'],
   components: {
-    datePicker
+    datePicker,
+    selectDropdown
   },
   data() {
     return {
@@ -187,6 +189,9 @@ export default {
     },
     updateListItemTotal(index) {
       this.formData.items[index].total = this.formData.items[index].price * this.formData.items[index].quantity;
+    },
+    updatePaymentTerm(payload) {
+      this.formData.paymentTerms = payload;
     },
     discardForm() {
       this.$emit('hideForm');

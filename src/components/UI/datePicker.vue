@@ -118,7 +118,6 @@ export default {
 <style lang="scss" scoped>
 input {
   margin-bottom: 8px;
-  user-select: none;
 }
 
 .date-picker {
