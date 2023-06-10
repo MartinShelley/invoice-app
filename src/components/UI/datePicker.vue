@@ -21,7 +21,7 @@
 <script>
 
 export default {
-  emits: ['saveInvoiceDate'],
+  emits: ['clearDatePickerError', 'saveInvoiceDate'],
   props: ['invalidElement'],
   data() {
     return {
@@ -76,6 +76,9 @@ export default {
         document.querySelector(`.day[data-value="${this.selected.date}"]`).classList.add('selected');
       }
     },
+    clearError() {
+      this.$emit('clearDatePickerError');
+    },
     decreaseMonth() {
       if (this.current.month == 0) {
         this.current.month = 11;
@@ -115,7 +118,8 @@ export default {
       this.$emit('saveInvoiceDate', this.selected.fullDate); //send date to form for form submission
     },
     toggleDatePicker() {
-      this.showDatePicker = !this.showDatePicker
+      this.showDatePicker = !this.showDatePicker;
+      this.$emit('clearDatePickerError', 'createdAt');
     }
   }
 }

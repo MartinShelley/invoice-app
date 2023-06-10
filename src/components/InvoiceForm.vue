@@ -9,27 +9,30 @@
         <fieldset>
           <legend>Bill Form</legend>
           <div id="address-container" class="input-container"
-            :class="{ invalid: !formErrorHandling.senderAddress.street }">
+            :class="{ invalid: !formErrorHandling.senderAddressStreet }">
             <label for="address">Street Address</label>
-            <p class="error" v-if="!formErrorHandling.senderAddress.street">can't be empty</p>
+            <p class="error" v-if="!formErrorHandling.senderAddressStreet">can't be empty</p>
             <input type="text" id="address" v-model="formData.senderAddress.street"
-              @blur="clearError(this.formErrorHandling.senderAddress.street)" />
+              @blur="clearErrors('senderAddressStreet')" />
           </div>
           <div class="col-3-wrapper">
-            <div class="input-container" :class="{ invalid: !formErrorHandling.senderAddress.city }">
+            <div class="input-container" :class="{ invalid: !formErrorHandling.senderAddressCity }">
               <label for="city">City</label>
-              <p class="error" v-if="!formErrorHandling.senderAddress.city">can't be empty</p>
-              <input type="text" id="city" v-model="formData.senderAddress.city" />
+              <p class="error" v-if="!formErrorHandling.senderAddressCity">can't be empty</p>
+              <input type="text" id="city" v-model="formData.senderAddress.city"
+                @blur="clearErrors('senderAddressCity')" />
             </div>
-            <div class="input-container" :class="{ invalid: !formErrorHandling.senderAddress.postCode }">
+            <div class="input-container" :class="{ invalid: !formErrorHandling.senderAddressPostCode }">
               <label for="postcode">Postcode</label>
-              <p class="error" v-if="!formErrorHandling.senderAddress.postCode">can't be empty</p>
-              <input type="text" id="postcode" v-model="formData.senderAddress.postCode" />
+              <p class="error" v-if="!formErrorHandling.senderAddressPostCode">can't be empty</p>
+              <input type="text" id="postcode" v-model="formData.senderAddress.postCode"
+                @blur="clearErrors('senderAddressPostCode')" />
             </div>
-            <div class="input-container" :class="{ invalid: !formErrorHandling.senderAddress.country }">
+            <div class="input-container" :class="{ invalid: !formErrorHandling.senderAddressCountry }">
               <label for="country">Country</label>
-              <p class="error" v-if="!formErrorHandling.senderAddress.country">can't be empty</p>
-              <input type="text" id="country" v-model="formData.senderAddress.country" />
+              <p class="error" v-if="!formErrorHandling.senderAddressCountry">can't be empty</p>
+              <input type="text" id="country" v-model="formData.senderAddress.country"
+                @blur="clearErrors('senderAddressCountry')" />
             </div>
           </div>
         </fieldset>
@@ -40,43 +43,47 @@
           <div class="input-container" :class="{ invalid: !formErrorHandling.clientName }">
             <label>Client's Name</label>
             <p class="error" v-if="!formErrorHandling.clientName">can't be empty</p>
-            <input type="text" v-model="formData.clientName" />
+            <input type="text" v-model="formData.clientName" @blur="clearErrors('clientName')" />
           </div>
           <div class="input-container" :class="{ invalid: !formErrorHandling.clientEmail }">
             <label>Client's Email</label>
             <p class="error" v-if="!formErrorHandling.clientEmail">can't be empty</p>
-            <input type="email" placeholder="e.g. email@example.com" v-model="formData.clientEmail" />
+            <input type="email" placeholder="e.g. email@example.com" v-model="formData.clientEmail"
+              @blur="clearErrors('clientEmail')" />
           </div>
-          <div class="input-container" :class="{ invalid: !formErrorHandling.clientAddress.street }">
+          <div class="input-container" :class="{ invalid: !formErrorHandling.clientAddressStreet }">
             <label>Street Address</label>
-            <p class="error" v-if="!formErrorHandling.clientAddress.street">can't be empty</p>
-            <input type="text" v-model="formData.clientAddress.street" />
+            <p class="error" v-if="!formErrorHandling.clientAddressStreet">can't be empty</p>
+            <input type="text" v-model="formData.clientAddress.street" @blur="clearErrors('clientAddressStreet')" />
           </div>
           <div class="col-3-wrapper">
-            <div class="input-container" :class="{ invalid: !formErrorHandling.clientAddress.city }">
+            <div class="input-container" :class="{ invalid: !formErrorHandling.clientAddressCity }">
               <label>City</label>
-              <p class="error" v-if="!formErrorHandling.clientAddress.city">can't be empty</p>
-              <input type="text" v-model="formData.clientAddress.city" />
+              <p class="error" v-if="!formErrorHandling.clientAddressCity">can't be empty</p>
+              <input type="text" v-model="formData.clientAddress.city" @blur="clearErrors('clientAddressCity')" />
             </div>
-            <div class="input-container" :class="{ invalid: !formErrorHandling.clientAddress.postCode }">
+            <div class="input-container" :class="{ invalid: !formErrorHandling.clientAddressPostCode }">
               <label>Postcode</label>
-              <p class="error" v-if="!formErrorHandling.clientAddress.postCode">can't be empty</p>
-              <input type="text" v-model="formData.clientAddress.postCode" />
+              <p class="error" v-if="!formErrorHandling.clientAddressPostCode">can't be empty</p>
+              <input type="text" v-model="formData.clientAddress.postCode" @blur="clearErrors('clientAddressPostCode')" />
             </div>
-            <div class="input-container" :class="{ invalid: !formErrorHandling.clientAddress.country }">
+            <div class="input-container" :class="{ invalid: !formErrorHandling.clientAddressCountry }">
               <label>Country</label>
-              <p class="error" v-if="!formErrorHandling.clientAddress.country">can't be empty</p>
-              <input type="text" v-model="formData.clientAddress.country" />
+              <p class="error" v-if="!formErrorHandling.clientAddressCountry">can't be empty</p>
+              <input type="text" v-model="formData.clientAddress.country" @blur="clearErrors('clientAddressCountry')" />
             </div>
           </div>
           <div class="col-2-wrapper">
-            <datePicker @saveInvoiceDate="updateInvoiceDate" :invalid-element="!formErrorHandling.createdAt" />
-            <selectDropdown @paymentTermSelected="updatePaymentTerm" :invalid-element="!formErrorHandling.paymentTerms" />
+            <datePicker @clearDatePickerError="clearErrors('createdAt')" @saveInvoiceDate="updateInvoiceDate"
+              :invalid-element="!formErrorHandling.createdAt" />
+            <selectDropdown @clearSelectDropdownError="clearErrors('paymentTerms')"
+              @paymentTermSelected="updatePaymentTerm" :invalid-element="!formErrorHandling.paymentTerms" />
           </div>
           <div class="input-container" :class="{ invalid: !formErrorHandling.description }">
             <label>Project Description</label>
             <p class="error" v-if="!formErrorHandling.description">can't be empty</p>
-            <input type="text" placeholder="e.g. Graphic Design Service" v-model="formData.description" />
+            <input type="text" placeholder="e.g. Graphic Design Service" v-model="formData.description"
+              @blur="clearErrors('description')" />
           </div>
         </fieldset>
       </section>
@@ -90,11 +97,11 @@
             <th>Total</th>
           </tr>
           <tr v-for="(_, index) in formData.items" :key="index">
-            <td><input type="text" v-model="formData.items[index].name" /></td>
+            <td><input type="text" v-model="formData.items[index].name" @blur="checkItems" /></td>
             <td><input type="number" class="tb-qty" min="1" v-model="formData.items[index].quantity"
-                @input="updateListItemTotal(index)" /></td>
+                @input="updateListItemTotal(index)" @blur="checkItems" /></td>
             <td><input type="number" class="tb-price" v-model="formData.items[index].price"
-                @input="updateListItemTotal(index)" /></td>
+                @input="updateListItemTotal(index)" @blur="checkItems" /></td>
             <td class="tb-total">{{ formData.items[index].total }}</td>
             <td class="tb-delete"><img src="@/assets/icon-delete.svg" @click="deleteTableRow(index)" /></td>
           </tr>
@@ -123,7 +130,6 @@
 <script>
 import datePicker from './UI/datePicker.vue';
 import selectDropdown from './UI/selectDropdown.vue';
-/* eslint-disable */
 export default {
   props: {
     editingForm: {
@@ -162,18 +168,14 @@ export default {
         total: 0,
       },
       formErrorHandling: {
-        senderAddress: {
-          street: true,
-          city: true,
-          postCode: true,
-          country: true
-        },
-        clientAddress: {
-          street: true,
-          city: true,
-          postCode: true,
-          country: true,
-        },
+        senderAddressStreet: true,
+        senderAddressCity: true,
+        senderAddressPostCode: true,
+        senderAddressCountry: true,
+        clientAddressStreet: true,
+        clientAddressCity: true,
+        clientAddressPostCode: true,
+        clientAddressCountry: true,
         clientName: true,
         clientEmail: true,
         createdAt: true,
@@ -210,6 +212,17 @@ export default {
         price: 0,
         total: 0
       });
+    },
+    checkItems() {
+      this.formData.items.forEach((item) => {
+        console.log(item);
+        if (item.name === '' || item.total === 0) {
+          this.formErrorHandling.items = false;
+        }
+        else {
+          this.formErrorHandling.items = true;
+        }
+      })
     },
     deleteTableRow(number) {
       this.formData.items.splice(number, 1);
@@ -253,12 +266,10 @@ export default {
     submitForm(status) {
       if (status == 'pending') {
         this.validateForm();
+        if (!this.formIsValid) {
+          return;
+        }
       }
-
-      if (!this.formIsValid) {
-        return;
-      }
-
 
       let newInvoice;
       let total = 0;
@@ -279,9 +290,9 @@ export default {
           var rnum = Math.floor(Math.random() * letters.length);
           randomstring += letters[rnum];
         }
-        for (var i = 0; i < number_length; i++) {
-          var rnum = Math.floor(Math.random() * numbers.length);
-          randomstring += numbers[rnum];
+        for (var j = 0; j < number_length; j++) {
+          var rnum2 = Math.floor(Math.random() * numbers.length);
+          randomstring += numbers[rnum2];
         }
         return randomstring;
       }
@@ -320,38 +331,45 @@ export default {
       this.$emit('hideForm');
       this.$store.dispatch('invoiceSaved', submitData);
     },
+    clearErrors(label) {
+      Object.entries(this.formErrorHandling).forEach((input) => {
+        if (input[0] == label) {
+          this.formErrorHandling[input[0]] = true;
+        }
+      })
+    },
     validateForm() {
       this.formIsValid = true;
       if (this.formData.senderAddress.street === '') {
-        this.formErrorHandling.senderAddress.street = false;
+        this.formErrorHandling.senderAddressStreet = false;
         this.formIsValid = false;
       }
       if (this.formData.senderAddress.city === '') {
-        this.formErrorHandling.senderAddress.city = false;
+        this.formErrorHandling.senderAddressCity = false;
         this.formIsValid = false;
       }
       if (this.formData.senderAddress.postCode === '') {
-        this.formErrorHandling.senderAddress.postCode = false;
+        this.formErrorHandling.senderAddressPostCode = false;
         this.formIsValid = false;
       }
       if (this.formData.senderAddress.country === '') {
-        this.formErrorHandling.senderAddress.country = false;
+        this.formErrorHandling.senderAddressCountry = false;
         this.formIsValid = false;
       }
       if (this.formData.clientAddress.street === '') {
-        this.formErrorHandling.clientAddress.street = false;
+        this.formErrorHandling.clientAddressStreet = false;
         this.formIsValid = false;
       }
       if (this.formData.clientAddress.city === '') {
-        this.formErrorHandling.clientAddress.city = false;
+        this.formErrorHandling.clientAddressCity = false;
         this.formIsValid = false;
       }
       if (this.formData.clientAddress.postCode === '') {
-        this.formErrorHandling.clientAddress.postCode = false;
+        this.formErrorHandling.clientAddressPostCode = false;
         this.formIsValid = false;
       }
       if (this.formData.clientAddress.country === '') {
-        this.formErrorHandling.clientAddress.country = false;
+        this.formErrorHandling.clientAddressCountry = false;
         this.formIsValid = false;
       }
       if (this.formData.clientName === '') {
@@ -377,6 +395,9 @@ export default {
       if (this.formData.items.length === 0) {
         this.formErrorHandling.items = false;
         this.formIsValid = false;
+      }
+      if (this.formData.items.length > 0) {
+        this.checkItems();
       }
       if (this.formData.total === 0) {
         this.formErrorHandling.total = false;

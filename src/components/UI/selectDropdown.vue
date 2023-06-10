@@ -25,7 +25,7 @@
 
 <script>
 export default {
-  emits: ['paymentTermSelected'],
+  emits: ['clearSelectDropdownError', 'paymentTermSelected'],
   props: ['invalidElement'],
   data() {
     return {
@@ -43,6 +43,7 @@ export default {
     },
     toggleDropdown() {
       this.showDropdown = !this.showDropdown;
+      this.$emit('clearSelectDropdownError');
       if (this.showDropdown == true) {
         document.querySelector('.arrow').classList.add('rotate');
       }
