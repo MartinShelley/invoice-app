@@ -45,11 +45,13 @@
             <p class="error" v-if="!formErrorHandling.clientName">can't be empty</p>
             <input type="text" v-model="formData.clientName" @blur="clearErrors('clientName')" />
           </div>
-          <div class="input-container" :class="{ invalid: !formErrorHandling.clientEmail }">
+          <div class="input-container"
+            :class="{ invalid: !formErrorHandling.clientEmail || !formErrorHandling.clientEmailValid }">
             <label>Client's Email</label>
             <p class="error" v-if="!formErrorHandling.clientEmail">can't be empty</p>
+            <p class="error" v-if="!formErrorHandling.clientEmailValid">enter valid email</p>
             <input type="email" placeholder="e.g. email@example.com" v-model="formData.clientEmail"
-              @blur="clearErrors('clientEmail')" />
+              @blur="clearErrors('clientEmail')" @keyup="validatedEmailInput($event)" />
           </div>
           <div class="input-container" :class="{ invalid: !formErrorHandling.clientAddressStreet }">
             <label>Street Address</label>
@@ -165,7 +167,6 @@ export default {
         paymentTerms: null,
         description: '',
         items: [],
-        total: 0,
       },
       formErrorHandling: {
         senderAddressStreet: true,
@@ -178,12 +179,12 @@ export default {
         clientAddressCountry: true,
         clientName: true,
         clientEmail: true,
+        clientEmailValid: true,
         createdAt: true,
         paymentDue: true,
         paymentTerms: true,
         description: true,
         items: true,
-        total: true,
       },
       formIsValid: true
     }
@@ -215,14 +216,13 @@ export default {
     },
     checkItems() {
       this.formData.items.forEach((item) => {
-        console.log(item);
         if (item.name === '' || item.total === 0) {
           this.formErrorHandling.items = false;
         }
         else {
           this.formErrorHandling.items = true;
         }
-      })
+      });
     },
     deleteTableRow(number) {
       this.formData.items.splice(number, 1);
@@ -232,6 +232,11 @@ export default {
     },
     updatePaymentTerm(payload) {
       this.formData.paymentTerms = payload;
+    },
+    validatedEmailInput(event) {
+      if (event.key == '@' || event.keyCode == 192) {
+        this.formErrorHandling.clientEmailValid = true;
+      }
     },
     discardForm() {
       this.$emit('hideForm');
@@ -262,6 +267,8 @@ export default {
       else if (this.editingForm == true) {
         this.formData = JSON.parse(JSON.stringify(this.originalData));
       }
+      this.clearErrors('all');
+      this.formIsValid = true;
     },
     submitForm(status) {
       if (status == 'pending') {
@@ -299,7 +306,6 @@ export default {
 
       if (this.formData.createdAt == '') {
         this.formData.createdAt = this.getTodaysDate;
-        console.log(this.getTodaysDate);
       }
 
       const submitData = {
@@ -330,16 +336,19 @@ export default {
 
       this.$emit('hideForm');
       this.$store.dispatch('invoiceSaved', submitData);
+      this.discardForm();
     },
     clearErrors(label) {
       Object.entries(this.formErrorHandling).forEach((input) => {
-        if (input[0] == label) {
+        if (input[0] == label || label == 'all') {
           this.formErrorHandling[input[0]] = true;
         }
       })
+      this.formIsValid = true;
     },
     validateForm() {
       this.formIsValid = true;
+      this.clearErrors('all');
       if (this.formData.senderAddress.street === '') {
         this.formErrorHandling.senderAddressStreet = false;
         this.formIsValid = false;
@@ -380,6 +389,10 @@ export default {
         this.formErrorHandling.clientEmail = false;
         this.formIsValid = false;
       }
+      if (!this.formData.clientEmail.includes('@')) {
+        this.formErrorHandling.clientEmailValid = false;
+        this.formIsValid = false;
+      }
       if (this.formData.createdAt === '') {
         this.formErrorHandling.createdAt = false;
         this.formIsValid = false;
@@ -399,10 +412,6 @@ export default {
       if (this.formData.items.length > 0) {
         this.checkItems();
       }
-      if (this.formData.total === 0) {
-        this.formErrorHandling.total = false;
-        this.formIsValid = false;
-      }
     },
     updateInvoiceDate(payload) {
       this.formData.createdAt = payload;
@@ -417,7 +426,7 @@ export default {
   },
   mounted() {
     document.querySelector('#invoice-form-overlay').scroll(0, 0);
-  }
+  },
 }
 </script>
 
