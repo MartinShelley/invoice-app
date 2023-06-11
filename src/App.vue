@@ -114,4 +114,10 @@ input {
   font-weight: 700;
   background-color: transparent;
 }
+
+@media screen and (max-width: 1024px) {
+  #app {
+    display: unset;
+  }
+}
 </style>

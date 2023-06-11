@@ -1,7 +1,7 @@
 <template>
   <section id="menu-bar">
     <div>
-      <img src="@/assets/logo.svg" alt="Invoice App Logo" />
+      <img class="logo" src="@/assets/logo.svg" alt="Invoice App Logo" />
     </div>
     <div class="menu-items">
       <div class="light-mode" @click="toggleColourMode">
@@ -58,6 +58,41 @@ export default {
       justify-content: center;
       padding-bottom: 24px;
       cursor: pointer;
+    }
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  #menu-bar {
+    height: 80px;
+    width: 100vw;
+    flex-direction: unset;
+
+    .logo {
+      height: 100%;
+    }
+
+    .menu-items {
+      flex-direction: unset;
+      padding-bottom: unset;
+      padding-right: 24px;
+
+      .light-mode {
+        padding-bottom: unset;
+        padding-right: 24px;
+        border-bottom: unset;
+        border-right: 1px solid #494E6E;
+        height: 100%;
+
+        img {
+          height: 20px;
+          margin: auto 0;
+        }
+      }
+
+      .account-icon {
+        height: 20px;
+      }
     }
   }
 }
