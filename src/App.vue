@@ -61,7 +61,6 @@ select {
 }
 
 main {
-  // width: calc(100vw - 103px);
   width: 730px;
   margin: 0 auto;
 }
@@ -118,6 +117,10 @@ input {
 @media screen and (max-width: 1024px) {
   #app {
     display: unset;
+  }
+
+  main {
+    width: unset;
   }
 }
 </style>

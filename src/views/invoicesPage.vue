@@ -2,12 +2,12 @@
   <div id="invoices-header">
     <div class="heading">
       <h1>Invoices</h1>
-      <p class="invoice-number-label" v-if="noOfInvoices">There are {{ noOfInvoices }} total invoices</p>
+      <p class="invoice-number-label" v-if="noOfInvoices">{{ numberOfInvoicesLabel }}</p>
       <p class="invoice-number-label" v-else>No Invoices</p>
     </div>
     <div class="header-items">
       <div id="filter" @mouseover="mouseOver" @mouseleave="mouseleave">
-        <span class="filter-label">Filter by status <img src="@/assets/icon-arrow-down.svg" /></span>
+        <span class="filter-label">{{ filterLabel }} <img src="@/assets/icon-arrow-down.svg" /></span>
         <div id="filter-dropdown" v-show="this.filterHover">
           <span>
             <input type="checkbox" id="filter-draft" name="filter-draft" value="Draft" v-model="selectedFilters.draft" />
@@ -29,11 +29,11 @@
           <circle cx="16" cy="16" r="16" fill="white" />
           <image href="@/assets/icon-plus.svg" width="10" height="10" x="11" y="11" />
         </svg>
-        New Invoice
+        {{ buttonLabel }}
       </button>
     </div>
   </div>
-  <div v-if="noOfInvoices" style="margin-top:65px;">
+  <div class="invoice-list-container" v-if="noOfInvoices">
     <InvoiceList :filters="selectedFilters" />
   </div>
   <NoInvoices v-else />
@@ -49,9 +49,11 @@ import NoInvoices from '@/components/NoInvoices.vue';
 import InvoiceForm from '@/components/InvoiceForm.vue';
 import InvoiceList from '@/components/invoiceList.vue';
 export default {
+  components: { NoInvoices, InvoiceForm, InvoiceList },
   data() {
     return {
       filterHover: false,
+      isMobile: false,
       selectedFilters: {
         paid: false,
         pending: false,
@@ -80,14 +82,45 @@ export default {
     }
   },
   computed: {
+    buttonLabel() {
+      if (this.isMobile) {
+        return 'New';
+      }
+      else {
+        return 'New Invoice';
+      }
+    },
+    filterLabel() {
+      if (this.isMobile) {
+        return 'Filter';
+      }
+      else {
+        return 'Filter by status';
+      }
+    },
     noOfInvoices() {
       return this.$store.getters['getNumberOfInvoices'];
+    },
+    numberOfInvoicesLabel() {
+      if (this.isMobile) {
+        return `${this.noOfInvoices} invoices`;
+      }
+      else {
+        return `There are ${this.noOfInvoices} total invoices`
+      }
     },
     showFormToggle() {
       return this.$store.getters.getShowFormToggle;
     }
   },
-  components: { NoInvoices, InvoiceForm, InvoiceList }
+  created() {
+    if (window.innerWidth < 768) {
+      this.isMobile = true;
+    }
+    else {
+      this.isMobile = false;
+    }
+  }
 }
 </script>
 
@@ -176,6 +209,10 @@ export default {
   }
 }
 
+.invoice-list-container {
+  margin-top: 65px;
+}
+
 button {
   width: 150px;
   height: 48px;
@@ -204,6 +241,38 @@ button {
   left: 0;
   position: fixed;
 }
+
+@media screen and (max-width: 1024px) {
+  #invoices-header {
+    max-width: unset;
+  }
+}
+
+@media screen and (max-width: 1024px) and (min-width: 768px) {
+
+  #invoices-header,
+  .invoice-list-container {
+    margin: 56px 48px 0;
+  }
+}
+
+@media screen and (max-width: 767px) {
+
+  #invoices-header,
+  .invoice-list-container {
+    margin: 32px 24px 0;
+  }
+
+  #invoices-header .header-items #filter .filter-label img {
+    margin-left: 12px;
+  }
+
+  button {
+    width: 90px;
+    gap: 8px;
+  }
+}
+
 
 .slide-enter-from,
 .slide-leave-to {

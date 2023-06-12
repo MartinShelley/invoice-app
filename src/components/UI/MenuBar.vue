@@ -67,6 +67,7 @@ export default {
     height: 80px;
     width: 100vw;
     flex-direction: unset;
+    border-radius: unset;
 
     .logo {
       height: 100%;
