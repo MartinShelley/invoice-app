@@ -405,6 +405,26 @@ export default {
   position: fixed;
 }
 
+@media screen and (max-width: 1024px) {
+  .invoice-header {
+    max-width: unset;
+  }
+}
+
+@media screen and (max-width: 1024px) and (min-width: 768px) {
+  .invoice-header {
+    margin: 48px 40px 0;
+  }
+
+  .invoice-main {
+    margin: 24px 40px 0;
+
+    .invoice-info {
+      gap: 110px;
+    }
+  }
+}
+
 .slide-enter-from,
 .slide-leave-to {
   transform: translateX(-100%);
