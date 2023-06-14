@@ -6,9 +6,9 @@
       <p class="invoice-number-label" v-else>No Invoices</p>
     </div>
     <div class="header-items">
-      <div id="filter" @mouseover="mouseOver" @mouseleave="mouseleave">
+      <div id="filter" @mouseover="mouseOver" @mouseleave="mouseleave" @touchend="this.filterHover = !this.filterHover">
         <span class="filter-label">{{ filterLabel }} <img src="@/assets/icon-arrow-down.svg" /></span>
-        <div id="filter-dropdown" v-show="this.filterHover">
+        <div id="filter-dropdown" v-show="filterHover">
           <span>
             <input type="checkbox" id="filter-draft" name="filter-draft" value="Draft" v-model="selectedFilters.draft" />
             <label for="filter-draft">Draft</label>
@@ -79,6 +79,14 @@ export default {
     backgroundClick() {
       this.$store.commit('toggleShowForm', false);
       document.body.style.overflow = "";
+    },
+    toggleIsMobile() {
+      if(window.innerWidth < 768) {
+        this.isMobile = true;
+      }
+      else {
+        this.isMobile = false;
+      }
     }
   },
   computed: {
@@ -114,12 +122,13 @@ export default {
     }
   },
   created() {
-    if (window.innerWidth < 768) {
-      this.isMobile = true;
-    }
-    else {
-      this.isMobile = false;
-    }
+    this.toggleIsMobile();
+  },
+  mounted() {
+    window.addEventListener('resize', this.toggleIsMobile);
+  },
+  beforeUnmounted() {
+    window.removeEventListener('resize', this.toggleIsMobile);
   }
 }
 </script>
