@@ -108,7 +108,8 @@
             <td class="tb-delete"><img src="@/assets/icon-delete.svg" @click="deleteTableRow(index)" /></td>
           </tr>
           <tr>
-            <td colspan="5"><button type="button" @click="addTableRow()">+ Add New Item</button></td>
+            <td colspan="5" class="button-container"><button type="button" @click="addTableRow()">+ Add New Item</button>
+            </td>
           </tr>
         </table>
       </section>
@@ -438,8 +439,10 @@ export default {
   top: 0;
   left: 0;
   background-color: #fff;
-  overflow-y: auto;
+  // overflow-y: auto;
+  overflow-y: hidden;
   z-index: 2;
+  border-radius: 0 20px 20px 0;
 
   .form-heading {
     padding: 56px 56px 48px 159px;
@@ -451,6 +454,8 @@ export default {
 
   .form-top-section {
     padding: 0 56px 32px 159px;
+    height: 80%;
+    overflow-y: scroll;
 
 
     #bill-from-section {
@@ -468,12 +473,15 @@ export default {
     }
 
     #item-list {
+      margin-bottom: 50px;
+
       h3 {
         font-size: 18px;
         font-weight: 700;
         line-height: 32px;
         letter-spacing: -0.38px;
         color: #777F98;
+        margin-bottom: 16px;
       }
     }
 
@@ -738,17 +746,52 @@ p {
 
 ::-webkit-scrollbar-track {
   background: #fff;
-  // padding-right: 8px;
+  margin-bottom: 15px;
 }
 
 ::-webkit-scrollbar-thumb {
   background: #DFE3FA;
   border-radius: 4px;
-  // background-clip: padding-box;
-  // border-right: 10px solid white;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: #7C5DFA;
+}
+
+
+@media screen and (max-width: 1024px) {
+  #invoice-form-overlay {
+    top: 80px;
+
+    .form-heading {
+      padding: 56px 56px 48px;
+    }
+
+    .form-top-section {
+      padding: 0 56px;
+    }
+  }
+}
+
+@media screen and (max-width: 1024px) and (min-width: 768px) {
+  #invoice-form-overlay {
+    width: 616px;
+
+    section fieldset .col-2-wrapper {
+      margin-top: 24px;
+    }
+
+    .form-top-section {
+      height: calc(100vh - 216px - 110px);
+
+      #item-list {
+        margin-bottom: unset;
+      }
+    }
+
+    #form-actions {
+      padding: 31px 56px;
+    }
+  }
 }
 </style>

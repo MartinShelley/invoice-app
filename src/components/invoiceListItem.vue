@@ -105,5 +105,29 @@ li {
     }
 
   }
+
+  &:hover {
+    border: 1px solid #7C5DFA;
+    cursor: pointer;
+  }
+}
+
+@media screen and (max-width: 1024px) and (min-width: 768px) {
+  li {
+    a {
+      gap: 27px;
+
+      .invoice-item-left-container {
+
+        #invoice-id {
+          width: 50px;
+        }
+
+        .invoice-text {
+          width: 100px;
+        }
+      }
+    }
+  }
 }
 </style>
