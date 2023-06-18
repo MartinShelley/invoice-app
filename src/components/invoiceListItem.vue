@@ -3,8 +3,8 @@
     <router-link :to="invoiceDetailLink">
       <div class="invoice-item-left-container">
         <p id="invoice-id"><span>#</span>{{ value.id }}</p>
-        <p class="invoice-text">{{ transformDate }}</p>
-        <p class="invoice-text">{{ value.clientName }}</p>
+        <p id="invoice-date" class="invoice-text">{{ transformDate }}</p>
+        <p id="invoice-client" class="invoice-text">{{ value.clientName }}</p>
       </div>
       <div class="invoice-item-right-container">
         <h3 id="invoice-price">{{ formattingPrice }}</h3>
@@ -20,6 +20,11 @@ import StatusIcon from './UI/StatusIcon.vue';
 
 export default {
   props: { value: Object },
+  data() {
+    return {
+      isMobile: false
+    }
+  },
   computed: {
     transformDate() {
       if (this.value.paymentDue != "") {
@@ -41,7 +46,26 @@ export default {
       return this.$route.path + "invoice/" + this.value.id;
     }
   },
-  components: { StatusIcon }
+  methods: {
+    toggleIsMobile() {
+      if (window.innerWidth < 768) {
+        this.isMobile = true;
+      }
+      else {
+        this.isMobile = false;
+      }
+    }
+  },
+  components: { StatusIcon },
+  created() {
+    this.toggleIsMobile();
+  },
+  mounted() {
+    window.addEventListener('resize', this.toggleIsMobile);
+  },
+  beforeUnmounted() {
+    window.removeEventListener('resize', this.toggleIsMobile);
+  }
 }
 </script>
 
@@ -125,6 +149,60 @@ li {
 
         .invoice-text {
           width: 100px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  li {
+    padding: 24px;
+
+    a {
+      display: unset;
+
+      .invoice-item-left-container {
+        display: grid;
+        grid-template-areas: "id name"
+          "date .";
+        row-gap: 24px;
+
+        #invoice-id {
+          grid-area: id;
+        }
+
+        #invoice-date {
+          grid-area: date;
+          margin-bottom: 8px;
+        }
+
+        #invoice-client {
+          grid-area: name;
+          text-align: right;
+        }
+      }
+
+      .invoice-item-right-container {
+        display: grid;
+        grid-template-areas: "price label"
+          ". label";
+        position: relative;
+
+        #invoice-price {
+          margin-right: 0;
+          grid-area: price;
+        }
+
+        .invoice-status {
+          grid-area: label;
+          position: absolute;
+          bottom: 0;
+          right: 0;
+        }
+
+        img {
+          display: none;
         }
       }
     }
