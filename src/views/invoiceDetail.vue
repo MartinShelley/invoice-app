@@ -74,6 +74,9 @@
       <h3>£{{ invoiceDetails.total.toFixed(2) }}</h3>
     </div>
   </div>
+  <div id="mobile-action-buttons" v-if="isMobile">
+
+  </div>
   <div id="delete-confirmation" v-show="deletePrompt">
     <div class="background"></div>
     <dialog>
