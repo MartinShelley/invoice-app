@@ -4,7 +4,12 @@
       <span>Status</span>
       <StatusIcon :statusValue="getStatusValue" />
     </div>
-    <div class="action-bar-buttons">
+    <div class="action-bar-buttons" v-if="!isMobile">
+      <button :class="['button button-edit', editClass]" @click="editInvoice">Edit</button>
+      <button class="button button-delete" @click="deleteInvoice">Delete</button>
+      <button :class="['button button-paid', paidClass]" @click="markAsPaid">Mark as Paid</button>
+    </div>
+    <div class="action-bar-buttons mobile-action-bar-buttons" v-else>
       <button :class="['button button-edit', editClass]" @click="editInvoice">Edit</button>
       <button class="button button-delete" @click="deleteInvoice">Delete</button>
       <button :class="['button button-paid', paidClass]" @click="markAsPaid">Mark as Paid</button>
@@ -19,6 +24,7 @@ import StatusIcon from './UI/StatusIcon.vue';
 export default {
   components: { StatusIcon },
   emits: ['delete-dialog', 'edit-invoice', 'mark-paid'],
+  props: ['isMobile'],
   computed: {
     getStatusValue() {
       return this.$store.getters.getInvoiceStatus(this.$route.params.id);
@@ -105,6 +111,27 @@ export default {
     .inactive {
       opacity: 0.2;
       pointer-events: none;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .action-bar {
+    display: block;
+    margin: 32px 24px 0;
+
+    .action-bar-status {
+      gap: unset;
+      justify-content: space-between;
+    }
+
+    .mobile-action-bar-buttons {
+      background-color: #fff;
+      padding: 22px 24px;
+      position: fixed;
+      bottom: 0;
+      left: 24px;
+      right: 24px;
     }
   }
 }

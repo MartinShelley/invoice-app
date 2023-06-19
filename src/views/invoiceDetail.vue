@@ -4,7 +4,8 @@
       <img src="@/assets/icon-arrow-left.svg" />
       <span>Go back</span>
     </router-link>
-    <InvoiceActionBar @delete-dialog="showDeleteDialog" @edit-invoice="showForm" @mark-paid="markInvoiceAsPaid" />
+    <InvoiceActionBar :is-mobile="isMobile" @delete-dialog="showDeleteDialog" @edit-invoice="showForm"
+      @mark-paid="markInvoiceAsPaid" />
   </div>
   <div class="invoice-main">
     <div class="invoice-heading">
@@ -44,7 +45,7 @@
       </div>
     </div>
     <div class="invoice-items">
-      <table>
+      <table v-if="!isMobile">
         <tr>
           <th>Item Name</th>
           <th>QTY.</th>
@@ -58,6 +59,15 @@
           <td>£{{ item.total.toFixed(2) }}</td>
         </tr>
       </table>
+      <div v-else>
+        <div class="invoice-item" v-for="(item, index) in invoiceDetails.items" :key="index">
+          <div>
+            <p class="invoice-item-name">{{ item.name }}</p>
+            <p>{{ item.quantity }} x £{{ item.price.toFixed(2) }}</p>
+          </div>
+          <p class="invoice-item-total">£{{ item.total.toFixed(2) }}</p>
+        </div>
+      </div>
     </div>
     <div class="invoice-total">
       <p>Amount Due</p>
@@ -87,7 +97,8 @@ import InvoiceForm from '@/components/InvoiceForm.vue';
 export default {
   data() {
     return {
-      deletePrompt: false
+      deletePrompt: false,
+      isMobile: false,
     }
   },
   components: {
@@ -144,7 +155,24 @@ export default {
     hideForm() {
       this.$store.commit('toggleShowForm', false);
       document.body.style.overflow = "";
+    },
+    toggleIsMobile() {
+      if (window.innerWidth < 768) {
+        this.isMobile = true;
+      }
+      else {
+        this.isMobile = false;
+      }
     }
+  },
+  created() {
+    this.toggleIsMobile();
+  },
+  mounted() {
+    window.addEventListener('resize', this.toggleIsMobile);
+  },
+  beforeUnmounted() {
+    window.removeEventListener('resize', this.toggleIsMobile);
   }
 }
 
@@ -421,6 +449,55 @@ export default {
 
     .invoice-info {
       gap: 110px;
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .invoice-main {
+    margin: 16px 24px 56px;
+    padding: 24px;
+
+    .invoice-heading {
+      flex-direction: column;
+      gap: 30px;
+
+      .sender-address-info {
+        text-align: left;
+      }
+    }
+
+    .invoice-info {
+      flex-wrap: wrap;
+      gap: unset;
+      column-gap: 41px;
+      row-gap: 36px;
+    }
+
+
+    .invoice-items {
+      padding: 24px 24px 0;
+
+      .invoice-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+
+        .invoice-item-name,
+        .invoice-item-total {
+          font-size: 12px;
+          font-weight: 700;
+          line-height: 15px;
+          letter-spacing: -0.25px;
+          text-align: left;
+          color: #000;
+        }
+
+        .invoice-item-name {
+          margin-bottom: 8px;
+        }
+      }
     }
   }
 }

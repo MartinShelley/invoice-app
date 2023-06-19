@@ -81,7 +81,7 @@ export default {
       document.body.style.overflow = "";
     },
     toggleIsMobile() {
-      if(window.innerWidth < 768) {
+      if (window.innerWidth < 768) {
         this.isMobile = true;
       }
       else {
@@ -272,8 +272,18 @@ button {
     margin: 32px 24px 0;
   }
 
-  #invoices-header .header-items #filter .filter-label img {
-    margin-left: 12px;
+  h1 {
+    font-size: 20px;
+  }
+
+  #invoices-header {
+    .header-items {
+      gap: 18px;
+
+      #filter .filter-label img {
+        margin-left: 12px;
+      }
+    }
   }
 
   button {

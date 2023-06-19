@@ -1,4 +1,4 @@
-# Frontend Mentor - Invoice app
+# Frontend Mentor - Invoice app WIP
 
 ![Design preview for the Invoice app coding challenge](./preview.jpg)
 
