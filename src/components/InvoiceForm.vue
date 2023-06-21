@@ -15,7 +15,7 @@
             <input type="text" id="address" v-model="formData.senderAddress.street"
               @blur="clearErrors('senderAddressStreet')" />
           </div>
-          <div class="col-3-wrapper">
+          <div :class="{ 'col-3-wrapper': !isMobile, 'col-2-wrapper': isMobile }">
             <div class="input-container" :class="{ invalid: !formErrorHandling.senderAddressCity }">
               <label for="city">City</label>
               <p class="error" v-if="!formErrorHandling.senderAddressCity">can't be empty</p>
@@ -58,7 +58,7 @@
             <p class="error" v-if="!formErrorHandling.clientAddressStreet">can't be empty</p>
             <input type="text" v-model="formData.clientAddress.street" @blur="clearErrors('clientAddressStreet')" />
           </div>
-          <div class="col-3-wrapper">
+          <div :class="{ 'col-3-wrapper': !isMobile, 'col-2-wrapper': isMobile }">
             <div class="input-container" :class="{ invalid: !formErrorHandling.clientAddressCity }">
               <label>City</label>
               <p class="error" v-if="!formErrorHandling.clientAddressCity">can't be empty</p>
@@ -75,7 +75,7 @@
               <input type="text" v-model="formData.clientAddress.country" @blur="clearErrors('clientAddressCountry')" />
             </div>
           </div>
-          <div class="col-2-wrapper">
+          <div :class="{ 'col-2-wrapper': !isMobile }">
             <datePicker @clearDatePickerError="clearErrors('createdAt')" @saveInvoiceDate="updateInvoiceDate"
               :invalid-element="!formErrorHandling.createdAt" />
             <selectDropdown @clearSelectDropdownError="clearErrors('paymentTerms')"
@@ -147,6 +147,7 @@ export default {
   },
   data() {
     return {
+      isMobile: false,
       originalData: {},
       formData: {
         senderAddress: {
@@ -416,10 +417,19 @@ export default {
     },
     updateInvoiceDate(payload) {
       this.formData.createdAt = payload;
+    },
+    toggleIsMobile() {
+      if (window.innerWidth < 768) {
+        this.isMobile = true;
+      }
+      else {
+        this.isMobile = false;
+      }
     }
   },
 
   async created() {
+    this.toggleIsMobile();
     if (this.editingForm == true) {
       this.originalData = JSON.parse(JSON.stringify(this.$store.getters.getInvoice(this.$route.params.id)));
       this.formData = JSON.parse(JSON.stringify(this.originalData));
@@ -427,7 +437,11 @@ export default {
   },
   mounted() {
     document.querySelector('#invoice-form-overlay').scroll(0, 0);
+    window.addEventListener('resize', this.toggleIsMobile);
   },
+  beforeUnmounted() {
+    window.removeEventListener('resize', this.toggleIsMobile);
+  }
 }
 </script>
 
@@ -639,14 +653,19 @@ export default {
       .input-container {
         // display: flex;
         // flex-direction: column;
+        // gap: 10px;
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         grid-template-rows: 0.5fr 1fr;
         margin-bottom: 24px;
         position: relative;
 
+        // div[data-lastpass-icon-root="true"] {
+        //   display: none;
+        // }
+
         label {
-          // margin-bottom: 10px;
+          margin-bottom: 10px;
           color: #7E88C3;
           font-size: 12px;
           font-weight: 500;
@@ -792,6 +811,39 @@ p {
     #form-actions {
       padding: 31px 56px;
     }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  #invoice-form-overlay {
+    width: 100%;
+    border-radius: unset;
+
+    .form-heading {
+      padding: 32px 24px 24px;
+    }
+
+    .form-top-section {
+      padding: 0 24px;
+
+      #bill-from-section {
+        margin-bottom: 40px;
+      }
+    }
+
+    section fieldset .col-2-wrapper {
+
+      grid-template-columns: repeat(2, 1fr);
+
+      .input-container:last-child {
+        grid-column: 1 / 3;
+      }
+    }
+
+    #bill-from-section fieldset .col-2-wrapper .input-container:last-child {
+      margin-bottom: 0;
+    }
+    
   }
 }
 </style>

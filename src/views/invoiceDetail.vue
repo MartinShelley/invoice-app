@@ -457,8 +457,12 @@ export default {
 }
 
 @media screen and (max-width: 767px) {
+  .invoice-header {
+    margin: 32px 24px 0;
+  }
+
   .invoice-main {
-    margin: 16px 24px 56px;
+    margin: 16px 24px 147px;
     padding: 24px;
 
     .invoice-heading {
@@ -475,6 +479,10 @@ export default {
       gap: unset;
       column-gap: 41px;
       row-gap: 36px;
+
+      .invoice-client-email {
+        width: 100%;
+      }
     }
 
 
