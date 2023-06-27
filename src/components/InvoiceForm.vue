@@ -92,39 +92,42 @@
       <section id="item-list" :class="{ invalid: !formErrorHandling.items }">
         <h3>Item List</h3>
         <table>
-          <tr>
+          <tr v-if=!isMobile>
             <th>Item Name</th>
             <th>Qty.</th>
             <th>Price</th>
             <th>Total</th>
           </tr>
           <tr v-for="(_, index) in formData.items" :key="index">
-            <td><input type="text" v-model="formData.items[index].name" @blur="checkItems" /></td>
-            <td><input type="number" class="tb-qty" min="1" v-model="formData.items[index].quantity"
+            <td class="tb-name"><label v-if=isMobile>Item Name</label><input type="text" v-model="formData.items[index].name" @blur="checkItems" /></td>
+            <td class="tb-quantity"><label v-if=isMobile>Qty.</label><input type="number" class="tb-qty" min="1" v-model="formData.items[index].quantity"
                 @input="updateListItemTotal(index)" @blur="checkItems" /></td>
-            <td><input type="number" class="tb-price" v-model="formData.items[index].price"
+            <td class="tb-price"><label v-if=isMobile>Price</label><input type="number" class="tb-price" v-model="formData.items[index].price"
                 @input="updateListItemTotal(index)" @blur="checkItems" /></td>
-            <td class="tb-total">{{ formData.items[index].total }}</td>
+            <td class="tb-total"><label v-if=isMobile>Total</label>{{ formData.items[index].total }}</td>
             <td class="tb-delete"><img src="@/assets/icon-delete.svg" @click="deleteTableRow(index)" /></td>
           </tr>
-          <tr>
-            <td colspan="5" class="button-container"><button type="button" @click="addTableRow()">+ Add New Item</button>
-            </td>
-          </tr>
         </table>
+        <div class="button-container"><button type="button" @click="addTableRow()">+ Add New Item</button></div>
       </section>
       <div class="errors-description">
         <p v-if="!formIsValid">- All fields must be added</p>
         <p v-if="!formErrorHandling.items">- An item must be added</p>
       </div>
     </div>
-    <section id="form-actions">
+    <section class="form-actions" v-if=!editingForm>
       <div>
         <button id="discard" type="button" @click="discardForm">Discard</button>
       </div>
       <div>
         <button id="save-draft" type="button" @click="submitForm('draft')">Save as Draft</button>
         <button id="save" type="button" @click="submitForm('pending')">Save & Send</button>
+      </div>
+    </section>
+    <section class="form-actions" id="form-actions-editing" v-else>
+      <div>
+        <button id="discard" type="button" @click="discardForm">Cancel</button>
+        <button id="save" type="button" @click="submitForm('draft')">Save Changes</button>
       </div>
     </section>
   </form>
@@ -138,7 +141,8 @@ export default {
     editingForm: {
       type: Boolean,
       required: false
-    }
+    }, 
+    
   },
   emits: ['hideForm'],
   components: {
@@ -522,8 +526,8 @@ export default {
     }
 
     th:first-child,
-    tr td:first-child,
-    tr td:first-child input {
+    tr .tb-name,
+    tr .tb-name input {
       width: 214px;
       padding-right: 16px;
     }
@@ -532,7 +536,7 @@ export default {
       width: 62px;
     }
 
-    tr td:nth-child(2) {
+    tr .tb-quantity {
       width: 46px;
       padding-right: 16px;
     }
@@ -551,8 +555,8 @@ export default {
     }
 
     th:nth-child(3),
-    tr td:nth-child(3),
-    tr td:nth-child(3) input {
+    tr .tb-price,
+    tr .tb-price input {
       width: 100px;
       padding-right: 16px;
     }
@@ -583,9 +587,13 @@ export default {
     }
   }
 
+  .button-container button {
+    width: 100%;
+    background-color: #F9FAFE;
+    color: #7E88C3;
+  }
 
-
-  #form-actions {
+  .form-actions {
     display: flex;
     justify-content: space-between;
     position: sticky;
@@ -626,6 +634,10 @@ export default {
     }
   }
 
+  #form-actions-editing {
+    justify-content: flex-end;
+  }
+
   section {
     fieldset {
       border: 0;
@@ -659,19 +671,7 @@ export default {
         grid-template-rows: 0.5fr 1fr;
         margin-bottom: 24px;
         position: relative;
-
-        // div[data-lastpass-icon-root="true"] {
-        //   display: none;
-        // }
-
-        label {
-          margin-bottom: 10px;
-          color: #7E88C3;
-          font-size: 12px;
-          font-weight: 500;
-          line-height: 15px;
-        }
-
+        
         .error {
           font-size: 10px;
           color: #EC5757;
@@ -685,6 +685,14 @@ export default {
         }
       }
     }
+  }
+
+  label {
+    margin-bottom: 10px;
+    color: #7E88C3;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 15px;
   }
 }
 
@@ -808,7 +816,7 @@ p {
       }
     }
 
-    #form-actions {
+    .form-actions {
       padding: 31px 56px;
     }
   }
@@ -818,13 +826,16 @@ p {
   #invoice-form-overlay {
     width: 100%;
     border-radius: unset;
+    overflow: auto;
 
     .form-heading {
       padding: 32px 24px 24px;
     }
 
     .form-top-section {
-      padding: 0 24px;
+      padding: 0 24px 150px;
+      height: unset;
+      overflow-y: unset;
 
       #bill-from-section {
         margin-bottom: 40px;
@@ -844,6 +855,64 @@ p {
       margin-bottom: 0;
     }
     
+    table {
+      width: 100%;
+      min-width: unset;
+
+      tr {
+        display: grid;
+        grid-template-areas: "name name name name"
+          "Quantity Price Total Delete";
+        margin-bottom: 24px;
+
+        .tb-name, .tb-total {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .tb-quantity, .tb-price {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .tb-name {
+          grid-area: name;
+          width: 100%;
+
+          input {
+            width: unset;
+          }
+        }
+
+        .tb-quantity {
+          grid-area: Quantity;
+        }
+
+        .tb-price {
+          grid-area: Price;
+        }
+
+        .tb-total {
+          grid-area: Total;
+          font-size: 14px;
+          font-weight: 700;
+          color: #888EB0;
+          gap: 14px;
+        }
+
+        .tb-delete {
+          grid-area: Delete;
+          margin: auto;
+          padding-bottom: unset;
+        }
+      }
+    }
+
+    .form-actions {
+      position: fixed;
+      height: 91px;
+      padding: 21px 24px;
+    }
   }
 }
 </style>

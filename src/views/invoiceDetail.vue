@@ -90,7 +90,8 @@
   </div>
   <div id="invoice-form-background" v-show="showFormToggle" @click="hideForm"></div>
   <Transition name="slide">
-    <InvoiceForm v-if="showFormToggle" @hide-form="hideForm" :editing-form="true" :invoice-data="invoiceDetails" />
+    <InvoiceForm v-if="showFormToggle" @hide-form="hideForm" :editing-form="true" />
+    <!-- :invoice-data="invoiceDetails" -->
   </Transition>
 </template>
 
@@ -160,7 +161,7 @@ export default {
       document.body.style.overflow = "";
     },
     toggleIsMobile() {
-      if (window.innerWidth < 768) {
+      if (window.innerWidth < 769) {
         this.isMobile = true;
       }
       else {
@@ -442,7 +443,7 @@ export default {
   }
 }
 
-@media screen and (max-width: 1024px) and (min-width: 768px) {
+@media screen and (max-width: 1024px) and (min-width: 769px) {
   .invoice-header {
     margin: 48px 40px 0;
   }
@@ -456,7 +457,7 @@ export default {
   }
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 768px) {
   .invoice-header {
     margin: 32px 24px 0;
   }
@@ -493,7 +494,7 @@ export default {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 24px;
+        padding-bottom: 24px;
 
         .invoice-item-name,
         .invoice-item-total {
