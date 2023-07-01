@@ -96,16 +96,28 @@ export default {
     .button-edit {
       background-color: #F9FAFE;
       color: #7E88C3;
+
+      &:hover {
+        background-color: #DFE3FA;
+      }
     }
 
     .button-delete {
       background-color: #EC5757;
       color: #fff;
+
+      &:hover {
+        background-color: #FF9797;
+      }
     }
 
     .button-paid {
       background-color: #7C5DFA;
       color: #fff;
+
+      &:hover {
+        background-color: #9277FF;
+      }
     }
 
     .inactive {
@@ -115,34 +127,35 @@ export default {
   }
 }
 
-@media screen and (max-width: 769px) {
-  
-    .action-bar {
-      display: block;
-      margin: 32px 0 0;
+@media screen and (max-width: 767px) {
 
-      .action-bar-status {
-        gap: unset;
-        justify-content: space-between;
+  .action-bar {
+    display: block;
+    margin: 32px 0 0;
+
+    .action-bar-status {
+      gap: unset;
+      justify-content: space-between;
+    }
+
+    .mobile-action-bar-buttons {
+      background-color: #fff;
+      padding: 22px 24px;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      justify-content: center;
+
+      .button-delete,
+      .button-edit {
+        width: 89px;
       }
 
-      .mobile-action-bar-buttons {
-        background-color: #fff;
-        padding: 22px 24px;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        justify-content: center;
-
-        .button-delete, .button-edit {
-          width: 89px;
-        }
-
-        .button-paid {
-          width: 149px;
-        }
+      .button-paid {
+        width: 149px;
       }
     }
   }
+}
 </style>

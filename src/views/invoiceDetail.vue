@@ -161,7 +161,7 @@ export default {
       document.body.style.overflow = "";
     },
     toggleIsMobile() {
-      if (window.innerWidth < 769) {
+      if (window.innerWidth < 768) {
         this.isMobile = true;
       }
       else {
@@ -443,7 +443,7 @@ export default {
   }
 }
 
-@media screen and (max-width: 1024px) and (min-width: 769px) {
+@media screen and (max-width: 1024px) and (min-width: 768px) {
   .invoice-header {
     margin: 48px 40px 0;
   }
@@ -457,7 +457,7 @@ export default {
   }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 767px) {
   .invoice-header {
     margin: 32px 24px 0;
   }

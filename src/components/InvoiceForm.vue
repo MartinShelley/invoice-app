@@ -99,11 +99,12 @@
             <th>Total</th>
           </tr>
           <tr v-for="(_, index) in formData.items" :key="index">
-            <td class="tb-name"><label v-if=isMobile>Item Name</label><input type="text" v-model="formData.items[index].name" @blur="checkItems" /></td>
-            <td class="tb-quantity"><label v-if=isMobile>Qty.</label><input type="number" class="tb-qty" min="1" v-model="formData.items[index].quantity"
-                @input="updateListItemTotal(index)" @blur="checkItems" /></td>
-            <td class="tb-price"><label v-if=isMobile>Price</label><input type="number" class="tb-price" v-model="formData.items[index].price"
-                @input="updateListItemTotal(index)" @blur="checkItems" /></td>
+            <td class="tb-name"><label v-if=isMobile>Item Name</label><input type="text"
+                v-model="formData.items[index].name" @blur="checkItems" /></td>
+            <td class="tb-quantity"><label v-if=isMobile>Qty.</label><input type="number" class="tb-qty" min="1"
+                v-model="formData.items[index].quantity" @input="updateListItemTotal(index)" @blur="checkItems" /></td>
+            <td class="tb-price"><label v-if=isMobile>Price</label><input type="number" class="tb-price"
+                v-model="formData.items[index].price" @input="updateListItemTotal(index)" @blur="checkItems" /></td>
             <td class="tb-total"><label v-if=isMobile>Total</label>{{ formData.items[index].total }}</td>
             <td class="tb-delete"><img src="@/assets/icon-delete.svg" @click="deleteTableRow(index)" /></td>
           </tr>
@@ -141,8 +142,8 @@ export default {
     editingForm: {
       type: Boolean,
       required: false
-    }, 
-    
+    },
+
   },
   emits: ['hideForm'],
   components: {
@@ -620,17 +621,30 @@ export default {
     #discard {
       color: #7E88C3;
       background-color: #F9FAFE;
+
+      &:hover {
+        background-color: #DFE3FA;
+      }
     }
 
     #save-draft {
       background-color: #373B53;
       color: #888EB0;
+
+      &:hover {
+        background-color: #0C0E16;
+      }
     }
 
     #save {
       background-color: #7C5DFA;
       color: #fff;
       margin-left: 8px;
+
+      &:hover {
+        background-color: #9277FF;
+        ;
+      }
     }
   }
 
@@ -671,7 +685,7 @@ export default {
         grid-template-rows: 0.5fr 1fr;
         margin-bottom: 24px;
         position: relative;
-        
+
         .error {
           font-size: 10px;
           color: #EC5757;
@@ -854,7 +868,7 @@ p {
     #bill-from-section fieldset .col-2-wrapper .input-container:last-child {
       margin-bottom: 0;
     }
-    
+
     table {
       width: 100%;
       min-width: unset;
@@ -865,12 +879,14 @@ p {
           "Quantity Price Total Delete";
         margin-bottom: 24px;
 
-        .tb-name, .tb-total {
+        .tb-name,
+        .tb-total {
           display: flex;
           flex-direction: column;
         }
 
-        .tb-quantity, .tb-price {
+        .tb-quantity,
+        .tb-price {
           display: flex;
           flex-direction: column;
         }
