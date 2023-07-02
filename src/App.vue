@@ -44,6 +44,12 @@ export default {
   box-sizing: border-box;
 }
 
+:root {
+  $dark-mode-background-color: #141625;
+  $dark-mode-background-second-color: #1E2139;
+  $dark-mode-font-color: #fff;
+}
+
 html {
   background-color: #f2f2f2;
 }

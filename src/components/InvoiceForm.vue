@@ -472,7 +472,7 @@ export default {
   }
 
   .form-top-section {
-    padding: 0 56px 32px 159px;
+    padding: 0 56px 100px 159px;
     height: 80%;
     overflow-y: scroll;
 

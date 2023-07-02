@@ -6,7 +6,7 @@
       <p class="invoice-number-label" v-else>No Invoices</p>
     </div>
     <div class="header-items">
-      <div id="filter" @mouseover="mouseOver" @mouseleave="mouseleave" @touchend="this.filterHover = !this.filterHover">
+      <div id="filter" @mouseover="mouseOver" @mouseleave="mouseleave" @click="this.filterHover = !this.filterHover">
         <span class="filter-label">{{ filterLabel }} <img src="@/assets/icon-arrow-down.svg" /></span>
         <div id="filter-dropdown" v-show="filterHover">
           <span>
