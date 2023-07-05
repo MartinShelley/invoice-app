@@ -1,8 +1,10 @@
 <template>
-  <MenuBar />
-  <main>
-    <RouterView />
-  </main>
+  <div class="app" :class="(lightMode) ? '' : 'dark-mode'">
+    <MenuBar />
+    <main>
+      <RouterView />
+    </main>
+  </div>
 </template>
 
 <script>
@@ -10,6 +12,11 @@ import MenuBar from './components/UI/MenuBar.vue';
 export default {
   components: {
     MenuBar
+  },
+  computed: {
+    lightMode() {
+      return this.$store.getters['getLightModeToggle'];
+    }
   },
   beforeCreate() {
     this.$store.dispatch('getInvoices');
@@ -45,14 +52,24 @@ export default {
 }
 
 :root {
-  $dark-mode-background-color: #141625;
-  $dark-mode-background-second-color: #1E2139;
-  $dark-mode-font-color: #fff;
+  --background-color-primary: #f2f2f2;
+  --background-second-color: #F8F8FB;
+  --main-font-color: #0C0E16;
+  --grey-font-color: #F8F8FB;
+  --input-border-color: #DFE3FA;
 }
 
-html {
-  background-color: #f2f2f2;
+.dark-mode {
+  --background-color-primary: #141625;
+  --background-second-color: #1E2139;
+  --main-font-color: #fff;
+  --grey-font-color: #DFE3FA;
+  --input-border-color: #252945;
 }
+
+// html {
+//   background-color: var(--background-color-primary);
+// }
 
 
 input,
@@ -62,8 +79,9 @@ select {
   font: inherit;
 }
 
-#app {
+.app {
   display: flex;
+  background-color: var(--background-color-primary);
 }
 
 main {
@@ -104,7 +122,6 @@ button {
   border-radius: 24px;
   border: 0;
   height: 48px;
-  // font-size: 12px;
   line-height: 15px;
   letter-spacing: -0.25px;
   font-weight: 700;
@@ -113,7 +130,7 @@ button {
 
 input {
   height: 48px;
-  border: 1px solid #DFE3FA;
+  border: 1px solid var(--input-border-color);
   border-radius: 4px;
   padding: 0 16px 0 20px;
   font-weight: 700;
