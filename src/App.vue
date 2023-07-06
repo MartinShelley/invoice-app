@@ -56,6 +56,9 @@ export default {
   --background-second-color: #FFF;
   --main-font-color: #0C0E16;
   --grey-font-color: #888EB0;
+  --invoice-detail-font-color: #7E88C3;
+  --invoice-detail-items-background: #F9FAFE;
+  --invoice-detail-total-background: #373B53;
   --input-border-color: #DFE3FA;
 }
 
@@ -64,6 +67,9 @@ export default {
   --background-second-color: #1E2139;
   --main-font-color: #fff;
   --grey-font-color: #DFE3FA;
+  --invoice-detail-font-color: #DFE3FA;
+  --invoice-detail-items-background: #252945;
+  --invoice-detail-total-background: #0C0E16;
   --input-border-color: #252945;
 }
 

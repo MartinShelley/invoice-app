@@ -18,6 +18,9 @@ export default {
         "invoice-status-draft": this.statusValue == "draft",
       }
     },
+    lightMode() {
+      return this.$store.getters['getLightModeToggle'];
+    }
   }
 }
 </script>
@@ -71,6 +74,20 @@ export default {
 
   p {
     color: #373B53;
+  }
+}
+
+.dark-mode {
+  .invoice-status-draft {
+    background-color: rgba(223, 227, 250, 0.05);
+
+    circle {
+      fill: #DFE3FA;
+    }
+
+    p {
+      color: #DFE3FA;
+    }
   }
 }
 </style>

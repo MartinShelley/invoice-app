@@ -63,7 +63,7 @@ export default {
 
 <style lang="scss" scoped>
 .action-bar {
-  background-color: #fff;
+  background-color: var(--background-second-color);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -125,6 +125,25 @@ export default {
       pointer-events: none;
     }
   }
+}
+
+.dark-mode .action-bar {
+  .action-bar-status span {
+    color: #DFE3FA;
+  }
+
+  .action-bar-buttons {
+    .button-edit {
+      background-color: #252945;
+      color: #DFE3FA;
+
+      &:hover {
+        background-color: #FFF;
+        color: #7E88C3;
+      }
+    }
+  }
+
 }
 
 @media screen and (max-width: 767px) {

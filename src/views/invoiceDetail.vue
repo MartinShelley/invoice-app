@@ -189,7 +189,7 @@ export default {
 
   .go-back {
     text-decoration: none;
-    color: #0C0E16;
+    color: var(--main-font-color);
     font-size: 12px;
     line-height: 15px;
     font-weight: 700;
@@ -202,7 +202,7 @@ export default {
 }
 
 .invoice-main {
-  background-color: #fff;
+  background-color: var(--background-second-color);
   box-shadow: 0px 10px 10px -10px rgba(72, 84, 159, 0.100397);
   border-radius: 8px;
   margin-top: 24px;
@@ -210,7 +210,7 @@ export default {
 
   p {
     font-size: 12px;
-    color: #7E88C3;
+    color: var(--invoice-detail-font-color);
     line-height: 15px;
     letter-spacing: -0.25px;
   }
@@ -222,11 +222,11 @@ export default {
 
 
     h3 {
-      color: #0C0E16;
+      color: var(--main-font-color);
     }
 
     span {
-      color: #888EB0;
+      color: var(--grey-font-color);
       font-weight: 700;
       font-size: 16px;
       line-height: 24px;
@@ -258,6 +258,7 @@ export default {
       font-weight: 700;
       line-height: 20px;
       letter-spacing: -0.31px;
+      color: var(--main-font-color);
     }
 
     .invoice-dates {
@@ -274,7 +275,7 @@ export default {
   }
 
   .invoice-items {
-    background-color: #F9FAFE;
+    background-color: var(--invoice-detail-items-background);
     border-radius: 8px 8px 0px 0px;
     padding: 32px 32px 8px;
 
@@ -285,7 +286,7 @@ export default {
         font-size: 11px;
         line-height: 18px;
         letter-spacing: -0.23px;
-        color: #7E88C3;
+        color: var(--invoice-detail-font-color);
         padding-bottom: 32px;
       }
 
@@ -322,11 +323,14 @@ export default {
 
       }
 
+      td:nth-child(1),
+      td:nth-child(4) {
+        color: var(--main-font-color);
+      }
 
       td:nth-child(2),
       td:nth-child(3) {
-        color: #7E88C3;
-
+        color: var(--invoice-detail-font-color);
       }
     }
   }
@@ -334,7 +338,7 @@ export default {
   .invoice-total {
     display: flex;
     justify-content: space-between;
-    background-color: #373B53;
+    background-color: var(--invoice-detail-total-background);
     border-radius: 0px 0px 8px 8px;
     padding: 24px 32px;
 
