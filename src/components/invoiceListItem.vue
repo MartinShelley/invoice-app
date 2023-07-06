@@ -72,7 +72,7 @@ export default {
 <style lang="scss" scoped>
 li {
   list-style-type: none;
-  background-color: #fff;
+  background-color: var(--background-second-color);
   padding: 16px 32px;
   margin-bottom: 16px;
   border-radius: 8px;
@@ -89,7 +89,7 @@ li {
       gap: 43px;
 
       #invoice-id {
-        color: #0C0E16;
+        color: var(--main-font-color);
         font-weight: 700;
         letter-spacing: -0.25px;
         font-size: 12px;
@@ -116,7 +116,7 @@ li {
       align-items: center;
 
       #invoice-price {
-        color: #000;
+        color: var(--main-font-color);
         font-size: 16px;
         line-height: 24px;
         font-weight: 700;

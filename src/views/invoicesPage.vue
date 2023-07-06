@@ -146,7 +146,7 @@ export default {
     font-weight: 500;
     line-height: 15px;
     letter-spacing: -0.25px;
-    color: #888EB0;
+    color: var(--grey-font-color);
   }
 
   .header-items {
@@ -163,6 +163,7 @@ export default {
         font-weight: 700;
         letter-spacing: -0.25px;
         line-height: 15px;
+        color: var(--main-font-color);
 
         img {
           margin-left: 16px;
@@ -173,7 +174,7 @@ export default {
     #filter-dropdown {
       display: flex;
       flex-direction: column;
-      background-color: #fff;
+      background-color: var(--background-second-color);
       padding: 24px;
       width: 192px;
       border-radius: 8px;
@@ -196,13 +197,12 @@ export default {
           width: 16px;
           margin-right: 13px;
           accent-color: #7C5DFA;
-          // background-color: #DFE3FA;
           border-radius: 2px;
         }
 
         label {
           font-weight: 700;
-          color: #0C0E16;
+          color: var(--main-font-color);
           cursor: pointer;
           font-size: 12px;
           line-height: 15px;

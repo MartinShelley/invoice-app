@@ -53,9 +53,9 @@ export default {
 
 :root {
   --background-color-primary: #f2f2f2;
-  --background-second-color: #F8F8FB;
+  --background-second-color: #FFF;
   --main-font-color: #0C0E16;
-  --grey-font-color: #F8F8FB;
+  --grey-font-color: #888EB0;
   --input-border-color: #DFE3FA;
 }
 
@@ -94,6 +94,7 @@ h1 {
   font-weight: 700;
   line-height: 35.84px;
   letter-spacing: -1px;
+  color: var(--main-font-color);
 }
 
 h2 {
