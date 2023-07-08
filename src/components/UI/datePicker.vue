@@ -153,7 +153,7 @@ input {
 
 .date-picker {
   width: 240px;
-  background: #FFFFFF;
+  background: var(--date-picker-background-color);
   box-shadow: 0px 10px 20px rgba(72, 84, 159, 0.25);
   border-radius: 8px;
   position: absolute;
@@ -176,7 +176,7 @@ input {
       line-height: 15px;
       letter-spacing: -0.25px;
       font-weight: 700;
-      color: #0C0E16;
+      color: var(--main-font-color);
     }
   }
 
@@ -194,6 +194,7 @@ input {
       font-weight: 700;
       letter-spacing: -0.25px;
       cursor: pointer;
+      color: var(--main-font-color);
     }
 
     .selected {

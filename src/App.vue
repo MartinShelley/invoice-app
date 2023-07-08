@@ -60,6 +60,9 @@ export default {
   --invoice-detail-items-background: #F9FAFE;
   --invoice-detail-total-background: #373B53;
   --input-border-color: #DFE3FA;
+  --input-background-color: transparent;
+  --date-picker-background-color: #FFF;
+  --form-scrollbar-thumb: #DFE3FA;
 }
 
 .dark-mode {
@@ -71,6 +74,9 @@ export default {
   --invoice-detail-items-background: #252945;
   --invoice-detail-total-background: #0C0E16;
   --input-border-color: #252945;
+  --input-background-color: #1E2139;
+  --date-picker-background-color: #252945;
+  --form-scrollbar-thumb: #252945;
 }
 
 // html {
@@ -141,7 +147,8 @@ input {
   border-radius: 4px;
   padding: 0 16px 0 20px;
   font-weight: 700;
-  background-color: transparent;
+  background-color: var(--input-background-color);
+  color: var(--main-font-color);
 }
 
 @media screen and (max-width: 1024px) {

@@ -467,8 +467,12 @@ export default {
     padding: 56px 56px 48px 159px;
     position: sticky;
     top: 0;
-    background-color: #fff;
+    // background-color: #fff;
     z-index: 2;
+
+    h2 {
+      color: var(--main-font-color);
+    }
   }
 
   .form-top-section {
@@ -520,6 +524,7 @@ export default {
     th {
       text-align: left;
       padding-bottom: 16px;
+      color: var(--grey-font-color);
     }
 
     td {
@@ -569,6 +574,7 @@ export default {
 
     .tb-total {
       font-size: 12px;
+      color: var(--grey-font-color);
     }
 
     th:nth-child(5),
@@ -580,18 +586,17 @@ export default {
       padding-left: 27px;
       cursor: pointer;
     }
-
-    button {
-      width: 100%;
-      background-color: #F9FAFE;
-      color: #7E88C3;
-    }
   }
 
   .button-container button {
     width: 100%;
-    background-color: #F9FAFE;
-    color: #7E88C3;
+    background-color: var(--invoice-detail-items-background);
+    color: var(--invoice-detail-font-color);
+
+    &:hover {
+      background-color: #DFE3FA;
+      color: #7E88C3;
+    }
   }
 
   .form-actions {
@@ -677,9 +682,6 @@ export default {
       }
 
       .input-container {
-        // display: flex;
-        // flex-direction: column;
-        // gap: 10px;
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         grid-template-rows: 0.5fr 1fr;
@@ -703,10 +705,39 @@ export default {
 
   label {
     margin-bottom: 10px;
-    color: #7E88C3;
+    color: var(--invoice-detail-font-color);
     font-size: 12px;
     font-weight: 500;
     line-height: 15px;
+  }
+}
+
+.dark-mode {
+
+  #invoice-form-overlay,
+  #invoice-form-overlay .form-actions {
+    background-color: #141625;
+  }
+
+  #invoice-form-overlay .form-actions {
+    border-top: unset;
+
+    #save-draft {
+      &:hover {
+        background-color: #1E2139;
+        color: #DFE3FA;
+      }
+    }
+
+    #discard {
+      color: #DFE3FA;
+      background-color: #252945;
+
+      &:hover {
+        background-color: #F9FAFE;
+        color: #7E88C3;
+      }
+    }
   }
 }
 
@@ -787,11 +818,12 @@ p {
 
 ::-webkit-scrollbar-track {
   background: #fff;
-  margin-bottom: 15px;
+  margin-bottom: 80px;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #DFE3FA;
+  background: var(--form-scrollbar-thumb);
   border-radius: 4px;
 }
 

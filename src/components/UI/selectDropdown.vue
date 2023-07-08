@@ -75,7 +75,7 @@ export default {
   width: 100%;
   position: relative;
   height: 48px;
-  border: 1px solid #DFE3FA;
+  border: 1px solid var(--input-border-color);
   border-radius: 4px;
   font-weight: 700;
   background-color: transparent;
@@ -125,12 +125,13 @@ export default {
     z-index: 2;
     width: 100%;
     border-radius: 8px;
-    background-color: #fff;
+    background-color: var(--background-second-color);
     box-shadow: 0px 10px 20px rgba(72, 84, 159, 0.25);
 
     .custom-select-item {
       padding: 15px 0px 15px 24px;
       font-size: 14px;
+      color: var(--main-font-color);
 
       &:not(:last-child) {
         border-bottom: 1px solid #DFE3FA;
