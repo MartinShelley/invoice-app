@@ -53,7 +53,6 @@ export default {
   data() {
     return {
       filterHover: false,
-      isMobile: false,
       selectedFilters: {
         paid: false,
         pending: false,
@@ -80,14 +79,6 @@ export default {
       this.$store.commit('toggleShowForm', false);
       document.body.style.overflow = "";
     },
-    toggleIsMobile() {
-      if (window.innerWidth < 768) {
-        this.isMobile = true;
-      }
-      else {
-        this.isMobile = false;
-      }
-    }
   },
   computed: {
     buttonLabel() {
@@ -106,6 +97,9 @@ export default {
         return 'Filter by status';
       }
     },
+    isMobile() {
+      return this.$store.getters.getIsMobile;
+    },
     noOfInvoices() {
       return this.$store.getters['getNumberOfInvoices'];
     },
@@ -121,15 +115,6 @@ export default {
       return this.$store.getters.getShowFormToggle;
     }
   },
-  created() {
-    this.toggleIsMobile();
-  },
-  mounted() {
-    window.addEventListener('resize', this.toggleIsMobile);
-  },
-  beforeUnmounted() {
-    window.removeEventListener('resize', this.toggleIsMobile);
-  }
 }
 </script>
 
@@ -180,7 +165,6 @@ export default {
       border-radius: 8px;
       box-shadow: 0px 10px 20px 0px #48549F40;
       position: absolute;
-      // top: 40px;
       margin-top: 20px;
       transform: translateX(-35px);
       z-index: 1;

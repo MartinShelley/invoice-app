@@ -12,6 +12,9 @@ export default {
     const invoice = state.invoices.find(invoice => invoice.id === id);
     return invoice.status;
   },
+  getIsMobile(state) {
+    return state.isMobile;
+  },
   getLightModeToggle(state) {
     return state.lightMode;
   },

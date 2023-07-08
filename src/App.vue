@@ -18,8 +18,27 @@ export default {
       return this.$store.getters['getLightModeToggle'];
     }
   },
+  methods: {
+    toggleIsMobile() {
+      if (window.innerWidth < 768) {
+        this.$store.commit('toggleIsMobile', true);
+      }
+      else {
+        this.$store.commit('toggleIsMobile', false);
+      }
+    }
+  },
   beforeCreate() {
     this.$store.dispatch('getInvoices');
+  },
+  async created() {
+    this.toggleIsMobile();
+  },
+  mounted() {
+    window.addEventListener('resize', this.toggleIsMobile);
+  },
+  beforeUnmounted() {
+    window.removeEventListener('resize', this.toggleIsMobile);
   }
 }
 </script>
@@ -79,11 +98,6 @@ export default {
   --form-scrollbar-thumb: #252945;
 }
 
-// html {
-//   background-color: var(--background-color-primary);
-// }
-
-
 input,
 button,
 textarea,
@@ -94,6 +108,7 @@ select {
 .app {
   display: flex;
   background-color: var(--background-color-primary);
+  height: 100vh;
 }
 
 main {
@@ -152,12 +167,13 @@ input {
 }
 
 @media screen and (max-width: 1024px) {
-  #app {
-    display: unset;
+  .app {
+    flex-direction: column;
   }
 
   main {
     width: unset;
+    margin: unset;
   }
 }
 </style>

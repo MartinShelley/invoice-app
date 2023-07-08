@@ -152,7 +152,6 @@ export default {
   },
   data() {
     return {
-      isMobile: false,
       originalData: {},
       formData: {
         senderAddress: {
@@ -210,7 +209,10 @@ export default {
       else {
         return paymentDate;
       }
-    }
+    },
+    isMobile() {
+      return this.$store.getters.getIsMobile;
+    },
   },
   methods: {
     addTableRow() {
@@ -423,18 +425,9 @@ export default {
     updateInvoiceDate(payload) {
       this.formData.createdAt = payload;
     },
-    toggleIsMobile() {
-      if (window.innerWidth < 768) {
-        this.isMobile = true;
-      }
-      else {
-        this.isMobile = false;
-      }
-    }
   },
 
   async created() {
-    this.toggleIsMobile();
     if (this.editingForm == true) {
       this.originalData = JSON.parse(JSON.stringify(this.$store.getters.getInvoice(this.$route.params.id)));
       this.formData = JSON.parse(JSON.stringify(this.originalData));
@@ -442,11 +435,7 @@ export default {
   },
   mounted() {
     document.querySelector('#invoice-form-overlay').scroll(0, 0);
-    window.addEventListener('resize', this.toggleIsMobile);
   },
-  beforeUnmounted() {
-    window.removeEventListener('resize', this.toggleIsMobile);
-  }
 }
 </script>
 
@@ -458,7 +447,6 @@ export default {
   top: 0;
   left: 0;
   background-color: #fff;
-  // overflow-y: auto;
   overflow-y: hidden;
   z-index: 2;
   border-radius: 0 20px 20px 0;
@@ -467,7 +455,6 @@ export default {
     padding: 56px 56px 48px 159px;
     position: sticky;
     top: 0;
-    // background-color: #fff;
     z-index: 2;
 
     h2 {
@@ -648,7 +635,6 @@ export default {
 
       &:hover {
         background-color: #9277FF;
-        ;
       }
     }
   }
@@ -773,7 +759,6 @@ h2 {
   font-size: 24px;
   line-height: 32px;
   letter-spacing: -0.5px;
-  // margin-bottom: 48px;
 }
 
 select {

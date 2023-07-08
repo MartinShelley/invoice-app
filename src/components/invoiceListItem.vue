@@ -20,11 +20,6 @@ import StatusIcon from './UI/StatusIcon.vue';
 
 export default {
   props: { value: Object },
-  data() {
-    return {
-      isMobile: false
-    }
-  },
   computed: {
     transformDate() {
       if (this.value.paymentDue != "") {
@@ -46,26 +41,7 @@ export default {
       return this.$route.path + "invoice/" + this.value.id;
     }
   },
-  methods: {
-    toggleIsMobile() {
-      if (window.innerWidth < 768) {
-        this.isMobile = true;
-      }
-      else {
-        this.isMobile = false;
-      }
-    }
-  },
   components: { StatusIcon },
-  created() {
-    this.toggleIsMobile();
-  },
-  mounted() {
-    window.addEventListener('resize', this.toggleIsMobile);
-  },
-  beforeUnmounted() {
-    window.removeEventListener('resize', this.toggleIsMobile);
-  }
 }
 </script>
 

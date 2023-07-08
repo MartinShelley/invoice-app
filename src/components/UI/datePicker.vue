@@ -134,7 +134,6 @@ export default {
   position: relative;
 
   label {
-    // margin-bottom: 10px;
     color: #7E88C3;
     font-size: 12px;
     font-weight: 500;

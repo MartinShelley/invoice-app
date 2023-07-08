@@ -9,6 +9,9 @@ export default {
     const findExistingInvoice = state.invoices.findIndex(invoice => invoice.id === payload.id);
     state.invoices[findExistingInvoice] = payload;
   },
+  toggleIsMobile(state, payload) {
+    state.isMobile = payload;
+  },
   toggleLightMode(state) {
     state.lightMode = !state.lightMode;
   },

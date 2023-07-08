@@ -91,18 +91,17 @@
   <div id="invoice-form-background" v-show="showFormToggle" @click="hideForm"></div>
   <Transition name="slide">
     <InvoiceForm v-if="showFormToggle" @hide-form="hideForm" :editing-form="true" />
-    <!-- :invoice-data="invoiceDetails" -->
   </Transition>
 </template>
 
 <script>
 import InvoiceActionBar from '@/components/InvoiceActionBar.vue';
 import InvoiceForm from '@/components/InvoiceForm.vue';
+import { mapGetters } from 'vuex';
 export default {
   data() {
     return {
       deletePrompt: false,
-      isMobile: false,
     }
   },
   components: {
@@ -133,7 +132,10 @@ export default {
     },
     showFormToggle() {
       return this.$store.getters.getShowFormToggle;
-    }
+    },
+    ...mapGetters({
+      isMobile: 'getIsMobile'
+    })
   },
   methods: {
     deleteInvoice() {
@@ -160,24 +162,7 @@ export default {
       this.$store.commit('toggleShowForm', false);
       document.body.style.overflow = "";
     },
-    toggleIsMobile() {
-      if (window.innerWidth < 768) {
-        this.isMobile = true;
-      }
-      else {
-        this.isMobile = false;
-      }
-    }
   },
-  created() {
-    this.toggleIsMobile();
-  },
-  mounted() {
-    window.addEventListener('resize', this.toggleIsMobile);
-  },
-  beforeUnmounted() {
-    window.removeEventListener('resize', this.toggleIsMobile);
-  }
 }
 
 </script>
@@ -357,7 +342,6 @@ export default {
 }
 
 #delete-confirmation {
-  // display: block;
   position: absolute;
   top: 0;
   left: 0;
@@ -386,19 +370,20 @@ export default {
     border-radius: 8px;
     box-shadow: 0px 10px 10px -10px rgba(72, 84, 159, 0.100397);
     border: none;
+    background-color: var(--background-second-color);
 
     h2 {
       font-size: 24px;
       line-break: 32px;
       letter-spacing: -0.5px;
       font-weight: 700;
-      color: #0C0E16;
+      color: var(--main-font-color);
       margin-bottom: 13px;
     }
 
     p {
       font-size: 13px;
-      color: #888EB0;
+      color: var(--grey-font-color);
       line-height: 22px;
       letter-spacing: -0.25px;
       margin-bottom: 16px;
@@ -421,11 +406,19 @@ export default {
       .cancel {
         background-color: #F9FAFE;
         color: #7E88C3;
+
+        &:hover {
+          background-color: #DFE3FA;
+        }
       }
 
       .delete {
         background-color: #EC5757;
         color: #fff;
+
+        &:hover {
+          background-color: #FF9797;
+        }
       }
     }
   }
@@ -439,6 +432,16 @@ export default {
   top: 0;
   left: 0;
   position: fixed;
+}
+
+.dark-mode #delete-confirmation dialog .buttons .cancel {
+  background-color: #252945;
+  color: #DFE3FA;
+
+  &:hover {
+    background-color: #FFF;
+    color: #7E88C3;
+  }
 }
 
 @media screen and (max-width: 1024px) {

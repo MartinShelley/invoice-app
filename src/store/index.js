@@ -7,6 +7,7 @@ const store = createStore({
   state() {
     return {
       invoices: [],
+      isMobile: false,
       lightMode: true,
       showFormToggle: false
     }
