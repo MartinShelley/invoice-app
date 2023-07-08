@@ -49,7 +49,7 @@
             :class="{ invalid: !formErrorHandling.clientEmail || !formErrorHandling.clientEmailValid }">
             <label>Client's Email</label>
             <p class="error" v-if="!formErrorHandling.clientEmail">can't be empty</p>
-            <p class="error" v-if="!formErrorHandling.clientEmailValid">enter valid email</p>
+            <p class="error" v-else-if="!formErrorHandling.clientEmailValid">enter valid email</p>
             <input type="email" placeholder="e.g. email@example.com" v-model="formData.clientEmail"
               @blur="clearErrors('clientEmail')" @keyup="validatedEmailInput($event)" />
           </div>
@@ -739,22 +739,6 @@ export default {
   }
 }
 
-#discard-confirmation {
-  display: block;
-  position: absolute;
-  left: 50%;
-  width: 400px;
-  z-index: 500;
-  height: 200px;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  padding: 24px;
-
-  h2 {
-    margin-bottom: 24px;
-  }
-}
-
 h2 {
   font-size: 24px;
   line-height: 32px;
@@ -861,6 +845,7 @@ p {
 
     .form-heading {
       padding: 32px 24px 24px;
+      background-color: #fff;
     }
 
     .form-top-section {
@@ -946,6 +931,10 @@ p {
       height: 91px;
       padding: 21px 24px;
     }
+  }
+
+  .dark-mode #invoice-form-overlay .form-heading {
+    background-color: #141625;
   }
 }
 </style>

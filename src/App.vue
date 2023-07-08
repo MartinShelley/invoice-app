@@ -108,7 +108,7 @@ select {
 .app {
   display: flex;
   background-color: var(--background-color-primary);
-  height: 100vh;
+  height: 100%;
 }
 
 main {

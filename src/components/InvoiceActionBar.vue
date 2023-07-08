@@ -158,7 +158,7 @@ export default {
     }
 
     .mobile-action-bar-buttons {
-      background-color: #fff;
+      background-color: var(--background-second-color);
       padding: 22px 24px;
       position: fixed;
       bottom: 0;
